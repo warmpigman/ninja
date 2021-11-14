@@ -1,0 +1,17 @@
+{
+  "name": "ninja",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {},
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@discordjs/collection": "^0.3.2",
+    "axios": "^0.24.0",
+    "chalk": "^4.1.2",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.12"
+  }
+}
