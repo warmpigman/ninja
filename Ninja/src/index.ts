@@ -1,7 +1,7 @@
 require('dotenv').config()
 import * as Discord from "discord.js";
 var Pagu = require("./pagu/pagu");
-const Client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, "GUILD_MESSAGES"] })
+const Client = new Discord.Client({ intents: new Discord.Intents(32767) });
 Client.on('ready', async() => {
     const PaguClient = await new Pagu.Client({
         client: Client, options: {

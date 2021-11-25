@@ -38,7 +38,7 @@ module.exports = {
                                     }
                                 }
                                 case "admin": {
-                                    if (message.member.hasPermission('ADMINISTRATOR') || message.member.roles.cache.find((r) => r.name.toLowerCase() == "admin")) {
+                                    if (message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.find((r) => r.name.toLowerCase() == "admin")) {
                                         hiddenToUser = false;
                                         break;
                                     }
@@ -48,7 +48,7 @@ module.exports = {
                                     }
                                 }
                                 case "mod" || "moderator": {
-                                    if (message.member.hasPermission('ADMINISTRATOR') || message.member.roles.cache.find((r) => r.name.toLowerCase() == "mod") || message.member.roles.cache.find((r) => r.name.toLowerCase() == "moderator")) {
+                                    if (message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.find((r) => r.name.toLowerCase() == "mod") || message.member.roles.cache.find((r) => r.name.toLowerCase() == "moderator")) {
                                         hiddenToUser = false;
                                         break;
                                     }
@@ -99,7 +99,10 @@ module.exports = {
                         if (alternatives.length == 0) {
                             alternatives = "No alternatives";
                         }
-                        embed.addFields({ name: "Alternatives", value: alternatives }, { name: "Description", value: command.description }, { name: "Usage", value: command.commandFile.usage ?? "No usage set" }, { name: "Examples", value: command.commandFile.examples ?? "No examples set" });
+                        else
+                            alternatives = alternatives.join(", ");
+                        console.log(alternatives);
+                        embed.addFields({ name: "Alternatives", value: alternatives }, { name: "Description", value: command.description.toString() }, { name: "Usage", value: command.commandFile.usage ?? "No usage set" }, { name: "Examples", value: command.commandFile.examples.join(",\n") ?? "No examples set" });
                     }
                 });
                 if (useHelp) {

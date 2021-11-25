@@ -37,7 +37,7 @@ module.exports = {
                                     }
                                 }
                                 case "admin": {
-                                    if (message.member.hasPermission('ADMINISTRATOR') || message.member.roles.cache.find((r: any) => r.name.toLowerCase() == "admin")) {
+                                    if (message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.find((r: any) => r.name.toLowerCase() == "admin")) {
                                         hiddenToUser = false;
                                         break;
                                     } else {
@@ -46,7 +46,7 @@ module.exports = {
                                     }
                                 }
                                 case "mod" || "moderator": {
-                                    if (message.member.hasPermission('ADMINISTRATOR') || message.member.roles.cache.find((r: any) => r.name.toLowerCase() == "mod") || message.member.roles.cache.find((r: any) => r.name.toLowerCase() == "moderator")) {
+                                    if (message.member.permissions.has('ADMINISTRATOR') || message.member.roles.cache.find((r: any) => r.name.toLowerCase() == "mod") || message.member.roles.cache.find((r: any) => r.name.toLowerCase() == "moderator")) {
                                         hiddenToUser = false;
                                         break;
                                     } else {
@@ -92,12 +92,13 @@ module.exports = {
                         alternatives.shift()
                         if (alternatives.length == 0) {
                             alternatives = "No alternatives"
-                        }
+                        } else alternatives = alternatives.join(", ")
+                        console.log(alternatives)
                         embed.addFields(
-                            { name: "Alternatives", value: alternatives },
-                            { name: "Description", value: command.description },
+                            { name: "Alternatives", value: alternatives},
+                            { name: "Description", value: command.description.toString() },
                             { name: "Usage", value: command.commandFile.usage ?? "No usage set" },
-                            { name: "Examples", value: command.commandFile.examples ?? "No examples set" }
+                            { name: "Examples", value: command.commandFile.examples.join(",\n") ?? "No examples set" }
                         )
                     }
     

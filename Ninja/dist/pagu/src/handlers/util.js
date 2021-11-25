@@ -9,4 +9,5 @@ module.exports = {
     newEco: require('../util/Util/Util/newEco'),
     commadToNumber: require('../util/Util/Util/commadToNumber'),
     createNewUser: require('../util/Util/Util/createNewUser'),
+    resolveTarget: require('../util/Util/Util/resolveTarget')
 };
