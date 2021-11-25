@@ -93,7 +93,6 @@ module.exports = {
                         if (alternatives.length == 0) {
                             alternatives = "No alternatives"
                         } else alternatives = alternatives.join(", ")
-                        console.log(alternatives)
                         embed.addFields(
                             { name: "Alternatives", value: alternatives},
                             { name: "Description", value: command.description.toString() },
@@ -108,7 +107,6 @@ module.exports = {
                     categories.forEach(async (category: any) => {
                         index++
                         await embed.addFields({ name: category.cleanName, value: `${category.commands.length} Commands`, inline: true })
-                    console.log(index, categories.size, 1)
                         if(index==categories.size) await resolve()
                     })
                 } else resolve()
@@ -117,7 +115,6 @@ module.exports = {
                 categories.forEach(async (category: any) => {
                     index++
                     await embed.addFields({ name: category.cleanName, value: `${category.commands.length} Commands`, inline: true })
-                    console.log(index, categories.size)
                     if(index==categories.size) await resolve()
                 })
             }

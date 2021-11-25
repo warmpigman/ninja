@@ -6,6 +6,8 @@ services:
     container_name: "ninjaBot"
     depends_on:
       - mongodb
+    volumes:
+      - ./Ninja:/application
   mongodb:
     image: mongo:3
     # restart: unless-stopped

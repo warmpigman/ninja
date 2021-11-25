@@ -103,7 +103,7 @@ module.exports = {
                     } catch (e) { }
                 })
             } while (splitLimit > 0 && counter < 11)
-            
+
             function findFileData() {
                 let dataToWrite = '';
                 messagesToDelete.reverse()
@@ -129,67 +129,30 @@ module.exports = {
             // Implement botlog channel but for now just send to public chat
             var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
             await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
-                .catch(function (e) {
-                    embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (Hastebin could not be created)`)
+                .catch(async function (e) {
+                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (Hastebin could not be created)`)
                     message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                 })
                 .then(async url => {
-                    embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
+                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
                     message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                 })
-                if (!filter.includes('silent')) {
-                    embed.setDescription('I have deleted ' + messagesToDelete.length + ' messages!')
-                    return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
-                }
+            if (!filter.includes('silent')) {
+                await embed.setDescription('I have deleted ' + messagesToDelete.length + ' messages!')
+                return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+            }
         }
         if (!filter.includes('silent')) {
             try {
 
                 await message.channel.send({ content: `Are you sure you want to delete ${limit} messages?` }).then(async (message3: Message) => {
-
-
                     message3.react('✅')
                     message3.react('❌')
-
-                    // const filter = (reaction: MessageReaction, user: User) => {
-                    //     return user.id === message.author.id
-                    // }
-                    // const collector = message3.createReactionCollector({
-                    //     filter,
-                    //     max: 1,
-                    //     time: 1000*60
-                    // })
-                    // collector.on('collect', (reaction: MessageReaction) => {
-                    //     console.log(reaction)
-                    // })
-                    // const filter1 = (reaction:any, user:any) => {
-                    //     console.log(reaction, user)
-                    //     return true //user.id === message.author.id
-                    // };
-                    // const collector = await message3.createReactionCollector(filter1, {
-                    //     max: 1,
-                    //     time: 60000
-                    // });
-                    // collector.on('collect', async (reaction:any, user:any) => {
-                    //     if (reaction.emoji.name === '👍') {
-                    //         await message.delete()
-                    //         await message3.delete()
-                    //         run()
-
-                    //     } else if (reaction.emoji.name === '👎') return message.channel.send('Ended')
-                    // });
-
-
-                    // console.log(message3)
                     var filter = (reaction: any, user: any) => {
-                        console.log(reaction)
-                        console.log(['✅', '❌'].includes(reaction.emoji.name), user.id == message.author.id)
-                        // return true
                         return ['✅', '❌'].includes(reaction.emoji.name) && user.id == message.author.id
                     }
                     var collector = await message3.createReactionCollector({ filter, max: 1, time: 60000 })
                     collector.on('collect', async (reaction: any, user: any) => {
-                        console.log(reaction)
                         if (reaction.emoji.name == '✅') {
                             await message.delete()
                             await collector.stop()
@@ -197,6 +160,9 @@ module.exports = {
                         } else if (reaction.emoji.name == '❌') {
                             await collector.stop()
                         }
+                    })
+                    collector.on('end', async () => {
+                        await message3.delete()
                     })
                 })
             } catch (e) {

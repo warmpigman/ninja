@@ -5,4 +5,5 @@ EXPOSE 80
 COPY package*.json ./
 COPY . .
 # RUN npm install --production
-CMD ["node", "."]
+CMD tail -f /dev/null
+# CMD ["node", "."]

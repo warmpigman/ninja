@@ -13,6 +13,6 @@ module.exports = {
             .setColor(`#${Math.floor(Math.random()*16777215).toString(16)}`)
             .setTimestamp()
         message.channel.send({content: 'hi'})
-
+        
     }
 }

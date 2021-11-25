@@ -101,7 +101,6 @@ module.exports = {
                         }
                         else
                             alternatives = alternatives.join(", ");
-                        console.log(alternatives);
                         embed.addFields({ name: "Alternatives", value: alternatives }, { name: "Description", value: command.description.toString() }, { name: "Usage", value: command.commandFile.usage ?? "No usage set" }, { name: "Examples", value: command.commandFile.examples.join(",\n") ?? "No examples set" });
                     }
                 });
@@ -110,7 +109,6 @@ module.exports = {
                     categories.forEach(async (category) => {
                         index++;
                         await embed.addFields({ name: category.cleanName, value: `${category.commands.length} Commands`, inline: true });
-                        console.log(index, categories.size, 1);
                         if (index == categories.size)
                             await resolve();
                     });
@@ -123,7 +121,6 @@ module.exports = {
                 categories.forEach(async (category) => {
                     index++;
                     await embed.addFields({ name: category.cleanName, value: `${category.commands.length} Commands`, inline: true });
-                    console.log(index, categories.size);
                     if (index == categories.size)
                         await resolve();
                 });
