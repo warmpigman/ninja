@@ -1,9 +1,9 @@
-import { MessageMentions, MessageAttachment, MessageReaction, User, Message } from 'discord.js';
+import { MessageMentions, MessageAttachment, MessageReaction, User, Message, Channel, TextChannel, ThreadChannel } from 'discord.js';
 import * as hastebin from 'hastebin'
 module.exports = {
     name: ["purge", "clear", "prune"],
     category: "Mod",
-    description: "Purges a certain amount of message with optional filters! ( Filters are used by -<filter>, possible filters are bots, users, links, invites, embeds, images, files, mentions, pins, silent)",
+    description: "Purges a certain amount of message with optional filters! ( Filters are used by -<filter>, possible filters are bots, users, links, invites, embeds, images, files, mentions, pins, silent, multichannel, and mc)",
     usage: "purge <amount> [Filters]",
     examples: [
         "purge 100 -invites"
@@ -15,8 +15,7 @@ module.exports = {
             .setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
             .setTimestamp()
             .setTitle('Purge')
-        var tags = ['bots', 'users', 'links', 'invites', 'embeds', 'images', 'files', 'mentions', 'pins', 'silent']
-        var { channel } = message
+        var tags = ['bots', 'users', 'links', 'invites', 'embeds', 'images', 'files', 'mentions', 'pins', 'silent', 'multichannel', 'mc']
         if (args.length == 0) {
             embed.setDescription('Purge is used to delete messages from a channel!\n\nUsage: `purge <amount> [Filters]`\n\nFilters are used by `-<filter>`, possible filters are: \n\n' + tags.join(', '))
             return message.reply({ embeds: [embed], allowedMentions: { users: [] } })
@@ -41,6 +40,9 @@ module.exports = {
         var messagesToDelete = new Array()
         var splitLimit = limit
         var counter = 0
+        var channels: Array<Array<TextChannel | ThreadChannel>> = filter.includes('mc' || 'multichannel') ? Array.from(message.guild.channels.cache.filter((channel: Channel) => ["GUILD_TEXT", "GUILD_NEWS_THREAD", "GUILD_PUBLIC_THREAD", "GUILD_PRIVATE_THREAD"].includes(channel.type))) : [message.channel]
+        var currentChannel = 0
+        var usedChannels = new Array<TextChannel | ThreadChannel>()
         function findNextLimit() {
             if (splitLimit >= 100) {
                 return 100
@@ -67,11 +69,14 @@ module.exports = {
                                 embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
                                 return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                             })
-                        return message.reply({ embeds: [embed], allowedMentions: { users: [] } })
+                        return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                     }
                 }
                 var toFetch: any = findNextLimit()
-                await message.channel.messages.fetch({ limit: toFetch }).then(async (messages: any) => {
+                // console.log(currentChannel)
+                // console.log(currentChannel, channels.length, channels[currentChannel], channels[currentChannel][1].messages)
+                await channels[currentChannel][1].messages.fetch({ limit: toFetch }).then(async (messages: any) => {
+
                     var messages2 = messages;
                     if (message.mentions.users.first()) messages2 = messages2.filter((msg: any) => msg.author.id == message.mentions.users.first().id)
                     if (filter.includes('bots')) messages2 = messages2.filter((msg: any) => msg.author.bot)
@@ -88,26 +93,37 @@ module.exports = {
                     else if (!filter.includes('pins')) messages2 = messages2.filter((msg: any) => !msg.pinned)
                     if (toFetch > splitLimit) messages2 = messages2.first(splitLimit)
                     messages2 = messages2.filter((filterMessage: any) => ((new Date().getTime() - new Date(filterMessage.createdAt.getTime()).getTime()) / (1000 * 3600 * 24)) < 14)
-                    splitLimit = splitLimit - messages2.size
-                    if (messages2.size == 0) counter++
-                    else if (messages2.size > 0) counter = 0
-                    try {
-                        var toConcat = new Array()
-                        messages2.forEach((x: any) => {
-                            toConcat.push(x)
-                        })
-                        messagesToDelete = messagesToDelete.concat(toConcat)
-                        if (messages2.length !== 0) {
-                            message.channel.bulkDelete(messages2)
+                    splitLimit = splitLimit - (messages2.size ?? messages2.length)
+                    if ((messages2.size ?? messages2.length) == 0) { await counter++; }
+                    else if ((messages2.size ?? messages2.length) > 0) {
+                        counter = 0
+                        try {
+                            var toConcat = new Array()//messages2
+                            messages2.forEach((x: any) => {
+                                toConcat.push(x)
+                            })
+                            messagesToDelete = messagesToDelete.concat(toConcat)
+                            if (messages2.length !== 0) {
+                                usedChannels.push(channels[currentChannel][1])
+                                channels[currentChannel][1].bulkDelete(messages2)
+                            }
+                        } catch (e) { }
+                    }
+                    if (filter.includes('mc' || 'multichannel')) {
+                        if (currentChannel == channels.length - 1) {
+                            currentChannel = 0
+                        } else {
+                            currentChannel++
                         }
-                    } catch (e) { }
+                    }
                 })
+                console.log(splitLimit, counter)
             } while (splitLimit > 0 && counter < 11)
 
             function findFileData() {
                 let dataToWrite = '';
                 messagesToDelete.reverse()
-                dataToWrite += `${messagesToDelete.length} deleted in #${message.channel.name} | ${message.channel.id}:\n\n`
+                dataToWrite += `${messagesToDelete.length} deleted in ${usedChannels.map(usedchannel => `#${usedchannel.name}`).join(', ')} | ${message.channel.id}:\n\n`
                 messagesToDelete.forEach((m: any) => {
                     if (!m) return
                     if (m.size) {
@@ -115,7 +131,7 @@ module.exports = {
                             m = m.values().next().value
                         }
                     }
-                    dataToWrite += `${m.author.tag} | ${m.author.id} - MessageID: ${m.id} - ${m.createdAt.toLocaleString()}\n${m.content.toString()}\n\n`
+                    dataToWrite += `${m.author.tag} | ${m.author.id} - MessageID: ${m.id}, ChannelID: ${m.channel.id} - ${m.createdAt.toLocaleString()}\n${m.content.toString()}\n\n`
                     if (m.attachments.size > 0) {
                         m.attachments.forEach((attachment: any) => {
                             dataToWrite += `${attachment.url}\n`
@@ -130,11 +146,11 @@ module.exports = {
             var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
             await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
                 .catch(async function (e) {
-                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (Hastebin could not be created)`)
+                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${usedChannels.map(usedchannel => `<#${usedchannel.id}>`).join(', ')} (Hastebin could not be created)`)
                     message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                 })
                 .then(async url => {
-                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
+                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${usedChannels.map(usedchannel => `<#${usedchannel.id}>`).join(', ')} (${url ?? "Hastebin could not be created"})`)
                     message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                 })
             if (!filter.includes('silent')) {
