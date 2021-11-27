@@ -11,7 +11,9 @@
     "strict": true,
     "resolveJsonModule": true,
   },
+  // "noImplicitAny": false,
   "include": [
+    "typings.d.ts",
     "src/",
     ".env"
   ]
