@@ -1,5 +1,7 @@
 import { MessageMentions, MessageAttachment, MessageReaction, User, Message, Channel, TextChannel, ThreadChannel } from 'discord.js';
-import * as hastebin from 'hastebin'
+// import * as hastebin from 'hastebin'
+import post, { AxiosResponse } from 'axios'
+import axios from 'axios';
 module.exports = {
     name: ["purge", "clear", "prune"],
     category: "Mod",
@@ -59,30 +61,42 @@ module.exports = {
                             name: 'I Checked through 1000 messages',
                             value: 'I have stopped because there were no matches in those 1000.'
                         })
-                        var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
-                        await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
-                            .catch(function (e) {
-                                embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (Hastebin could not be created)`)
-                                return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
-                            })
-                            .then(async url => {
-                                embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
-                                return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
-                            })
+                        var data = await findFileData()
+                        var File = await new MessageAttachment(Buffer.from(data, 'utf8'), 'purge.txt');
+                        axios.post('https://hastebin.com', {
+                            data
+                        }).then((res:AxiosResponse)=> {
+                            embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${res.data.key ?? "Hastebin could not be created"})`)
+                            return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+                        }).catch((err:Error) => {
+                            embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel}`)
+                            return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+                        })
+                        
+                        // await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
+                        //     .catch(function (e) {
+                        //         embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (Hastebin could not be created)`)
+                        //         return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+                        //     })
+                        //     .then(async url => {
+                        //         embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
+                        //         return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+                        //     })
                         return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
                     }
                 }
                 var toFetch: any = findNextLimit()
                 // console.log(currentChannel)
-                // console.log(currentChannel, channels.length, channels[currentChannel], channels[currentChannel][1].messages)
-                await channels[currentChannel][1].messages.fetch({ limit: toFetch }).then(async (messages: any) => {
+                // console.log(currentChannel, channels.length, channels[currentChannel], (channels[currentChannel][1]??channels[currentChannel]).messages)\
+                console.log(channels[currentChannel])
+                await (channels[currentChannel][1]??channels[currentChannel]).messages.fetch({ limit: toFetch }).then(async (messages: any) => {
 
                     var messages2 = messages;
                     if (message.mentions.users.first()) messages2 = messages2.filter((msg: any) => msg.author.id == message.mentions.users.first().id)
                     if (filter.includes('bots')) messages2 = messages2.filter((msg: any) => msg.author.bot)
                     if (filter.includes('users')) messages2 = messages2.filter((msg: any) => !msg.author.bot)
                     if (filter.includes('links')) {
-                        messages2 = messages2.filter((msg:any)=> {
+                        messages2 = messages2.filter((msg: any) => {
                             return new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+").test(msg.content)
                         })
                         // messages2 = messages2.filter((msg: any) => { if (msg.content.includes('http://' || 'https://')) { return true; } else { return false } })
@@ -107,8 +121,8 @@ module.exports = {
                             })
                             messagesToDelete = messagesToDelete.concat(toConcat)
                             if (messages2.length !== 0) {
-                                usedChannels.push(channels[currentChannel][1])
-                                channels[currentChannel][1].bulkDelete(messages2)
+                                usedChannels.push(channels[currentChannel][1]??channels[currentChannel]);
+                                ;(channels[currentChannel][1]??channels[currentChannel]).bulkDelete(messages2)
                             }
                         } catch (e) { }
                     }
@@ -125,6 +139,7 @@ module.exports = {
             function findFileData() {
                 let dataToWrite = '';
                 messagesToDelete.reverse()
+                console.log(usedChannels)
                 dataToWrite += `${messagesToDelete.length} deleted in ${usedChannels.map(usedchannel => `#${usedchannel.name}`).join(', ')} | ${message.channel.id}:\n\n`
                 messagesToDelete.forEach((m: any) => {
                     if (!m) return
@@ -145,16 +160,27 @@ module.exports = {
                 return dataToWrite
             }
             // Implement botlog channel but for now just send to public chat
-            var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
-            await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
-                .catch(async function (e) {
-                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${usedChannels.map(usedchannel => `<#${usedchannel.id}>`).join(', ')} (Hastebin could not be created)`)
-                    message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
-                })
-                .then(async url => {
-                    await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${usedChannels.map(usedchannel => `<#${usedchannel.id}>`).join(', ')} (${url ?? "Hastebin could not be created"})`)
-                    message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
-                })
+            var data = await findFileData().toString()
+                        var File = await new MessageAttachment(Buffer.from(data, 'utf8'), 'purge.txt');
+                        console.log(data)
+                        axios.post('https://hastebin.com/documents', data).then((res:AxiosResponse)=> {
+                            console.log(res.data)
+                            embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${res.data.key ?`https://hastebin.com/${res.data.key}`: "Hastebin could not be created"})`)
+                            return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+                        }).catch((err:Error) => {
+                            embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel}`)
+                            return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+                        })
+            // var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
+            // await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
+            //     .catch(async function (e) {
+            //         await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${usedChannels.map(usedchannel => `<#${usedchannel.id}>`).join(', ')} (Hastebin could not be created)`)
+            //         message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+            //     })
+            //     .then(async url => {
+            //         await embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${usedChannels.map(usedchannel => `<#${usedchannel.id}>`).join(', ')} (${url ?? "Hastebin could not be created"})`)
+            //         message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
+            //     })
             if (!filter.includes('silent')) {
                 await embed.setDescription('I have deleted ' + messagesToDelete.length + ' messages!')
                 return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
