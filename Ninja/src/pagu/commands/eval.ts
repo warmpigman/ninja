@@ -9,7 +9,7 @@ module.exports = {
         "eval paguClient.options.client.on('message', message => {\nif(message.author.id==\"738857742474805370\")\n{ message.react(\"❤️\") })})"
     ],
     hidden: ["dev"],
-    execute(message: any, args:Array<string>, client:any, paguClient:any) {
+    async execute(message: any, args:Array<string>, client:any, paguClient:any) {
         if(paguClient.options.options.devs.includes(message.author.id)) {
             try{
                 const clean = (text:string) => {
@@ -29,7 +29,7 @@ module.exports = {
                     embed.setDescription('Please enter something to eval!')
                 } else{
                 try {
-                let evaled = eval(code);
+                let evaled = await eval(code);
                 embed.setTitle('Eval - Success')
                 embed.setDescription(`\`\`\`xl\n${clean(evaled)}\n\`\`\``);
                 }catch(e:any){

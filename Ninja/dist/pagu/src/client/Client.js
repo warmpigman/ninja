@@ -13,6 +13,7 @@ var mongoose = require('mongoose');
 class Pagu extends events_1.EventEmitter {
     Util;
     commands;
+    events;
     categories;
     cache;
     schemas;
@@ -36,6 +37,12 @@ class Pagu extends events_1.EventEmitter {
      * @private
      */
         this.commands = new Discord.Collection();
+        /**
+     * The events handled by the client
+     * @type {Discord.Collection}
+     * @private
+     */
+        this.events = new Discord.Collection();
         /**
     * The command cattegories handled by the client
     * @type {Discord.Collection}
@@ -122,6 +129,7 @@ class Pagu extends events_1.EventEmitter {
                 Util.registerSchemas(options, this),
                 Util.registerCache(options, this),
                 Util.addCommands(options, this),
+                Util.addEvents(options, this),
             ]);
         })();
     }

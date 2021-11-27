@@ -20,7 +20,7 @@ module.exports = {
                 value: `Please follow the correct command format, try using, "${module.exports.usage}"`
                 // value: "1. Go to any main lobby\n2. Type \"/profile\" in the in-game chat and press enter\n3. Find the icon called \"Social Media\"\n4.Find the icon called \"Discord\"\n5.Go to the Discord app and click on your name on the bottom left to copy your Discord tag\n6. Go back in game and paste that copied tag into the chat and press enter\n7. If a book pops up, click \"I understand\"\n8. Then go try issuing this command again"
             })
-            return message.reply({ embeds: [embed] })
+            return message.channel.send({ embeds: [embed] })
         } else {
             get(
                 `https://api.mojang.com/users/profiles/minecraft/${args[0].toString()}`, {
@@ -35,7 +35,7 @@ module.exports = {
                             name: "Failed!",
                             value: "Not a valid username or a mojang error occured.",
                         });
-                        return message.reply({
+                        return message.channel.send({
                             embeds: [embed]
                         });
                     } else {
@@ -49,7 +49,7 @@ module.exports = {
                                         value: "1. Go to any main lobby\n2. Type \"/profile\" in the in-game chat and press enter\n3. Find the icon called \"Social Media\"\n4.Find the icon called \"Discord\"\n5.Go to the Discord app and click on your name on the bottom left to copy your Discord tag\n6. Go back in game and paste that copied tag into the chat and press enter\n7. If a book pops up, click \"I understand\"\n8. Then go try issuing this command again"
                                     })
                                     var video = new paguClient.Discord.MessageAttachment('https://i.gyazo.com/3a2358687dae9b4333fd2fef932e0a17.mp4')
-                                    return message.reply({ embeds: [embed], files: [video] })
+                                    return message.channel.send({ embeds: [embed], files: [video] })
                                 }
                                 if (res.data.player.socialMedia.links.DISCORD) {
                                     if (
@@ -63,7 +63,7 @@ module.exports = {
                                                     name: "Error!",
                                                     value: `Sorry, you're trade banned!`,
                                                 });
-                                                // return await message.reply({
+                                                // return await message.channel.send({
                                                 //     embeds: [embed],
                                                 //     allowedMentions: { "users": [] }
                                                 // });
@@ -111,9 +111,9 @@ module.exports = {
                                         value: "1. Go to any main lobby\n2. Type \"/profile\" in the in-game chat and press enter\n3. Find the icon called \"Social Media\"\n4.Find the icon called \"Discord\"\n5.Go to the Discord app and click on your name on the bottom left to copy your Discord tag\n6. Go back in game and paste that copied tag into the chat and press enter\n7. If a book pops up, click \"I understand\"\n8. Then go try issuing this command again"
                                     })
                                     var video = new paguClient.Discord.MessageAttachment('https://i.gyazo.com/3a2358687dae9b4333fd2fef932e0a17.mp4')
-                                    return message.reply({ embeds: [embed], files: [video] })
+                                    return message.channel.send({ embeds: [embed], files: [video] })
                                 }
-                                return message.reply({
+                                return message.channel.send({
                                     embeds: [embed],
                                     allowedMentions: { "users": [] }
                                 });

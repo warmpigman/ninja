@@ -3,7 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const user = new mongoose_1.Schema({
     discordID: String,
-    mojangUUID: String
+    mojangUUID: String,
+    afk: {
+        reason: String,
+        afk: Boolean
+    },
 }, {
     minimize: false
 });

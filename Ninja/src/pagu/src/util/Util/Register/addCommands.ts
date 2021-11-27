@@ -27,10 +27,9 @@ module.exports = function (options: any, paguClient: any) {
                                     if (message.author.bot) return;
                                     var args = message.content.split(/[ ]+/)
                                     if ((args[0].toLowerCase() == `${process.env.PREFIX}${alias}` || (message.mentions.has(options.client.user) && args[1] == alias)) && message.guild !== null) {
-                                        // if(message.guild.id=="835220768110805043") return message.reply('no')
                                         args.shift()
-                                        if ((commandFile.perms && !message.member.hasPermission(commandFile.perms, { checkAdmin: true, checkOwner: true })) && message.author.id !== "406920919131488268") {
-                                            return message.reply(`You are missing permissions to use this command.`);
+                                        if (((commandFile.perms??commandFile.permissions) && !message.member.permissions.has((commandFile.perms??commandFile.permissions), { checkAdmin: true, checkOwner: true}))) {
+                                            return message.channel.send(`You are missing permissions to use this command.`);
                                         } else {
                                             async function checkCooldown() {
                                                 var returnBoolean = true
@@ -41,7 +40,7 @@ module.exports = function (options: any, paguClient: any) {
                                                 }
                                                 return returnBoolean
                                             }
-                                            if (commandFile.cooldown && await checkCooldown()) return message.reply(`You are currently on cooldown for ${await paguClient.Util.findTimeUntil(new Date(), paguClient.cache.internal.cooldowns[commandFile.name[0]])}`)
+                                            if (commandFile.cooldown && await checkCooldown()) return message.channel.send(`You are currently on cooldown for ${await paguClient.Util.findTimeUntil(new Date(), paguClient.cache.internal.cooldowns[commandFile.name[0]])}`)
                                             commandFile.execute(message, args, options.client, paguClient)
                                         }
                                         // 

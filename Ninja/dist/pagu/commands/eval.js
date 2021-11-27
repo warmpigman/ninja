@@ -10,7 +10,7 @@ module.exports = {
         "eval paguClient.options.client.on('message', message => {\nif(message.author.id==\"738857742474805370\")\n{ message.react(\"❤️\") })})"
     ],
     hidden: ["dev"],
-    execute(message, args, client, paguClient) {
+    async execute(message, args, client, paguClient) {
         if (paguClient.options.options.devs.includes(message.author.id)) {
             try {
                 const clean = (text) => {
@@ -30,7 +30,7 @@ module.exports = {
                 }
                 else {
                     try {
-                        let evaled = eval(code);
+                        let evaled = await eval(code);
                         embed.setTitle('Eval - Success');
                         embed.setDescription(`\`\`\`xl\n${clean(evaled)}\n\`\`\``);
                     }

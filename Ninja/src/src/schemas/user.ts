@@ -1,7 +1,11 @@
 import {Schema, model} from 'mongoose'
 const user = new Schema({
     discordID: String,
-    mojangUUID: String
+    mojangUUID: String,
+    afk: {
+        reason: String,
+        afk: Boolean
+    },
 }, {
     minimize: false
 });

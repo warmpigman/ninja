@@ -1,0 +1,18 @@
+{
+  "name": "Tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "migrateBadLinksToDB.js",
+  "dependencies": {
+    "node": "16.6",
+    "mongoose": "^6.0.13"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "migrateBadLinksToDB": "node migrateBadLinksToDB.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
