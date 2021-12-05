@@ -11,10 +11,10 @@ module.exports = {
             .setTitle('Scam Message')
         var scamSchema = await paguClient.schemas.get('scam')
         var scamData = await scamSchema.find().clone().exec()
-        if(new RegExp(scamData.map((data: any) => data.website).join('|')).test(message.content)) {
+        if(scamData.length>0 && new RegExp(scamData.map((data: any) => data.website).join('|')).test(message.content)) {
             message.delete()
             embed.setDescription(`${message.author.tag} has sent a scam message.`)
             message.channel.send({embeds:[embed]})
         }
     }
-}
+}   
