@@ -16,13 +16,12 @@ module.exports = {
             let embed = new MessageEmbed()
             embed.setImage(String(message.author.avatarURL()))
             embed.setTimestamp()
-            embed.setFooter(`${message.author.toString()} | ${client.user?.username} `, message.author.avatarURL()?.toString())
+            embed.setFooter(`${message.author.username} | ${client.user?.username} `, message.author.avatarURL()?.toString())
             message.channel.send({embeds: [embed]})
             return
         }
-        let user_str:string = args[0]
-        let user_id:Number = parseInt(user_str)
-        let user = paguClient.users.fetch(user_id)
+        let user_id:string | Number = ((isNaN(parseInt(args[0]))) ? args[0].slice(3, -1) : args[0])
+        let user =client.users.fetch(`${user_id}`)
         user.then((user:User) => {
             let embed = new MessageEmbed
             embed.setImage(String(user.displayAvatarURL()))
@@ -30,7 +29,7 @@ module.exports = {
             embed.setFooter(`${message.author.username} | ${client.user?.username} `, message.author.avatarURL()?.toString())
             message.channel.send({embeds: [embed]})
             return
-        }).catch(() => {
+        }).catch((err) => {
             message.channel.send("Could not find that user.")
         });
 
