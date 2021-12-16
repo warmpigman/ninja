@@ -17,7 +17,8 @@ Client.on('ready', async () => {
                 dev: "<:dev:865771194531184661> Dev",
                 utility: ":gear: Utility",
                 none: ":question: None",
-                eco: "<:eco:866070829270564886> Economy"
+                eco: "<:eco:866070829270564886> Economy",
+                image: "🖼️ Image"
             },
             niceCommands: {
                 test: "Test",
