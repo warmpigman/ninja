@@ -16,5 +16,7 @@ jobs:
         node-version: 16.6
     - name: npm install
       run: npm install --prefix ./Ninja
+    - name: npm install tsc
+      run: npm install typescript
     - name: tsc compile --project Ninja
       uses: icrawl/action-tsc@v1
