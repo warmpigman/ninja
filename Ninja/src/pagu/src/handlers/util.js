@@ -10,4 +10,5 @@ module.exports = {
     createNewUser: require('../util/Util/Util/createNewUser'),
     resolveTarget: require('../util/Util/Util/resolveTarget'),
     addEvents: require('../util/Util/Register/addEvents'),
+    apiCallHandler: require("../util/Util/Register/apiCallHandler")
 }
