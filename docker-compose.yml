@@ -16,4 +16,8 @@ services:
       MONGO_INITDB_DATABASE: mongodb
       MONGO_INITDB_ROOT_USERNAME: VQUzCLSs60TpfFcT9AViaS0VlVDlBTpLXTRrRdkCRO6mXkCCcYHV1us2k3DksZXd
       MONGO_INITDB_ROOT_PASSWORD: fY2EL8sTwdVZRcvXssyb8jh85ut5hy6gbIcsYeDQxMUwd8O6x6loUumhxz3LKgqt
+  senither-weight:
+    image: senither/hypixel-skyblock-facade
+    container_name: senither-weight
+    restart: unless-stopped
 
