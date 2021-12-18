@@ -5,6 +5,7 @@ services:
     container_name: "ninjabot"
     depends_on:
       - mongodb
+      - senither-weight
     volumes:
       - ./Ninja:/application
   mongodb:
