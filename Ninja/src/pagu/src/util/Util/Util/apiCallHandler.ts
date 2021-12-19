@@ -23,6 +23,13 @@ module.exports = async function (url: String) {
                 await delay(e.response.headers['Retry-After']*1000)
                 return response = await module.exports(url )
             }
+            else {
+                return response = {
+                    "status": e.response.status,
+                    "cause": e.response.cause,
+                    "response": e.response
+                }
+            }
         })
     return response
 }
