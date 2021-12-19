@@ -11,7 +11,6 @@ module.exports = {
         "weight ProNinjaGamin0",
         "weight ProNinjaGamin0 skills",
         "weight ProNinjaGamin0 Mango",
-        "weight"
     ],
     async execute(message: Message, args: Array<string>, client: any, paguClient: any) {
         message.channel.sendTyping()
