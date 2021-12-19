@@ -18,5 +18,5 @@ jobs:
       run: npm install --prefix ./Ninja
     - name: npm install tsc
       run: npm install typescript
-    - name: npx tsc -p Ninja
-      uses: icrawl/action-tsc@v1
+    - name: tsc run
+      run: npx tsc -p Ninja
