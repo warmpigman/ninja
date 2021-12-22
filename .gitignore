@@ -1,2 +1,4 @@
 mongodb
 Ninja/dist
+Docker/Volumes/mongodata/*
+!Docker/Volumes/mongodata/.gitkeep
