@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tsc:
+    name: tsc
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: install node v16.6
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.6
+    - name: npm install
+      run: npm install --prefix ./Ninja
+    - name: npm install tsc
+      run: npm install typescript
+    - name: tsc run
+      run: npx tsc -p Ninja

@@ -11,13 +11,14 @@ Client.on('ready', async () => {
             mongoURI: process.env.MONGODB_URI,
             schemaDir: "/dist/src/schemas",
             devs: [
-                "406920919131488268"
+                "300669365563424770"
             ],
             niceCategory: {
                 dev: "<:dev:865771194531184661> Dev",
                 utility: ":gear: Utility",
                 none: ":question: None",
-                eco: "<:eco:866070829270564886> Economy"
+                eco: "<:eco:866070829270564886> Economy",
+                image: "🖼️ Image"
             },
             niceCommands: {
                 test: "Test",
