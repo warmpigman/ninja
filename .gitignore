@@ -1,4 +1,4 @@
-Docker/Volumes/Ninja/dist
+dist
 Docker/Volumes/mongodata/*
 !Docker/Volumes/mongodata/.gitkeep
 #breaking? maybe
