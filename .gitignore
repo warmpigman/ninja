@@ -1,3 +1,5 @@
-Ninja/dist
+Docker/Volumes/Ninja/dist
 Docker/Volumes/mongodata/*
 !Docker/Volumes/mongodata/.gitkeep
+#breaking? maybe
+node_modules

@@ -5,7 +5,8 @@
   "main": "migrateBadLinksToDB.js",
   "dependencies": {
     "node": "16.6",
-    "mongoose": "^6.0.13"
+    "mongoose": "^6.0.13",
+    "csvtojson": "^2.0.10"
   },
   "devDependencies": {},
   "scripts": {
