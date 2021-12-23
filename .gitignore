@@ -1,6 +1,3 @@
-mongodb
-mongodata
 Ninja/dist
 Docker/Volumes/mongodata/*
 !Docker/Volumes/mongodata/.gitkeep
-guacamole-docker-compose
