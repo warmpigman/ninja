@@ -6,13 +6,15 @@ services:
     depends_on:
       - mongodb
       - senither-weight
+      - maro-api
     volumes:
       - ./Ninja:/application
   mongodb:
     image: mongo:3
     # restart: unless-stopped
+    #get rid of in prod
     ports:
-      - "27017:27017"
+      - "27019:27017"
     environment:
       MONGO_INITDB_DATABASE: mongodb
       MONGO_INITDB_ROOT_USERNAME: VQUzCLSs60TpfFcT9AViaS0VlVDlBTpLXTRrRdkCRO6mXkCCcYHV1us2k3DksZXd
@@ -23,4 +25,10 @@ services:
     image: senither/hypixel-skyblock-facade
     container_name: senither-weight
     restart: unless-stopped
-
+  maro-api:
+    build: './Docker/Volumes/maro-api'
+    container_name: maro-api
+    # restart: unless-stopped
+    #get rid of in prod
+    ports:
+      - "27018:3000"

@@ -11,7 +11,8 @@ Client.on('ready', async () => {
             mongoURI: process.env.MONGODB_URI,
             schemaDir: "/dist/src/schemas",
             devs: [
-                "300669365563424770"
+                // "300669365563424770",
+                "406920919131488268"
             ],
             niceCategory: {
                 dev: "<:dev:865771194531184661> Dev",
