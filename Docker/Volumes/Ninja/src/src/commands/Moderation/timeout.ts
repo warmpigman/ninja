@@ -28,6 +28,7 @@ module.exports = {
             // let duration = (isNaN(parseInt(args[1]))) ? ((isNaN(parseInt(args[1].slice(0, -1)))) ? 0 : (parseInt(args[1].slice(0, -1)) * multipliers[args[1].slice(-1)])) : parseInt(args[1])
             
             // Second time using stricter regex instead of parseInt
+            // Actually this is the fourth time i didnt save the ones before
             let duration = (args[1].match(/^\d+$/) == null) ? ((isNaN(parseInt(args[1].slice(0, -1)))) ? 0 : ((Object.keys(multipliers).includes(args[1].slice(-1)))) ? multipliers[args[1].slice(-1)] : 0) : parseInt(args[1])
             console.log(duration)
 
