@@ -19,7 +19,7 @@
     "syncworkspacerepos": "node Tools/syncworkspacerepos.js",
     "start": "docker-compose up -d --build",
     "stop": "docker-compose stop",
-    "dev": "docker-compose up -d --build",
+    "dev": "docker-compose up --build",
     "test": "docker-compose run --rm --entrypoint \"/bin/bash\" ninjabot && docker-compose stop"
   },
   "devDependencies": {

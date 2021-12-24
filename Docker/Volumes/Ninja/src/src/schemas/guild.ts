@@ -1,38 +1,37 @@
-import {Schema, model} from 'mongoose'
+import { Schema, model } from 'mongoose'
+const RoleSubSchema = {
+  ID: String,
+  Set: {
+    type: Boolean,
+    default: false
+  }
+}
+const ChannelSubSchema = {
+  ID: String,
+  Set: {
+    type: Boolean,
+    default: false
+  }
+}
 const guild = new Schema({
-    guildID: String,
-    swearAllowedChannels: [String],
-    mainLoggingChannel: String,
-    swearAllowedCategories: [String],
-    spamAllowedCategories: [String],
-    nickRequestChannel: String,
-    reportRequestChannel: String,
-    mutedRole: {
-      ID: String,
-      Set: Boolean
-    },
-    tradeBanRole: {
-      ID: String,
-      Set: Boolean
-    },
-    silentVCRole: {
-      ID: String,
-      Set: Boolean
-    },
-    verifiedRole: {
-      ID: String,
-      Set: Boolean
-    },
-    modRole: {
-      ID: String,
-      Set: Boolean
-    },
-    botCommandChannels: {
-      Normal: [String],
-      skyblockBotCommandChannels: [String]
-    }
+  guildID: String,
+  swearAllowedChannels: [String], // not needed
+  mainLoggingChannel: ChannelSubSchema, // needed
+  swearAllowedCategories: [String], // not needed
+  spamAllowedCategories: [String], // not needed
+  nickRequestChannel: ChannelSubSchema, // not needed
+  reportRequestChannel: ChannelSubSchema, // not needed
+  mutedRole: RoleSubSchema, // not needed
+  tradeBanRole: RoleSubSchema, // not needed
+  silentVCRole: RoleSubSchema, // not needed
+  verifiedRole: RoleSubSchema, // not needed
+  modRole: RoleSubSchema, // not needed
+  botCommandChannels: {
+    Normal: [String],
+    skyblockBotCommandChannels: [String]
+  }
 }, {
-    minimize: false
+  minimize: false
 });
 
 module.exports = model('guild', guild);

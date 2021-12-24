@@ -1,4 +1,9 @@
 import {Schema, model} from 'mongoose'
+const ModActionSchema = new Schema({
+    set: Boolean,
+    permanent: Boolean,
+    until: Date
+})
 const user = new Schema({
     discordID: String,
     mojangUUID: String,
@@ -6,16 +11,8 @@ const user = new Schema({
         reason: String,
         afk: Boolean
     },
-    ban: {
-        set: Boolean,
-        permanent: Boolean,
-        until: Date
-    },
-    mute: {
-        set: Boolean,
-        permanent: Boolean,
-        unti: Date,
-    },
+    ban: ModActionSchema,
+    mute: ModActionSchema,
 }, {
     minimize: false
 });

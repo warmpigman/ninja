@@ -3,5 +3,5 @@ ENV NODE_ENV=production
 WORKDIR /application
 COPY . .
 # RUN npm install --production
-CMD ["tsc"]
+RUN ["tsc"]
 CMD ["node", "."]
