@@ -16,5 +16,7 @@ jobs:
         node-version: 16.6
     - name: Install Yarn
       run: npm install --global yarn
+    - name: Install Dependencies
+      run: yarn install
     - name: Typescript Check
       run: yarn tsc -p Docker/Volumes/Ninja
