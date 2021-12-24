@@ -1,0 +1,28 @@
+{
+  "name": "ninja",
+  "version": "1.0.0",
+  "main": "none",
+  "repository": "https://github.com/warmpigman/ninja",
+  "author": "warmpigman <warmpigman@gmail.com>",
+  "license": "Unliscensed ",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "Docker/Volumes/maro-api",
+      "Docker/Volumes/Ninja",
+      "Tools"
+    ]
+  },
+  "scripts": {
+    "migrateBadLinksToDB": "node Tools/migrateBadLinksToDB.js",
+    "importmarocsv": "node Tools/importmarocsv.js",
+    "syncworkspacerepos": "node Tools/syncworkspacerepos.js",
+    "start": "docker-compose up -d --build",
+    "stop": "docker-compose stop",
+    "dev": "docker-compose up -d --build",
+    "test": "docker-compose run --rm --entrypoint \"/bin/bash\" ninjabot && docker-compose stop"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}

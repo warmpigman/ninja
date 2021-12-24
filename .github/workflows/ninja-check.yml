@@ -1,4 +1,4 @@
-name: CI
+name: Ninja-CheckTsc
 
 on:
   push:
@@ -9,14 +9,14 @@ jobs:
     name: tsc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: install node v16.6
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: 16.6
-    - name: npm install
-      run: npm install --prefix ./Docker/Volumes/Ninja
-    - name: npm install tsc
-      run: npm install typescript
-    - name: tsc run
-      run: npx tsc -p Docker/Volumes/Ninja
+    - name: Install Yarn
+      run: npm install --global yarn
+    - name: Install Dependencies
+      run: yarn install
+    - name: Typescript Check
+      run: yarn tsc -p Docker/Volumes/Ninja
