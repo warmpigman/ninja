@@ -14,9 +14,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 16.6
-    - name: npm install
-      run: npm install --prefix ./Docker/Volumes/Ninja
-    - name: npm install tsc
-      run: npm install typescript
-    - name: tsc run
-      run: npx tsc -p Docker/Volumes/Ninja
+    - name: Install Yarn
+      run: npm install --global yarn
+    - name: Typescript Check
+      run: yarn tsc -p Docker/Volumes/Ninja
