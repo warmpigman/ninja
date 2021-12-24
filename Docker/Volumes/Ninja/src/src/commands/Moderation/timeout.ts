@@ -1,4 +1,4 @@
-import { Message, Guild, Client } from "discord.js"
+import { Message, Guild, Client, TextChannel, MessageEmbed } from "discord.js"
 import { parse } from "path/posix"
 
 module.exports = {
@@ -43,13 +43,26 @@ module.exports = {
                 else {
                     let guild = client.guilds.cache.get(message.guildId)
                     let member = guild?.members.cache.get(member_id)
+
                     let epoch_timestamp = (Date.now()) + (duration * 1000)
                     let timestamp = new Date(epoch_timestamp)
-                    let options = {"communication_disabled_until":timestamp.toISOString()}
-                    member?.edit({}, reason).then((res:any) => {
+                    let options = {"communicationDisabledUntil":timestamp.toISOString()}
+                    member?.edit(options, reason).then((res:any) => {
                         let guildSchema = paguClient.schemas.get("guild")
-                        guildSchema.findOne({guildID:message.guildId})
-                    })  
+                        guildSchema.findOne({guildID:message.guildId}, async (err:Error, data:{mainLoggingChannel:string}) => {
+                            let mainLoggingChannel = data.mainLoggingChannel
+                            const channel: TextChannel = await client.channels.fetch(mainLoggingChannel) as TextChannel
+                            let embed = new MessageEmbed
+                            embed.setAuthor({name:`${member?.user.username}`, iconURL:`${member?.user.avatarURL()}`})
+                            embed.setTitle("Timed Out User")
+                            embed.addFields([{name: "User Timed Out", value:`<@${member?.id}>`},
+                            {name:"Moderator", value:`<@${message.author.id}>`}])
+                            embed.setTimestamp(Date.now())
+                            channel.send({embeds:[embed]})
+                        })
+                    })
+
+                    
                 }
             }
         }
