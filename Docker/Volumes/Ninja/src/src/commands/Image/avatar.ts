@@ -14,9 +14,9 @@ module.exports = {
     async execute(message:Message, args:Array<string>, client:Client, paguClient:any) {
         if (args.length === 0) {
             let embed = new MessageEmbed()
-            embed.setImage(String(message.author.avatarURL()))
+            embed.setImage(message.author.displayAvatarURL({dynamic: true}))
             embed.setTimestamp()
-            embed.setFooter(`${message.author.username} | ${client.user?.username} `, message.author.avatarURL()?.toString())
+            embed.setFooter(`${message.author.username} | ${client.user?.username} `, message.author.displayAvatarURL({ dynamic: true }))
             message.channel.send({embeds: [embed]})
             return
         }
@@ -24,9 +24,9 @@ module.exports = {
         let user =client.users.fetch(`${user_id}`)
         user.then((user:User) => {
             let embed = new MessageEmbed
-            embed.setImage(String(user.displayAvatarURL()))
+            embed.setImage(user.displayAvatarURL({dynamic: true}))
             embed.setTimestamp()
-            embed.setFooter(`${message.author.username} | ${client.user?.username} `, message.author.avatarURL()?.toString())
+            embed.setFooter(`${message.author.username} | ${client.user?.username} `, message.author.displayAvatarURL({ dynamic: true }))
             message.channel.send({embeds: [embed]})
             return
         }).catch((err) => {

@@ -1,11 +1,11 @@
 module.exports = {
-    name: ["setnickrequestchannel", "set-nick-request-channel","set-nickrequestchannel"],
+    name: ["setreportrequestchannel", "set-report-request-channel","set-reportrequestchannel"],
     category: "Mod",
-    description: "Set's the guild's nick request channel to send requests to.",
-    usage: "setnickrequestchannel [ID or #channel]",
+    description: "Set's the guild's report request channel to send requests to.",
+    usage: "setreportrequestchannel [ID or #channel]",
     examples: [
-        "setnickrequestchannel #nick-requests",
-        "setnickrequestchannel 212148329245020082",
+        "setreportrequestchannel #report-requests",
+        "setreportrequestchannel 212148329245020082",
     ],
     permissions: ["MANAGE_CHANNELS"],
     hidden: ["mod"],
@@ -25,20 +25,20 @@ module.exports = {
                 if(!data) {
                     guildSchema.create({
                         guildID: message.guild.id,
-                        nickRequestChannel: {
+                        reportRequestChannel: {
                             ID:channelID,
                             Set:true
                         }
                     })
-                    return message.reply({ content: `<#${channelID}> has been set as the nick request channel.` })
+                    return message.reply({ content: `<#${channelID}> has been set as the report request channel.` })
                 } else if(data) {
-                    if(data.nickRequestChannel.ID == channelID) {
-                        return message.reply({ content: `<#${channelID}> is already the nick request channel.` })
+                    if(data.reportRequestChannel.ID == channelID) {
+                        return message.reply({ content: `<#${channelID}> is already the report request channel.` })
                     } else {
-                        data.nickRequestChannel.ID = channelID
-                        data.nickRequestChannel.Set = true
+                        data.reportRequestChannel.ID = channelID
+                        data.reportRequestChannel.Set = true
                         data.save()
-                        return message.reply({ content: `<#${channelID}> has been set as the nick request channel.` })
+                        return message.reply({ content: `<#${channelID}> has been set as the report request channel.` })
                     }
                 }
             }

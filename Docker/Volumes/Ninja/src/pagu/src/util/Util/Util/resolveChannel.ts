@@ -11,8 +11,8 @@ module.exports = function (args: Array<String>, message: Message, argsIndex: num
             }
             // throw new Error("No channel specified.")
         } else if (args[argsIndex].startsWith("<#") && args[argsIndex].endsWith(">")) {
-            args[argsIndex] = args[argsIndex].replace("<#", "").replace(">", "")
-            return args[argsIndex]
+            var req = args[argsIndex].replace("<#", "").replace(">", "")
+            return req
         } else if (args[argsIndex].startsWith("#")) {
             return args[argsIndex].replace("#", "")
         } else if (message.guild && message.guild.channels.cache.get(args[argsIndex].toString())) {

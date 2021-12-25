@@ -12,5 +12,6 @@ module.exports = {
     addEvents: require('../util/Util/Register/addEvents'),
     apiCallHandler: require("../util/Util/Util/apiCallHandler"),
     checkGuildSchema: require("../util/Util/Util/checkGuildSchema"),
-    resolveChannel: require("../util/Util/Util/resolveChannel")
+    resolveChannel: require("../util/Util/Util/resolveChannel"),
+    resolveRole: require("../util/Util/Util/resolveRole"),
 }
