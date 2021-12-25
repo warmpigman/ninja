@@ -1,5 +1,4 @@
 import { Message, Guild, Client, TextChannel, MessageEmbed } from "discord.js"
-import { parse } from "path/posix"
 
 module.exports = {
     name: ["timeout"],
