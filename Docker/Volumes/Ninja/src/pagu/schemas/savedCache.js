@@ -1,7 +1,5 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const cache = Schema({
-    
-});
+const cache = Schema({});
 
-module.exports = model('cache', cache);
+module.exports = model("cache", cache);

@@ -9,12 +9,8 @@
     "outDir": "dist/",
     // "sourceMap": true,
     "strict": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "noImplicitAny": false,
-  "include": [
-    "typings.d.ts",
-    "src/",
-    ".env"
-  ]
+  "include": ["typings.d.ts", "src/", ".env"]
 }

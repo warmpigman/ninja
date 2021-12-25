@@ -21,9 +21,11 @@
     "stop": "docker-compose stop",
     "dev": "docker-compose up --build",
     "test": "(docker-compose run --rm --entrypoint \"/bin/bash\" ninjabot && docker-compose stop) || docker-compose stop",
-    "build": "docker-compose build"
+    "build": "docker-compose build",
+    "format":"prettier --write ."
   },
   "devDependencies": {
+    "prettier": "^2.5.1",
     "typescript": "^4.5.4"
   }
 }
