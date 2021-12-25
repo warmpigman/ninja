@@ -1,11 +1,11 @@
 module.exports = {
-    name: ["setmainloggingchannel", "set-main-logging-channel","set-mainloggingchannel"],
+    name: ["setnickrequestchannel", "set-nick-request-channel","set-nickrequestchannel"],
     category: "Mod",
-    description: "Set's the guild's main logging channel to send logs to.",
-    usage: "setmainloggingchannel [ID or #channel]",
+    description: "Set's the guild's nick request channel to send requests to.",
+    usage: "setnickrequestchannel [ID or #channel]",
     examples: [
-        "setmainloggingchannel #bot-logs",
-        "setmainloggingchannel 212148329245020082",
+        "setnickrequestchannel #nick-requests",
+        "setnickrequestchannel 212148329245020082",
     ],
     permissions: ["MANAGE_CHANNELS"],
     hidden: ["mod"],
@@ -25,20 +25,20 @@ module.exports = {
                 if(!data) {
                     guildSchema.create({
                         guildID: message.guild.id,
-                        mainLoggingChannel: {
+                        nickRequestChannel: {
                             ID:channelID,
                             Set:true
                         }
                     })
-                    return message.reply({ content: `<#${channelID}> has been set as the main logging channel.` })
+                    return message.reply({ content: `<#${channelID}> has been set as the nick request channel.` })
                 } else if(data) {
-                    if(data.mainLoggingChannel == channelID) {
-                        return message.reply({ content: `<#${channelID}> is already the main logging channel.` })
+                    if(data.nickRequestChannel == channelID) {
+                        return message.reply({ content: `<#${channelID}> is already the nick request channel.` })
                     } else {
-                        data.mainLoggingChannel.ID = channelID
-                        data.mainLoggingChannel.Set = true
+                        data.nickRequestChannel.ID = channelID
+                        data.nickRequestChannel.Set = true
                         data.save()
-                        return message.reply({ content: `<#${channelID}> has been set as the main logging channel.` })
+                        return message.reply({ content: `<#${channelID}> has been set as the nick request channel.` })
                     }
                 }
             }

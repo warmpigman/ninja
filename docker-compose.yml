@@ -1,6 +1,7 @@
 version: "3.3"
 services:
   ninjabot:
+    restart: unless-stopped
     build: "./Docker/Volumes/Ninja"
     container_name: "ninjabot"
     depends_on:
@@ -11,7 +12,7 @@ services:
       - ./Docker/Volumes/Ninja:/application
   mongodb:
     image: mongo:3
-    # restart: unless-stopped
+    restart: unless-stopped
     #get rid of in prod
     ports:
       - "27019:27017"
@@ -28,7 +29,7 @@ services:
   maro-api:
     build: './Docker/Volumes/maro-api'
     container_name: maro-api
-    # restart: unless-stopped
+    restart: unless-stopped
     #get rid of in prod
     ports:
       - "27018:3000"

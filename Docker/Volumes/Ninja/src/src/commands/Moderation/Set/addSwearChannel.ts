@@ -1,7 +1,7 @@
 module.exports = {
     name: ["addswearchannel", "add-swear-channel","add-swearchannel"],
     category: "Mod",
-    description: "Add's a channel to the swear-allowed channels",
+    description: "Add's a channel to the swear-allowed channels. Categories are also supported!",
     usage: "addswearchannel [ID or #channel]",
     examples: [
         "addswearchannel #no-filter",
@@ -24,16 +24,16 @@ module.exports = {
                 } else if(!data) {
                     await guildSchema.create({
                         guildID: message.guild.id,
-                        swearAllowedChannels: [channelID]
+                        [message.guild.channels.cache.get(channelID).type=="GUILD_CATEGORY"?"swearAllowedCategories":"swearAllowedChannels"]: [channelID]
                     })
-                    return message.reply({ content: `<#${channelID}> has been added to the swear allowed channels.` })
+                    return message.reply({ content: `<#${channelID}> has been added to the swear allowed ${message.guild.channels.cache.get(channelID).type=="GUILD_CATEGORY"?"categories":"channels"}.` })
                 } else if(data) {
-                    if(!data.swearAllowedChannels.includes(channelID)) {
-                        data.swearAllowedChannels.push(channelID)
+                    if(!data[message.guild.channels.cache.get(channelID).type=="GUILD_CATEGORY"?"swearAllowedCategories":"swearAllowedChannels"].includes(channelID)) {
+                        data[message.guild.channels.cache.get(channelID).type=="GUILD_CATEGORY"?"swearAllowedCategories":"swearAllowedChannels"].push(channelID)
                         await data.save()
-                        return message.reply({ content: `<#${channelID}> has been added to the swear allowed channels.` })
+                        return message.reply({ content: `<#${channelID}> has been added to the swear allowed ${message.guild.channels.cache.get(channelID).type=="GUILD_CATEGORY"?"categories":"channels"}.` })
                     } else {
-                        return message.reply({ content: `<#${channelID}> is already a swear allowed channel.` })
+                        return message.reply({ content: `<#${channelID}> is already a swear allowed ${message.guild.channels.cache.get(channelID).type=="GUILD_CATEGORY"?"categories":"channels"}.` })
                     }
                 }
             }).clone()

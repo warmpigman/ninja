@@ -20,7 +20,8 @@
     "start": "docker-compose up -d --build",
     "stop": "docker-compose stop",
     "dev": "docker-compose up --build",
-    "test": "docker-compose run --rm --entrypoint \"/bin/bash\" ninjabot && docker-compose stop"
+    "test": "(docker-compose run --rm --entrypoint \"/bin/bash\" ninjabot && docker-compose stop) || docker-compose stop",
+    "build": "docker-compose build"
   },
   "devDependencies": {
     "typescript": "^4.5.4"
