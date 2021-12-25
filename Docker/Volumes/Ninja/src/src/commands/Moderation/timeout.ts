@@ -31,7 +31,6 @@ module.exports = {
             // Second time using stricter regex instead of parseInt
             // Actually this is the fourth time i didnt save the ones before
             let duration = (args[1].match(/^\d+$/) == null) ? ((isNaN(parseInt(args[1].slice(0, -1)))) ? 0 : ((Object.keys(multipliers).includes(args[1].slice(-1)))) ? multipliers[args[1].slice(-1)] : 0) : parseInt(args[1])
-            console.log(duration)
 
             if (duration === 0 || isNaN(duration)) {
                 message.channel.send("Please use a proper duration")
