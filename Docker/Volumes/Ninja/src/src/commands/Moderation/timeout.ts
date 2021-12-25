@@ -44,24 +44,32 @@ module.exports = {
                 else {
                     let guild = client.guilds.cache.get(message.guildId)
                     let member = guild?.members.cache.get(member_id)
-
-                    let epoch_timestamp = (Date.now()) + (duration * 1000)
-                    let timestamp = new Date(epoch_timestamp)
-                    let options = {"communicationDisabledUntil":timestamp.toISOString()}
-                    member?.edit(options, reason).then((res:any) => {
-                        let guildSchema = paguClient.schemas.get("guild")
-                        guildSchema.findOne({guildID:message.guildId}, async (err:Error, data:{mainLoggingChannel:string}) => {
-                            let mainLoggingChannel = data.mainLoggingChannel
-                            const channel: TextChannel = await client.channels.fetch(mainLoggingChannel) as TextChannel
-                            let embed = new MessageEmbed
-                            embed.setAuthor({name:`${member?.user.username}`, iconURL:`${member?.user.avatarURL()}`})
-                            embed.setTitle("Timed Out User")
-                            embed.addFields([{name: "User Timed Out", value:`<@${member?.id}>`},
-                            {name:"Moderator", value:`<@${message.author.id}>`}])
-                            embed.setTimestamp(Date.now())
-                            channel.send({embeds:[embed]})
+                    if (member === undefined) {
+                        message.channel.send("That user does not exist or is not a member of this server")
+                    }
+                    else {
+                        let epoch_timestamp = (Date.now()) + (duration * 1000)
+                        let timestamp = new Date(epoch_timestamp)
+                        let options = {"communicationDisabledUntil":timestamp.toISOString()}
+                        member?.edit(options, reason).then((res:any) => {
+                            let guildSchema = paguClient.schemas.get("guild")
+                            guildSchema.findOne({guildID:message.guildId}, async (err:Error, data:{mainLoggingChannel:string}) => {
+                                let mainLoggingChannel = data.mainLoggingChannel
+                                const channel: TextChannel = await client.channels.fetch(mainLoggingChannel) as TextChannel
+                                let embed = new MessageEmbed
+                                embed.setAuthor({name:`${member?.user.username}`, iconURL:`${member?.user.avatarURL()}`})
+                                embed.setTitle("Timed Out User")
+                                embed.addFields([{name: "User Timed Out", value:`<@${member?.id}>`},
+                                {name:"Moderator", value:`<@${message.author.id}>`}])
+                                embed.setTimestamp(Date.now())
+                                channel.send({embeds:[embed]})
+                            })
+                        }).catch((err:any) => {
+                            message.channel.send("The duration specified was too long. It must be at most 4 weeks.")
                         })
-                    })
+                    }
+
+                    
 
                     
                 }
