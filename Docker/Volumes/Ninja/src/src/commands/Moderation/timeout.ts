@@ -13,9 +13,11 @@ module.exports = {
     async execute(message: Message, args: Array<string>, client: Client, paguClient: any) {
         if (args.length == 0) {
             message.channel.send(`Please follow the proper usage of ${module.exports.usage}`)
+            paguClient.commands.get('help').commandFile.execute(message, ["timeout"], client, paguClient)
         }
         else if (args.length == 1) {
             message.channel.send("Please specify a duration to timeout the user.")
+            paguClient.commands.get('help').commandFile.execute(message, ["timeout"], client, paguClient)
         }
         else {
             let member_id = (isNaN(parseInt(args[0]))) ? args[0].slice(3, -1) : args[0]
