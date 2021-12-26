@@ -14,9 +14,9 @@
     ]
   },
   "scripts": {
-    "migrateBadLinksToDB": "node Tools/migrateBadLinksToDB.js",
-    "importmarocsv": "node Tools/importmarocsv.js",
-    "syncworkspacerepos": "node Tools/syncworkspacerepos.js",
+    "migrateBadLinksToDB": "node Tools/migrateBadLinksToDB",
+    "importmarocsv": "node Tools/importmarocsv",
+    "syncworkspacerepos": "node Tools/syncworkspacerepos",
     "start": "docker-compose up -d --build",
     "stop": "docker-compose stop",
     "dev": "docker-compose up --build",
