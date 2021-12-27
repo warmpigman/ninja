@@ -1,20 +1,23 @@
-import {Schema, model} from 'mongoose'
+import { Schema, model } from "mongoose";
 const ModActionSchema = new Schema({
-    set: Boolean,
-    permanent: Boolean,
-    until: Date
-})
-const user = new Schema({
+  set: Boolean,
+  permanent: Boolean,
+  until: Date,
+});
+const user = new Schema(
+  {
     discordID: String,
     mojangUUID: String,
     afk: {
-        reason: String,
-        afk: Boolean
+      reason: String,
+      afk: Boolean,
     },
     ban: ModActionSchema,
     mute: ModActionSchema,
-}, {
-    minimize: false
-});
+  },
+  {
+    minimize: false,
+  }
+);
 
-module.exports = model('users', user);
+module.exports = model("users", user);

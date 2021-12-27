@@ -1,15 +1,15 @@
 module.exports = {
   name: [
-    "setmainloggingchannel",
-    "set-main-logging-channel",
-    "set-mainloggingchannel",
+    "setreportrequestchannel",
+    "set-report-request-channel",
+    "set-reportrequestchannel",
   ],
   category: "Mod",
-  description: "Set's the guild's main logging channel to send logs to.",
-  usage: "setmainloggingchannel [ID or #channel]",
+  description: "Set's the guild's report request channel to send requests to.",
+  usage: "setreportrequestchannel [ID or #channel]",
   examples: [
-    "setmainloggingchannel #bot-logs",
-    "setmainloggingchannel 212148329245020082",
+    "setreportrequestchannel #report-requests",
+    "setreportrequestchannel 212148329245020082",
   ],
   permissions: ["MANAGE_CHANNELS"],
   hidden: ["mod"],
@@ -45,25 +45,25 @@ module.exports = {
           if (!data) {
             guildSchema.create({
               guildID: message.guild.id,
-              mainLoggingChannel: {
+              reportRequestChannel: {
                 ID: channelID,
                 Set: true,
               },
             });
             return message.reply({
-              content: `<#${channelID}> has been set as the main logging channel.`,
+              content: `<#${channelID}> has been set as the report request channel.`,
             });
           } else if (data) {
-            if (data.mainLoggingChannel == channelID) {
+            if (data.reportRequestChannel.ID == channelID) {
               return message.reply({
-                content: `<#${channelID}> is already the main logging channel.`,
+                content: `<#${channelID}> is already the report request channel.`,
               });
             } else {
-              data.mainLoggingChannel.ID = channelID;
-              data.mainLoggingChannel.Set = true;
+              data.reportRequestChannel.ID = channelID;
+              data.reportRequestChannel.Set = true;
               data.save();
               return message.reply({
-                content: `<#${channelID}> has been set as the main logging channel.`,
+                content: `<#${channelID}> has been set as the report request channel.`,
               });
             }
           }

@@ -27,7 +27,7 @@ services:
     container_name: senither-weight
     restart: unless-stopped
   maro-api:
-    build: './Docker/Volumes/maro-api'
+    build: "./Docker/Volumes/maro-api"
     container_name: maro-api
     restart: unless-stopped
     #get rid of in prod
