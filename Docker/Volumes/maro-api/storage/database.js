@@ -5,7 +5,7 @@ const createDatabaseConnection = function () {
   try {
     mongoose.connect(config.dbUrl, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
 
     console.log('Successaafully connected to database.' + process.pid);

@@ -18,10 +18,10 @@ const retrievePrices = async function () {
 
     if (index === -1) allAuctions.push(auction);
     else allAuctions[index] = auction;
-  };
-}
+  }
+};
 router.get('/every', async (req, res) => {
-  console.log('yo')
+  console.log('yo');
   if (allAuctions.length === 0) {
     return res.status(404).json({
       status: 404,

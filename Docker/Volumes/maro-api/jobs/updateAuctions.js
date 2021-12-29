@@ -27,13 +27,9 @@ const updateAuctions = async function () {
       const auction = auctions[item].filter(i => i.price === lbin)[0];
 
       await db.auctions.updateOne({ id: item.toUpperCase() }, { sales: sales, auction: auction }, { upsert: true });
-      if(!auctions[item]) return
-      await auctions[item].sort((a,b) => a.price - b.price);
-      await db.allAuctions.updateOne(
-        { id: item.toUpperCase() },
-        { many: { sales: sales, auction: auctions[item] } },
-        { upsert: true }
-      );
+      if (!auctions[item]) return;
+      await auctions[item].sort((a, b) => a.price - b.price);
+      await db.allAuctions.updateOne({ id: item.toUpperCase() }, { many: { sales: sales, auction: auctions[item] } }, { upsert: true });
     }
   });
 
