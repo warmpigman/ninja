@@ -6,7 +6,7 @@ module.exports = {
   category: "Hypixel",
   description:
     "Check the skyblock weight of a user. Optional strategies are last_save, weight, skills, slayers, catacombs or profile name.",
-  usage: "weight [user]",
+  usage: "weight [user] (profile)",
   examples: [
     "weight",
     "weight ProNinjaGamin0",
