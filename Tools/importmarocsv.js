@@ -62,8 +62,7 @@
               if (i == arr.length - 1) {
                 mongoose.disconnect();
                 console.log(
-                  `Successfully finished, ${
-                    total == 0 ? "no" : total
+                  `Successfully finished, ${total == 0 ? "no" : total
                   } documents imported.`
                 );
                 process.exit();
