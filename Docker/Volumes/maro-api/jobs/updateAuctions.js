@@ -6,6 +6,7 @@ const db = require('../storage/database');
 let auctions = {};
 
 const fetchAuctions = async function (pages = 0) {
+  console.log(`Fetching auctions...`);
   for (let i = 0; i <= pages; i++) {
     const auctionPage = await api.getAuctionPage(i);
     if (!auctionPage.success) continue;
@@ -26,10 +27,14 @@ const updateAuctions = async function () {
       const auction = auctions[item].filter(i => i.price === lbin)[0];
 
       await db.auctions.updateOne({ id: item.toUpperCase() }, { sales: sales, auction: auction }, { upsert: true });
+      if (!auctions[item]) return;
+      await auctions[item].sort((a, b) => a.price - b.price);
+      await db.allAuctions.updateOne({ id: item.toUpperCase() }, { many: { sales: sales, auction: auctions[item] } }, { upsert: true });
     }
   });
 
   auctions = {};
+  fetchAuctions();
   setTimeout(() => fetchAuctions(), 30 * 10000);
 };
 

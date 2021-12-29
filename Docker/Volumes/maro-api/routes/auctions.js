@@ -3,7 +3,7 @@ const helper = require('../src/helper');
 const router = require('express').Router();
 
 let auctions = [];
-
+let allAuctions = [];
 const retrievePrices = async function () {
   for (const item of await db.auctions.find()) {
     const auction = { id: item.id, name: item.auction.name, lowestBin: item.auction.price };
@@ -12,8 +12,27 @@ const retrievePrices = async function () {
     if (index === -1) auctions.push(auction);
     else auctions[index] = auction;
   }
-};
+  for (const item of await db.allAuctions.find()) {
+    const auction = { id: item.id, auctions: item.many };
+    const index = allAuctions.findIndex(i => i.id === item.id);
 
+    if (index === -1) allAuctions.push(auction);
+    else allAuctions[index] = auction;
+  }
+};
+router.get('/every', async (req, res) => {
+  console.log('yo');
+  if (allAuctions.length === 0) {
+    return res.status(404).json({
+      status: 404,
+      data: 'No auctions found.'
+    });
+  }
+  return res.status(200).json({
+    status: 200,
+    data: allAuctions
+  });
+});
 router.get('/all', async (req, res) => {
   if (auctions.length === 0) {
     return res.status(404).json({
