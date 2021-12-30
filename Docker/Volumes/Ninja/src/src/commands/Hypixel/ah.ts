@@ -193,7 +193,7 @@ module.exports = {
                 response = await axios.get(
                   `https://api.mojang.com/user/profiles/${uuid}/names`
                 );
-                await inner(profile, uuid, response.data[0].name);
+                await inner(profile, uuid, response.data.slice(-1).name);
               } catch {
                 m.edit("There was an issue in finding the player");
               }
@@ -267,7 +267,7 @@ module.exports = {
                     response = await axios.get(
                       `https://api.mojang.com/user/profiles/${uuid}/names`
                     );
-                    await inner(profile, uuid, response.data[0].name);
+                    await inner(profile, uuid, response.data.slice(-1).name);
                   } catch {
                     m.edit("There was an issue in finding the player");
                   }
