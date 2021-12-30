@@ -109,7 +109,7 @@ module.exports = {
         }
         let embed = new MessageEmbed();
         embed.setTitle("Auctions");
-        embed.setFooter(`Profile: ${profile.cute_name}`);
+        embed.setFooter(`Profile: ${profile.cute_name}`, message.author.displayAvatarURL({ dynamic: true }));
         embed.setTimestamp(Date.now());
         embed.setThumbnail(`https://mc-heads.net/head/${uuid}`);
         embed.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
