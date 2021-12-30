@@ -10,7 +10,7 @@ const getActiveProfile = function (profiles: any, uuid: any) {
 const getProfileByName = function (profiles: any, name: String) {
   let profile: any;
   for (profile in profiles) {
-    if (profile.cute_name === name) {
+    if (profile.cute_name.toLowerCase() === name.toLowerCase()) {
       return profile;
     }
   }
