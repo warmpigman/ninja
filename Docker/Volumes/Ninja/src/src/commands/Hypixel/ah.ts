@@ -112,7 +112,7 @@ module.exports = {
         embed.setFooter(`Profile: ${profile.cute_name}`, message.author.displayAvatarURL({ dynamic: true }));
         embed.setTimestamp(Date.now());
         embed.setThumbnail(`https://mc-heads.net/head/${uuid}`);
-        embed.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`)
+        embed.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
         let d =
           totalUnclaimed > 0
             ? `**[${username}](https://sky.shiiyu.moe/stats/${username}/${
