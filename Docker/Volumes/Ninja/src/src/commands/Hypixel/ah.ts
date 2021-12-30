@@ -25,6 +25,38 @@ function abbreviateNumber(value:any) {
       }).format(value);
 }
 
+const getEnchants = (str:string) => {
+    const regex = /(?<![MDCLXVI])(?=[MDCLXVI])M{0,3}(?:C[MD]|D?C{0,3})(?:X[CL]|L?X{0,3})(?:I[XV]|V?I{0,3})[^ ]\b/gm;
+    let m;
+    var total = new Array()
+    var enchants = new Array()
+    while ((m = regex.exec(str)) !== null) {
+        if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
+        }
+        m.forEach((match, groupIndex) => {
+            total.push(match)
+        });
+    }
+    function filter(string:any) {
+        return string.replace(/§9/g, '')
+        .replace(/, /g, '')
+        .replace(/§/g, '')
+        .replace(/\\/g, '')
+    }
+    total.forEach(item => {
+        var a = str.substring(str.indexOf("§9"), str.indexOf(item)+filter(item).length)
+        if(filter(a).length==0) return;
+        enchants.push(a)
+        str = str.substring(str.indexOf(item))
+    })
+    enchants.map((item,index) => {
+        item = filter(item)
+        enchants[index] = item
+    })
+    return enchants
+}
+
 module.exports = {
     name:["ah", "auctions"],
     category:"Hypixel",
@@ -65,8 +97,9 @@ module.exports = {
                 let d = totalUnclaimed > 0 ? `**[${username}](https://sky.shiiyu.moe/stats/${username}/${profile.cute_name}) has ${abbreviateNumber(totalUnclaimed)} coins that are unclaimed**` : `[${username}](https://sky.shiiyu.moe/stats/${username}/${profile.cute_name})`
                 embed.setDescription(d)
                 for (let auction of auctions) {
+                    let name = (auction.item_name.includes("Enchanted Book")) ? `Enchanted Book: ${getEnchants(auction.item_lore)}` : auction.item_name
                     if (!auction.claimed) {                                    
-                        embed.addField(auction.item_name, `This auction has **ended at ${abbreviateNumber(auction.highest_bid_amount)}** coins`)
+                        embed.addField(name, `This auction has **ended at ${abbreviateNumber(auction.highest_bid_amount)}** coins`)
                     }
                     else {
                         let timeleft:Number = auction.end - Date.now()
@@ -77,7 +110,7 @@ module.exports = {
                         let minutes = b[0]
                         let seconds = b[1]
                         let nice_time = (hours > 0) ? `${hours}h, ${minutes}m` : `${minutes}m`
-                        embed.addField(auction.item_name, `Current Bid: **${abbreviateNumber(auction.highest_bid_amount)}** • Ends in: **${nice_time}**`)     
+                        embed.addField(name, `Current Bid: **${abbreviateNumber(auction.highest_bid_amount)}** • Ends in: **${nice_time}**`)     
                     }
                 }
                 m.edit({content:null,embeds:[embed],allowedMentions:{repliedUser:false}})
