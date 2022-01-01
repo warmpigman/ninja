@@ -91,7 +91,21 @@ module.exports = {
     });
 
     async function inner(profile: any, uuid: any, username: String) {
-      let response = await axios.get(url + uuid);
+      let response= await paguClient.Util.cacheGet(
+        url+uuid
+        ,paguClient
+      )
+      if(!response) {
+        response = await axios.get(url + uuid);
+        await paguClient.Util.cacheThis(
+          {
+            key: url+uuid,
+            data: response,
+          },
+          paguClient
+        )
+      }
+
 
       if (response.status == 200) {
         let auctions: any[] = [];
@@ -167,10 +181,27 @@ module.exports = {
       userSchema.findOne(
         { discordID: message.author.id },
         async (err: Error, data: { mojangUUID: String }) => {
+          if(!data) {
+            m.edit("You need to link your account first!")
+            return;
+          }
           let uuid = data.mojangUUID;
-          let response = await paguClient.Util.apiCallHandler(
+          let response= await paguClient.Util.cacheGet(
             `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
-          );
+            ,paguClient
+          )
+          if(!response) {
+            response = await paguClient.Util.apiCallHandler(
+                `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
+              );
+            await paguClient.Util.cacheThis(
+              {
+                key: `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
+                data: response,
+              },
+              paguClient
+            )
+          }
           switch (response.status) {
             case 404:
               m.edit("Could not find that user or profile.");
@@ -197,8 +228,9 @@ module.exports = {
                 response = await axios.get(
                   `https://api.mojang.com/user/profiles/${uuid}/names`
                 );
-                await inner(profile, uuid, response.data.slice(-1).name);
-              } catch {
+                await inner(profile, uuid, response.data.slice(-1)[0].name);
+              } catch (e){
+                console.log(e)
                 m.edit("There was an issue in finding the player");
               }
           }
@@ -238,10 +270,27 @@ module.exports = {
         userSchema.findOne(
           { discordID: message.author.id },
           async (err: Error, data: { mojangUUID: String }) => {
+            if(!data) {
+              m.edit("You need to link your account first!")
+              return;
+            }
             let uuid = data.mojangUUID;
-            let response = await paguClient.Util.apiCallHandler(
+            let response = await paguClient.Util.cacheGet(
               `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
-            );
+              ,paguClient
+            )
+            if(!response) {
+              response = await paguClient.Util.apiCallHandler(
+                  `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
+                );
+              await paguClient.Util.cacheThis(
+                {
+                  key: `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
+                  data: response,
+                },
+                paguClient
+              )
+            }
             switch (response.status) {
               case 404:
                 m.edit("Could not find that user or profile.");
@@ -271,7 +320,7 @@ module.exports = {
                     response = await axios.get(
                       `https://api.mojang.com/user/profiles/${uuid}/names`
                     );
-                    await inner(profile, uuid, response.data.slice(-1).name);
+                    await inner(profile, uuid, response.data.slice(-1)[0].name);
                   } catch {
                     m.edit("There was an issue in finding the player");
                   }
@@ -286,9 +335,22 @@ module.exports = {
         let username = r.data.name;
         if (r.status == 200) {
           let uuid = r.data.id;
-          let response = await paguClient.Util.apiCallHandler(
+          let response= await paguClient.Util.cacheGet(
             `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
-          );
+            ,paguClient
+          )
+          if(!response) {
+            response = await paguClient.Util.apiCallHandler(
+                `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
+              );
+            await paguClient.Util.cacheThis(
+              {
+                key: `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
+                data: response,
+              },
+              paguClient
+            )
+          }
           switch (response.status) {
             case 404:
               m.edit("Could not find that user or profile.");
@@ -329,9 +391,22 @@ module.exports = {
       let username = r.data.name;
       if (r.status == 200) {
         let uuid = r.data.id;
-        let response = await paguClient.Util.apiCallHandler(
+        let response= await paguClient.Util.cacheGet(
           `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
-        );
+          ,paguClient
+        )
+        if(!response) {
+          response = await paguClient.Util.apiCallHandler(
+              `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
+            );
+          await paguClient.Util.cacheThis(
+            {
+              key: `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
+              data: response,
+            },
+            paguClient
+          )
+        }
         switch (response.status) {
           case 404:
             m.edit("Could not find that user or profile.");

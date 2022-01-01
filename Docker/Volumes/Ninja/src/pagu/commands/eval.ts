@@ -43,10 +43,19 @@ module.exports = {
           } catch (e: any) {
             paguClient.Util.log(__filename, "error", e, false);
             embed.setTitle("Eval - Error");
-            embed.setDescription(`\`\`\`xl\n${clean(e.toString())}\n\`\`\``);
+            try {
+              embed.setDescription(`\`\`\`xl\n${clean(e.toString())}\n\`\`\``);
+            } catch(e) {
+              embed.setDescription(`There was an error, it's a possibility that the message is too long; maybe try logging to console?`);
+            }
           }
         }
-        message.channel.send({ embeds: [embed] });
+        try{
+          message.channel.send({ embeds: [embed] });
+        } catch(e) {
+          embed.setDescription(`There was an error, it's a possibility that the message is too long; maybe try logging to console?`);
+          message.channel.send({ embeds: [embed] });
+        }
       } catch (e) {
         paguClient.Util.log(__filename, "error", e, true);
       }
