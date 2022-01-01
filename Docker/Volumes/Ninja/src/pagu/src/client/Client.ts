@@ -4,6 +4,7 @@ import * as Discord from "discord.js";
 var cacheGuildHandler = require("../handlers/Cache/guild");
 var cacheUserHandler = require("../handlers/Cache/user");
 var mongoose = require("mongoose");
+const redis = require("redis");
 /**
  * Pagu
  * @extends {EventEmitter}
@@ -17,6 +18,7 @@ class Pagu extends EventEmitter {
   schemas: any;
   options: any;
   Discord: any;
+  redisClient: any;
   /**
    * @param {paguOtopions} options Options for this, client is required.
    */
@@ -128,6 +130,50 @@ class Pagu extends EventEmitter {
               __filename,
               "error",
               "There was an error connecting to the Mongo Database!"
+            );
+            Util.log(__filename, "error", e, true);
+          }
+        })(),
+        (async () => {
+          try {
+            this.redisClient = redis.createClient({
+              url: options.options.redisURI,
+              retry_strategy: function (Options: any) {
+                if (Options.error && Options.error.code === "ECONNREFUSED") {
+                  // End reconnecting on a specific error and flush all commands with a individual error
+                  return new Error("The Redis Database was disconnected!");
+                }
+                if (Options.total_retry_time > 1000 * 60 * 60) {
+                  // End reconnecting after a specific timeout and flush all commands with a individual error
+                  return new Error(
+                    "Retry time exhausted. The Redis Database was disconnected!"
+                  );
+                }
+                if (Options.attempt > 10) {
+                  // End reconnecting with built in error
+                  return undefined;
+                }
+                // reconnect after
+                return Math.min(Options.attempt * 100, 3000);
+              },
+            });
+            this.redisClient.on("ready", () => {
+              Util.log(__filename, "log", "Connected to the Redis Database!");
+            });
+            this.redisClient.on("error", (err: Error) => {
+              Util.log(
+                __filename,
+                "error",
+                "An error occured with the Redis Database!"
+              );
+              Util.log(__filename, "error", err, true);
+            });
+            await this.redisClient.connect();
+          } catch (e) {
+            Util.log(
+              __filename,
+              "error",
+              "There was an error connecting to the Redis Database!"
             );
             Util.log(__filename, "error", e, true);
           }

@@ -50,7 +50,7 @@ module.exports = {
     ) {
       try {
         const response = await axios.post(
-          "https://nariah-dev.com/api/networth/categories",
+          "http://maro-api:3000/api/networth/categories",
           { data: profile }
         );
         let embed = new MessageEmbed();
@@ -192,7 +192,20 @@ module.exports = {
         }
       }
     }
-
+    async function get(key: string, uuid: string) {
+      let response = await paguClient.Util.cacheGet(key, paguClient);
+      if (response) return response;
+      else {
+        response = await axios.get(
+          `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
+        );
+        await paguClient.Util.cacheThis(
+          { key: key, data: response },
+          paguClient
+        );
+        return response;
+      }
+    }
     if (args.length == 0) {
     } else if (args.length == 1) {
       if (false) {
@@ -202,9 +215,7 @@ module.exports = {
         );
         const uuid = resp.data.id;
         const username = resp.data.name;
-        const { data } = await axios.get(
-          `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
-        );
+        const { data } = await get(key ?? "", uuid);
         const activeProfile = getActiveProfile(data.profiles, uuid);
         const profile = activeProfile.members[uuid];
         profile.banking = activeProfile.banking;
@@ -216,9 +227,7 @@ module.exports = {
       );
       const uuid = resp.data.id;
       const username = resp.data.name;
-      const { data } = await axios.get(
-        `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
-      );
+      const { data } = await get(key ?? "", uuid);
       const activeProfile = getProfileByName(data.profiles, args[1]);
       if (activeProfile === null) {
         m.edit("That profile does not exist");

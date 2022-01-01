@@ -316,6 +316,10 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
         userSchema.findOne(
           { discordID: message.author.id },
           async (err: Error, data: { mojangUUID: String }) => {
+            if (!data) {
+              message.reply("You need to link your account first!");
+              return;
+            }
             let uuid = data.mojangUUID;
             axios
               .get(`https://api.mojang.com/user/profiles/${uuid}/names`)
@@ -361,21 +365,49 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
         { discordID: message.author.id },
         async (err: Error, data: { mojangUUID: String }) => {
           if (!data) {
-            message.channel.send("You have not linked an account.");
+            message.reply("You need to link your account first!");
+            return;
           } else {
             let uuid = data.mojangUUID;
-            axios
-              .get(`https://api.mojang.com/user/profiles/${uuid}/names`)
-              .then((res: any) => {
-                let strategy = "save";
-                inner(uuid, strategy);
-              })
-              .catch(async (e: any) => {
-                message.channel.send(
-                  "There was an error in looking up the username."
-                );
-                return;
-              });
+            let response = await paguClient.Util.cacheGet(
+              `https://api.mojang.com/user/profiles/${uuid}/names`,
+              paguClient
+            );
+            if (!response) {
+              axios
+                .get(`https://api.mojang.com/user/profiles/${uuid}/names`)
+                .then(async () => {
+                  let strategy = "save";
+                  inner(uuid, strategy);
+                  await paguClient.Util.cacheThis(
+                    {
+                      key: `https://api.mojang.com/user/profiles/${uuid}/names`,
+                      data: { valid: true },
+                    },
+                    paguClient
+                  );
+                })
+                .catch(async (e: any) => {
+                  message.channel.send(
+                    "There was an error in looking up the username."
+                  );
+                  await paguClient.Util.cacheThis(
+                    {
+                      key: `https://api.mojang.com/user/profiles/${uuid}/names`,
+                      data: { valid: false },
+                    },
+                    paguClient
+                  );
+                  return;
+                });
+            } else if (response.valid) {
+              let strategy = "save";
+              inner(uuid, strategy);
+            } else {
+              message.channel.send(
+                "There was an error in looking up the username."
+              );
+            }
           }
         }
       );

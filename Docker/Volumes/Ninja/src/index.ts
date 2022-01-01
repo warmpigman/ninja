@@ -8,10 +8,11 @@ Client.on("ready", async () => {
     options: {
       prefix: process.env.PREFIX,
       mongoURI: process.env.MONGODB_URI,
+      redisURI: process.env.REDIS_URI,
       schemaDir: "/dist/src/schemas",
       devs: [
-        "300669365563424770",
-        // "406920919131488268",
+        // "300669365563424770",
+        "406920919131488268",
       ],
       niceCategory: {
         dev: "<:dev:865771194531184661> Dev",

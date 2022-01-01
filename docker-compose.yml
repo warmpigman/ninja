@@ -8,6 +8,7 @@ services:
       - mongodb
       - senither-weight
       - maro-api
+      - redis
     volumes:
       - ./Docker/Volumes/Ninja:/application
   mongodb:
@@ -22,6 +23,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: fY2EL8sTwdVZRcvXssyb8jh85ut5hy6gbIcsYeDQxMUwd8O6x6loUumhxz3LKgqt
     volumes:
       - ./Docker/Volumes/mongodata:/data/db
+  redis:
+    image: redis:6.2.6
+    restart: unless-stopped
+    command: redis-server --requirepass "fY2EL8sTwdVZRcvXssyb8jh85ut5hy6gbIcsYeDQxMUwd8O6x6loUumhxz3LKgqt" --maxmemory 50mb
+    ports:
+      - "6379:6379"
   senither-weight:
     image: senither/hypixel-skyblock-facade
     container_name: senither-weight

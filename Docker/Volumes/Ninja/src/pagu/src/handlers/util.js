@@ -14,4 +14,6 @@ module.exports = {
   checkGuildSchema: require("../util/Util/Util/checkGuildSchema"),
   resolveChannel: require("../util/Util/Util/resolveChannel"),
   resolveRole: require("../util/Util/Util/resolveRole"),
+  cacheGet: require("../util/Util/Util/cacheGet"),
+  cacheThis: require("../util/Util/Util/cacheThis"),
 };
