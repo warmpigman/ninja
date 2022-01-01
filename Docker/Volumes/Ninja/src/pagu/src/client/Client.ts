@@ -4,7 +4,7 @@ import * as Discord from "discord.js";
 var cacheGuildHandler = require("../handlers/Cache/guild");
 var cacheUserHandler = require("../handlers/Cache/user");
 var mongoose = require("mongoose");
-const redis = require('redis')
+const redis = require("redis");
 /**
  * Pagu
  * @extends {EventEmitter}
@@ -155,7 +155,7 @@ class Pagu extends EventEmitter {
                 }
                 // reconnect after
                 return Math.min(Options.attempt * 100, 3000);
-              }
+              },
             });
             this.redisClient.on("ready", () => {
               Util.log(__filename, "log", "Connected to the Redis Database!");
@@ -168,7 +168,7 @@ class Pagu extends EventEmitter {
               );
               Util.log(__filename, "error", err, true);
             });
-            await this.redisClient.connect()
+            await this.redisClient.connect();
           } catch (e) {
             Util.log(
               __filename,

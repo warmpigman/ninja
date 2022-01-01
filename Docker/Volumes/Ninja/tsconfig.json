@@ -10,9 +10,7 @@
     // "sourceMap": true,
     "strict": true,
     "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "noImplicitAny": false,
   "include": ["typings.d.ts", "src/", ".env"]

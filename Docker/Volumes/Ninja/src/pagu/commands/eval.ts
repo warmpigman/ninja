@@ -45,15 +45,19 @@ module.exports = {
             embed.setTitle("Eval - Error");
             try {
               embed.setDescription(`\`\`\`xl\n${clean(e.toString())}\n\`\`\``);
-            } catch(e) {
-              embed.setDescription(`There was an error, it's a possibility that the message is too long; maybe try logging to console?`);
+            } catch (e) {
+              embed.setDescription(
+                `There was an error, it's a possibility that the message is too long; maybe try logging to console?`
+              );
             }
           }
         }
-        try{
+        try {
           message.channel.send({ embeds: [embed] });
-        } catch(e) {
-          embed.setDescription(`There was an error, it's a possibility that the message is too long; maybe try logging to console?`);
+        } catch (e) {
+          embed.setDescription(
+            `There was an error, it's a possibility that the message is too long; maybe try logging to console?`
+          );
           message.channel.send({ embeds: [embed] });
         }
       } catch (e) {
