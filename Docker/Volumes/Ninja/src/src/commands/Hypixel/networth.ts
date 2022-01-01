@@ -193,12 +193,17 @@ module.exports = {
       }
     }
     async function get(key: string, uuid: string) {
-      let response = await paguClient.Util.cacheGet(key, paguClient)
-      if(response) return response
+      let response = await paguClient.Util.cacheGet(key, paguClient);
+      if (response) return response;
       else {
-        response = await axios.get(`https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`)
-        await paguClient.Util.cacheThis({key:key, data: response}, paguClient)
-        return response
+        response = await axios.get(
+          `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
+        );
+        await paguClient.Util.cacheThis(
+          { key: key, data: response },
+          paguClient
+        );
+        return response;
       }
     }
     if (args.length == 0) {
@@ -210,7 +215,7 @@ module.exports = {
         );
         const uuid = resp.data.id;
         const username = resp.data.name;
-        const { data } = await get(key??'', uuid)
+        const { data } = await get(key ?? "", uuid);
         const activeProfile = getActiveProfile(data.profiles, uuid);
         const profile = activeProfile.members[uuid];
         profile.banking = activeProfile.banking;
@@ -222,7 +227,7 @@ module.exports = {
       );
       const uuid = resp.data.id;
       const username = resp.data.name;
-      const { data } = await get(key??'', uuid)
+      const { data } = await get(key ?? "", uuid);
       const activeProfile = getProfileByName(data.profiles, args[1]);
       if (activeProfile === null) {
         m.edit("That profile does not exist");

@@ -29,12 +29,21 @@ module.exports = {
         allowedMentions: { repliedUser: false },
       });
       let search_term = args.join(" ").toLowerCase();
-      let response = await paguClient.Util.cacheGet(`https://sky.shiiyu.moe/api/v2/bazaar?key=${key}`, paguClient);
-      if(!response) {
+      let response = await paguClient.Util.cacheGet(
+        `https://sky.shiiyu.moe/api/v2/bazaar?key=${key}`,
+        paguClient
+      );
+      if (!response) {
         response = await axios.get(
           `https://sky.shiiyu.moe/api/v2/bazaar?key=${key}`
         );
-        paguClient.Util.cacheThis({key:`https://sky.shiiyu.moe/api/v2/bazaar?key=${key}`, data: response.data}, paguClient);
+        paguClient.Util.cacheThis(
+          {
+            key: `https://sky.shiiyu.moe/api/v2/bazaar?key=${key}`,
+            data: response.data,
+          },
+          paguClient
+        );
       }
       let items = response.data;
       let found = false;
