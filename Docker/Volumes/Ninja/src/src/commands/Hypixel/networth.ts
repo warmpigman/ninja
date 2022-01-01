@@ -50,7 +50,7 @@ module.exports = {
     ) {
       try {
         const response = await axios.post(
-          "https://nariah-dev.com/api/networth/categories",
+          "http://maro-api:3000/api/networth/categories",
           { data: profile }
         );
         let embed = new MessageEmbed();
