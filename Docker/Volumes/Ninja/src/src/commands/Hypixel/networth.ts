@@ -209,25 +209,26 @@ module.exports = {
     }
     if (args.length == 0) {
       let userSchema = paguClient.schemas.get("user");
-        userSchema.findOne(
-          { discordID: message.author.id },
-          async (err: Error, schemaData: { mojangUUID: string }) => {
-            if (!schemaData) {
-              m.edit("You need to link your account first!");
-              return;
-            }
-            const uuid = schemaData.mojangUUID
-            const { data } = await get(key ?? "", uuid)
-            const activeProfile = getActiveProfile(data.profiles, uuid);
-            const profile = activeProfile.members[uuid];
-            profile.banking = activeProfile.banking;
+      userSchema.findOne(
+        { discordID: message.author.id },
+        async (err: Error, schemaData: { mojangUUID: string }) => {
+          if (!schemaData) {
+            m.edit("You need to link your account first!");
+            return;
+          }
+          const uuid = schemaData.mojangUUID;
+          const { data } = await get(key ?? "", uuid);
+          const activeProfile = getActiveProfile(data.profiles, uuid);
+          const profile = activeProfile.members[uuid];
+          profile.banking = activeProfile.banking;
 
-            const resp = await axios.get(
-              `https://api.mojang.com/users/profiles/${uuid}/names`
-            );
-            const username = resp.data.slice(-1).name
-            await inner(uuid, profile, username, activeProfile.cute_name);
-            })
+          const resp = await axios.get(
+            `https://api.mojang.com/users/profiles/${uuid}/names`
+          );
+          const username = resp.data.slice(-1).name;
+          await inner(uuid, profile, username, activeProfile.cute_name);
+        }
+      );
     } else if (args.length == 1) {
       let possible = [
         "apple",
@@ -266,8 +267,8 @@ module.exports = {
               m.edit("You need to link your account first!");
               return;
             }
-            const uuid = schemaData.mojangUUID
-            const { data } = await get(key ?? "", uuid)
+            const uuid = schemaData.mojangUUID;
+            const { data } = await get(key ?? "", uuid);
             const activeProfile = getProfileByName(data.profiles, args[0]);
             const profile = activeProfile.members[uuid];
             profile.banking = activeProfile.banking;
@@ -275,10 +276,10 @@ module.exports = {
             const resp = await axios.get(
               `https://api.mojang.com/users/profiles/${uuid}/names`
             );
-            const username = resp.data.slice(-1).name
+            const username = resp.data.slice(-1).name;
             await inner(uuid, profile, username, activeProfile.cute_name);
           }
-      )
+        );
       } else {
         const resp = await axios.get(
           `https://api.mojang.com/users/profiles/minecraft/${args[0]}`
