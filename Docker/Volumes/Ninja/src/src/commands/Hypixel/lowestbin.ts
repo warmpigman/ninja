@@ -22,9 +22,9 @@ module.exports = {
       content: "<a:loading:925859228374142977> Loading...",
       allowedMentions: { repliedUser: false },
     });
-    async function run(item: any, key?:string) {
-      if(key) {
-        await paguClient.Util.cacheThis({key:key, data: item}, paguClient)
+    async function run(item: any, key?: string) {
+      if (key) {
+        await paguClient.Util.cacheThis({ key: key, data: item }, paguClient);
       }
       var url = `http://maro-api:3000/api/auctions/quickStats/${item.id}`;
       var response = await paguClient.Util.cacheGet(url, paguClient);
@@ -49,16 +49,16 @@ module.exports = {
         return m.edit(`No item found for ${item.name}`);
       }
       var colors = {
-        "COMMON": "#FFFFFF",
-        "UNCOMMON": "#00FF00",
-        "RARE": "#0000FF",
-        "EPIC": "#FF0000",
-        "LEGENDARY": "#FFA500",
-      }
+        COMMON: "#FFFFFF",
+        UNCOMMON: "#00FF00",
+        RARE: "#0000FF",
+        EPIC: "#FF0000",
+        LEGENDARY: "#FFA500",
+      };
       const embed = new paguClient.Discord.MessageEmbed()
-        .setTitle(`${item.rarity??"COMMON"} - ${item.name}`)
+        .setTitle(`${item.rarity ?? "COMMON"} - ${item.name}`)
         //@ts-ignore
-        .setColor(colors[item.rarity??'COMMON'])
+        .setColor(colors[item.rarity ?? "COMMON"])
         .setTimestamp()
         .setFooter(
           `Requested by ${message.author.username}`,
@@ -68,10 +68,13 @@ module.exports = {
         .addFields([
           {
             name: "Lowest Bin",
-            value: `${Intl.NumberFormat('en-US',{notation: "compact", maximumFractionDigits:1}).format(response.data.data.min)}`,
+            value: `${Intl.NumberFormat("en-US", {
+              notation: "compact",
+              maximumFractionDigits: 1,
+            }).format(response.data.data.min)}`,
           },
         ]);
-      m.edit({content: null, embeds: [embed] });
+      m.edit({ content: null, embeds: [embed] });
     }
     let search_term = args.join(" ").toLowerCase();
     let { data } = await axios.get(
@@ -110,12 +113,19 @@ module.exports = {
       xs.reduce((a: any, x: any) => ((a[x] = (a[x] || 0) + 1), a), {});
 
     const uniq = (xs: any) => [...new Set(xs)];
-    if(await paguClient.Util.cacheGet(`${search_term.toLowerCase()}`, paguClient)){
-      return run(await paguClient.Util.cacheGet(`${search_term.toLowerCase()}`, paguClient));
+    if (
+      await paguClient.Util.cacheGet(`${search_term.toLowerCase()}`, paguClient)
+    ) {
+      return run(
+        await paguClient.Util.cacheGet(
+          `${search_term.toLowerCase()}`,
+          paguClient
+        )
+      );
     }
     for (var i = 0; i < items.length; i++) {
       let rarity = items[i].tier;
-      if(!rarity) rarity=""
+      if (!rarity) rarity = "";
       var likeliness = stringSimilarity(
         search_term.toLowerCase(),
         items[i].id.toLowerCase()
