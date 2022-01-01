@@ -1,4 +1,5 @@
 import { Message, Client, MessageEmbed } from "discord.js";
+import pagu = require("../../../pagu/pagu");
 
 const axios = require("axios");
 
@@ -207,8 +208,77 @@ module.exports = {
       }
     }
     if (args.length == 0) {
+      let userSchema = paguClient.schemas.get("user");
+        userSchema.findOne(
+          { discordID: message.author.id },
+          async (err: Error, schemaData: { mojangUUID: string }) => {
+            if (!schemaData) {
+              m.edit("You need to link your account first!");
+              return;
+            }
+            const uuid = schemaData.mojangUUID
+            const { data } = await get(key ?? "", uuid)
+            const activeProfile = getActiveProfile(data.profiles, uuid);
+            const profile = activeProfile.members[uuid];
+            profile.banking = activeProfile.banking;
+
+            const resp = await axios.get(
+              `https://api.mojang.com/users/profiles/${uuid}/names`
+            );
+            const username = resp.data.slice(-1).name
+            await inner(uuid, profile, username, activeProfile.cute_name);
+            })
     } else if (args.length == 1) {
-      if (false) {
+      let possible = [
+        "apple",
+        "banana",
+        "blueberry",
+        "coconut",
+        "cucumber",
+        "grapes",
+        "kiwi",
+        "lemon",
+        "lime",
+        "mango",
+        "orange",
+        "papaya",
+        "pear",
+        "peach",
+        "pineapple",
+        "pomegranate",
+        "raspberry",
+        "strawberry",
+        "tomato",
+        "watermelon",
+        "zucchini",
+        "weight",
+        "save",
+        "skills",
+        "slayers",
+        "catacombs",
+      ];
+      if (possible.includes(args[0])) {
+        let userSchema = paguClient.schemas.get("user");
+        userSchema.findOne(
+          { discordID: message.author.id },
+          async (err: Error, schemaData: { mojangUUID: string }) => {
+            if (!schemaData) {
+              m.edit("You need to link your account first!");
+              return;
+            }
+            const uuid = schemaData.mojangUUID
+            const { data } = await get(key ?? "", uuid)
+            const activeProfile = getProfileByName(data.profiles, args[0]);
+            const profile = activeProfile.members[uuid];
+            profile.banking = activeProfile.banking;
+
+            const resp = await axios.get(
+              `https://api.mojang.com/users/profiles/${uuid}/names`
+            );
+            const username = resp.data.slice(-1).name
+            await inner(uuid, profile, username, activeProfile.cute_name);
+          }
+      )
       } else {
         const resp = await axios.get(
           `https://api.mojang.com/users/profiles/minecraft/${args[0]}`
