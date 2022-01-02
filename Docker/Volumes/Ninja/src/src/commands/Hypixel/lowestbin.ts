@@ -108,14 +108,17 @@ module.exports = {
     seller = seller.data[0].name;
     let tier;
     const item = res.data.items.find((x: any) => x.id == lbin.id);
-    if(!item) {
-      if(!Object.keys(colors).some((x:any) => {
-        if(lbin.id.includes(x)) {
-          tier = x;
-          return true;
-        }
-      })) tier="COMMON"
-    } else tier=item.tier
+    if (!item) {
+      if (
+        !Object.keys(colors).some((x: any) => {
+          if (lbin.id.includes(x)) {
+            tier = x;
+            return true;
+          }
+        })
+      )
+        tier = "COMMON";
+    } else tier = item.tier;
     //@ts-expect-error
     let color = colors[tier] || colors.COMMON;
 
@@ -133,21 +136,23 @@ module.exports = {
           name: "Price",
           value: `${Intl.NumberFormat("en-US", {
             notation: "compact",
-            maximumFractionDigits: 1
-            }).format(lbin.lowestBin)}`,
+            maximumFractionDigits: 1,
+          }).format(lbin.lowestBin)}`,
           inline: true,
         },
         {
           name: "Rarity",
-          value: tier.charAt(0).toUpperCase()+tier.slice(1).toLowerCase() || "Common",
+          value:
+            tier.charAt(0).toUpperCase() + tier.slice(1).toLowerCase() ||
+            "Common",
           inline: true,
         },
         {
           name: "Seller",
           value: seller,
           inline: true,
-        }
-      ])
+        },
+      ]);
     m.edit({ content: null, embeds: [embed] });
   },
 };
