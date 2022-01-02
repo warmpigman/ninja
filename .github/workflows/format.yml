@@ -18,8 +18,16 @@ jobs:
         run: yarn install --immutable --immutable-cache --check-cache
       - name: Format
         run: yarn format
-      - name: Bump Version (always patch)
-        run: yarn version --patch
+      - name:  'Automated Version Bump'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          minor-wording:  'add,Adds,new'
+          major-wording:  'MAJOR,cut-major'
+          patch-wording:  'patch,fixes'     # Providing patch-wording will override commits
+                                            # defaulting to a patch bump.
+          rc-wording:     'RELEASE,alpha'
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
