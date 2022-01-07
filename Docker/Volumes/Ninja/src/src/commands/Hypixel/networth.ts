@@ -54,6 +54,7 @@ module.exports = {
           "http://maro-api:3000/api/networth/categories",
           { data: profile }
         );
+
         let embed = new MessageEmbed();
         embed.setColor(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
         embed.setTimestamp(Date.now());
@@ -88,7 +89,6 @@ module.exports = {
           { name: ":coin: Bank", value: bankValue, inline: true },
           { name: ":handbag: Sack's Value", value: sackValue, inline: true },
         ]);
-
         let storageText = ``;
         let inventoryText = ``;
         let enderchestText = ``;
@@ -102,53 +102,93 @@ module.exports = {
         let wardrobe = categories.wardrobe_inventory;
         let pets = categories.pets;
         let talismans = categories.talismans;
-        for (let i = 0; i < 5; i++) {
-          storageText += `${storage.top_items[i].name} → ${abbreviateNumber(
-            storage.top_items[i].price
-          )}\n`;
-          inventoryText += `${inventory.top_items[i].name} → ${abbreviateNumber(
-            inventory.top_items[i].price
-          )}\n`;
-          enderchestText += `${
-            enderchest.top_items[i].name
-          } → ${abbreviateNumber(enderchest.top_items[i].price)}\n`;
-          wardrobeText += `${wardrobe.top_items[i].name} → ${abbreviateNumber(
-            wardrobe.top_items[i].price
-          )}\n`;
-          petsText += `${pets.top_items[i].name} → ${abbreviateNumber(
-            pets.top_items[i].price
-          )}\n`;
-          talismansText += `${talismans.top_items[i].name} → ${abbreviateNumber(
-            talismans.top_items[i].price
-          )}\n`;
+
+        if (storage !== undefined) {
+          for (let i = 0; i < Math.min(storage.top_items.length, 5); i++) {
+            storageText += `${storage.top_items[i].name} → ${abbreviateNumber(
+              storage.top_items[i].price
+            )}\n`;
+          }
         }
+        if (inventory !== undefined) {
+          for (let i = 0; i < Math.min(inventory.top_items.length, 5); i++) {
+            inventoryText += `${
+              inventory.top_items[i].name
+            } → ${abbreviateNumber(inventory.top_items[i].price)}\n`;
+          }
+        }
+        if (enderchest !== undefined) {
+          for (let i = 0; i < Math.min(enderchest.top_items.length, 5); i++) {
+            enderchestText += `${
+              enderchest.top_items[i].name
+            } → ${abbreviateNumber(enderchest.top_items[i].price)}\n`;
+          }
+        }
+        if (wardrobe !== undefined) {
+          for (let i = 0; i < Math.min(wardrobe.top_items.length, 5); i++) {
+            wardrobeText += `${wardrobe.top_items[i].name} → ${abbreviateNumber(
+              wardrobe.top_items[i].price
+            )}\n`;
+          }
+        }
+        if (pets !== undefined) {
+          for (let i = 0; i < Math.min(pets.top_items.length, 5); i++) {
+            petsText += `${pets.top_items[i].name} → ${abbreviateNumber(
+              pets.top_items[i].price
+            )}\n`;
+          }
+        }
+        if (talismans !== undefined) {
+          for (let i = 0; i < Math.min(talismans.top_items.length, 5); i++) {
+            talismansText += `${
+              talismans.top_items[i].name
+            } → ${abbreviateNumber(talismans.top_items[i].price)}\n`;
+          }
+        }
+        if (storageText === "") storageText = "Storage API Disabled";
+        if (inventoryText === "") inventoryText = "Inventory API Disabled";
+        if (enderchestText === "") enderchestText = "Enderchest API Disabled";
+        if (wardrobeText === "") wardrobeText = "Wardrobe API Disabled";
+        if (petsText === "") petsText = "Pets API Disabled";
+        if (talismansText === "") talismansText = "Talismans API Disabled";
+
+        let storageTotal =
+          storage === undefined ? "0" : abbreviateNumber(storage.total);
+        let inventoryTotal =
+          inventory === undefined ? "0" : abbreviateNumber(inventory.total);
+        let enderchestTotal =
+          enderchest === undefined ? "0" : abbreviateNumber(enderchest.total);
+        let wardrobeTotal =
+          wardrobe === undefined ? "0" : abbreviateNumber(wardrobe.total);
+        let petsTotal = pets === undefined ? "0" : abbreviateNumber(pets.total);
+        let talismansTotal =
+          talismans === undefined ? "0" : abbreviateNumber(talismans.total);
         embed.addFields([
           {
-            name: `Storage Value: ${abbreviateNumber(storage.total)}`,
+            name: `Storage Value: ${storageTotal}`,
             value: storageText,
           },
           {
-            name: `Storage Value: ${abbreviateNumber(inventory.total)}`,
+            name: `Inventory Value: ${inventoryTotal}`,
             value: inventoryText,
           },
           {
-            name: `Storage Value: ${abbreviateNumber(enderchest.total)}`,
+            name: `Enderchest Value: ${enderchestTotal}`,
             value: enderchestText,
           },
           {
-            name: `Storage Value: ${abbreviateNumber(wardrobe.total)}`,
+            name: `Wardrobe Value: ${wardrobeTotal}`,
             value: wardrobeText,
           },
           {
-            name: `Storage Value: ${abbreviateNumber(pets.total)}`,
+            name: `Pets Value: ${petsTotal}`,
             value: petsText,
           },
           {
-            name: `Storage Value: ${abbreviateNumber(talismans.total)}`,
+            name: `Talismans Value: ${talismansTotal}`,
             value: talismansText,
           },
         ]);
-
         m.edit({
           content: null,
           embeds: [embed],
