@@ -14,9 +14,7 @@ Client.on("ready", async () => {
         // "300669365563424770",
         "406920919131488268",
       ],
-      devServers: [
-        "802395497881010196"
-      ],
+      devServers: ["802395497881010196"],
       niceCategory: {
         dev: "<:dev:865771194531184661> Dev",
         utility: ":gear: Utility",
@@ -35,15 +33,15 @@ Client.on("ready", async () => {
   });
 });
 process
-.on("unhandledRejection", (reason, p) => {
-  console.log("error", reason, p);
-})
-.on("uncaughtException", (err, origin) => {
-  console.log("error", err, origin);
-})
-.on("uncaughtExceptionMonitor", (err, origin) => {
-  console.log("error", err, origin);
-})
+  .on("unhandledRejection", (reason, p) => {
+    console.log("error", reason, p);
+  })
+  .on("uncaughtException", (err, origin) => {
+    console.log("error", err, origin);
+  })
+  .on("uncaughtExceptionMonitor", (err, origin) => {
+    console.log("error", err, origin);
+  });
 // Commenting this because I am too bad coder and don't understand promises sooo...
 /*
 .on("multipleResolves", (type, promise, reason) => {

@@ -166,11 +166,11 @@ module.exports = function (options: any, paguClient: any) {
             }
           });
           // interactionCreate
-          var validSlashes = origValids
-          for( let k of validSlashes.keys()) {
-            console.log(k,validSlashes.get(k))
-            if(validSlashes.get(k).cache.type!=="slash") {
-              validSlashes.delete(k)
+          var validSlashes = origValids;
+          for (let k of validSlashes.keys()) {
+            console.log(k, validSlashes.get(k));
+            if (validSlashes.get(k).cache.type !== "slash") {
+              validSlashes.delete(k);
             }
           }
           options.client.on(
@@ -178,20 +178,26 @@ module.exports = function (options: any, paguClient: any) {
             async (interaction: Interaction) => {
               if (!interaction.isCommand()) return;
               var Command = validSlashes.get(interaction.commandName);
-              if(!Command) {
-                interaction.reply({content: "Command not found", ephemeral: true})
+              if (!Command) {
+                interaction.reply({
+                  content: "Command not found",
+                  ephemeral: true,
+                });
               } else {
                 try {
                   Command.commandFile.execute(
                     interaction,
                     options.client,
                     paguClient
-                  )
+                  );
                 } catch (e) {
-                  console.log(e)
-                  interaction.reply({content: "An error occured while executing the command. Please report this!", ephemeral: true})
+                  console.log(e);
+                  interaction.reply({
+                    content:
+                      "An error occured while executing the command. Please report this!",
+                    ephemeral: true,
+                  });
                 }
-                
               }
             }
           );
@@ -202,7 +208,6 @@ module.exports = function (options: any, paguClient: any) {
             if (validCommand.cache.type == "slash")
               validSlashCommands.push(validCommand);
             if (i == origValids.size - 1) {
-              
               var slashCommands = await validSlashCommands.map((slash: any) =>
                 slash.commandFile.slashInit().toJSON()
               );
@@ -232,7 +237,7 @@ module.exports = function (options: any, paguClient: any) {
                         __filename,
                         "log",
                         `Successfully loaded per server commands to ${server}`
-                      )
+                      );
                     } catch (e) {
                       paguClient.Util.log(
                         __filename,
