@@ -1,4 +1,4 @@
-var paguClient = require("../../../../pagu").Client;
+var paguClient = require("../../../client/Client").Client;
 type paguClientType = typeof paguClient;
 module.exports = async function (paguClient: paguClientType, GuildID: String) {
   // Check guild schema exists in mongodb given guildID

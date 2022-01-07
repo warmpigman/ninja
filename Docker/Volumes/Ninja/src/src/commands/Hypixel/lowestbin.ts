@@ -4,6 +4,7 @@ import axios from "axios";
 import { strictEqual } from "assert";
 module.exports = {
   name: ["lowestbin", "lb"],
+  category: "Hypixel",
   description: "Finds the lowest bin of an auction",
   usage: "lowestbin item",
   examples: ["lowestbin diamond", "lowestbin diamond sword"],

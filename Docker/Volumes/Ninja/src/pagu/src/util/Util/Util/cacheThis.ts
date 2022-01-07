@@ -1,5 +1,5 @@
 var redis = require("redis");
-var paguClient = require("../../../../pagu").Client;
+var paguClient = require("../../../client/Client").Client;
 type ClientType = typeof paguClient;
 interface data {
   key: string;

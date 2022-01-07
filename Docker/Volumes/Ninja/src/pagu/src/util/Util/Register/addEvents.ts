@@ -7,10 +7,8 @@ module.exports = function (options: any, paguClient: any) {
       process.cwd(),
       options.options.EventDir ?? "dist/src/Events"
     );
-    console.log(path);
     if (!fs.existsSync(path))
       path = Path.join(process.cwd(), "dist/src/events");
-    console.log(path);
     if (!fs.existsSync(path))
       throw 'The "Events" folder could not be found \n Try initalizing the client with a eventDir leading to your Events folder.';
     function registerEvents(path: string) {
