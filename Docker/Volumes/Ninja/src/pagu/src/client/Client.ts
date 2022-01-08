@@ -5,7 +5,7 @@ var cacheGuildHandler = require("../handlers/Cache/guild");
 var cacheUserHandler = require("../handlers/Cache/user");
 var mongoose = require("mongoose");
 const redis = require("redis");
-import * as util from "util"
+import * as util from "util";
 /**
  * Pagu
  * @extends {EventEmitter}
@@ -158,26 +158,23 @@ class Pagu extends EventEmitter {
             var self = this;
             mongoose.Query.prototype.exec = async function () {
               console.log(this.getQuery());
-              const key = await JSON.stringify(
-                {
-                  ...this.getQuery(),
-                  collection: this.mongooseCollection.name,
-                  op: this.op,
-                  options: this.options
-                }
-              )
+              const key = await JSON.stringify({
+                ...this.getQuery(),
+                collection: this.mongooseCollection.name,
+                op: this.op,
+                options: this.options,
+              });
               const cached = await self.redisClient.get(key);
               if (cached) {
                 return JSON.parse(cached);
               }
               const result = await mongooseExec.apply(this, arguments);
 
-              if(result) {
-
+              if (result) {
                 await self.redisClient.set(key, JSON.stringify(result));
               }
               return result;
-            }
+            };
             mongoose.connection
               .on("connected", () => {
                 Util.log(__filename, "log", "Connected to the Mongo Database!");
