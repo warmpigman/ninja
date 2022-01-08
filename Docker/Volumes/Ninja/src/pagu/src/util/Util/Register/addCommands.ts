@@ -168,7 +168,6 @@ module.exports = function (options: any, paguClient: any) {
           // interactionCreate
           var validSlashes = origValids;
           for (let k of validSlashes.keys()) {
-            console.log(k, validSlashes.get(k));
             if (validSlashes.get(k).cache.type !== "slash") {
               validSlashes.delete(k);
             }

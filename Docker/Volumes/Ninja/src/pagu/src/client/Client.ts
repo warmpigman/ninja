@@ -5,6 +5,7 @@ var cacheGuildHandler = require("../handlers/Cache/guild");
 var cacheUserHandler = require("../handlers/Cache/user");
 var mongoose = require("mongoose");
 const redis = require("redis");
+import * as util from "util"
 /**
  * Pagu
  * @extends {EventEmitter}
@@ -108,34 +109,6 @@ class Pagu extends EventEmitter {
       Promise.all([
         (async () => {
           try {
-            mongoose.connection
-              .on("connected", () => {
-                Util.log(__filename, "log", "Connected to the Mongo Database!");
-              })
-              .on("disconnected", () => {
-                Util.log(
-                  __filename,
-                  "error",
-                  "The Mongo Database was disconnected!",
-                  true
-                );
-              });
-            await mongoose.connect(options.options.mongoURI, {
-              useNewUrlParser: true,
-              useUnifiedTopology: true,
-              // useFindAndModify: false
-            });
-          } catch (e) {
-            Util.log(
-              __filename,
-              "error",
-              "There was an error connecting to the Mongo Database!"
-            );
-            Util.log(__filename, "error", e, true);
-          }
-        })(),
-        (async () => {
-          try {
             this.redisClient = redis.createClient({
               url: options.options.redisURI,
               retry_strategy: function (Options: any) {
@@ -168,12 +141,65 @@ class Pagu extends EventEmitter {
               );
               Util.log(__filename, "error", err, true);
             });
+            // this.redisClient.get = util.promisify(this.redisClient.get)
             await this.redisClient.connect();
           } catch (e) {
             Util.log(
               __filename,
               "error",
               "There was an error connecting to the Redis Database!"
+            );
+            Util.log(__filename, "error", e, true);
+          }
+        })(),
+        (async () => {
+          try {
+            const mongooseExec = mongoose.Query.prototype.exec;
+            var self = this;
+            mongoose.Query.prototype.exec = async function () {
+              console.log(this.getQuery());
+              const key = await JSON.stringify(
+                {
+                  ...this.getQuery(),
+                  collection: this.mongooseCollection.name,
+                  op: this.op,
+                  options: this.options
+                }
+              )
+              const cached = await self.redisClient.get(key);
+              if (cached) {
+                return JSON.parse(cached);
+              }
+              const result = await mongooseExec.apply(this, arguments);
+
+              if(result) {
+
+                await self.redisClient.set(key, JSON.stringify(result));
+              }
+              return result;
+            }
+            mongoose.connection
+              .on("connected", () => {
+                Util.log(__filename, "log", "Connected to the Mongo Database!");
+              })
+              .on("disconnected", () => {
+                Util.log(
+                  __filename,
+                  "error",
+                  "The Mongo Database was disconnected!",
+                  true
+                );
+              });
+            await mongoose.connect(options.options.mongoURI, {
+              useNewUrlParser: true,
+              useUnifiedTopology: true,
+              // useFindAndModify: false
+            });
+          } catch (e) {
+            Util.log(
+              __filename,
+              "error",
+              "There was an error connecting to the Mongo Database!"
             );
             Util.log(__filename, "error", e, true);
           }

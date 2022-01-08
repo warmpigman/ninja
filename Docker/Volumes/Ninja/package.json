@@ -4,8 +4,7 @@
   "description": "",
   "main": "dist/index",
   "scripts": {
-    "compile": "tsc && node .",
-    "dev": "export NODE_ENV=development && nodemon -e ts --exec \"npm run compile || exit 1\""
+    "dev": "tsc-watch --onSuccess \"node . || exit 1\""
   },
   "author": "",
   "license": "UNLICENSED",
@@ -22,7 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.5",
-    "nodemon": "^2.0.15",
+    "tsc-watch": "^4.6.0",
     "typescript": "^4.5.3"
   }
 }
