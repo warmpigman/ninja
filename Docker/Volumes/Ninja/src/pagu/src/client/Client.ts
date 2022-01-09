@@ -153,10 +153,11 @@ class Pagu extends EventEmitter {
         })(),
         (async () => {
           try {
-            if(process.env.NODE_ENV=="development") mongoose.set('debug', true);
+            if (process.env.NODE_ENV == "development")
+              mongoose.set("debug", true);
             const mongooseExec = mongoose.Query.prototype.exec;
             var self = this;
-            mongoose.Query.prototype.exec = async function (cb:any) {
+            mongoose.Query.prototype.exec = async function (cb: any) {
               const key = await JSON.stringify({
                 ...this.getQuery(),
                 collection: this.mongooseCollection.name,
@@ -166,10 +167,10 @@ class Pagu extends EventEmitter {
               let cached = await self.redisClient.get(key);
               let result;
               if (cached) {
-                if(!cb) return;
+                if (!cb) return;
                 cb(undefined, JSON.parse(cached));
               } else {
-                result = await mongooseExec.apply(this, arguments)
+                result = await mongooseExec.apply(this, arguments);
                 const value = String(await JSON.stringify(result));
                 await self.redisClient.set(key, value);
                 return result;

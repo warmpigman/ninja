@@ -5,10 +5,9 @@ import { Interaction } from "discord.js";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 function resolveType(commandFile: any) {
-  if(commandFile.slashInit && commandFile.messageExecute) {
-    return "both"
-  } else
-  if (commandFile.slashInit) {
+  if (commandFile.slashInit && commandFile.messageExecute) {
+    return "both";
+  } else if (commandFile.slashInit) {
     return "slash";
   } else {
     return "message";
@@ -152,20 +151,20 @@ module.exports = function (options: any, paguClient: any) {
                       )}`
                     );
                   try {
-                    if(commandFile.cache.type=="message")
-                    commandFile.execute(
-                      message,
-                      args,
-                      options.client,
-                      paguClient
-                    )
-                    else if(commandFile.cache.type=="both") {
+                    if (commandFile.cache.type == "message")
+                      commandFile.execute(
+                        message,
+                        args,
+                        options.client,
+                        paguClient
+                      );
+                    else if (commandFile.cache.type == "both") {
                       commandFile.messageExecute(
                         message,
                         args,
                         options.client,
                         paguClient
-                      )
+                      );
                     }
                   } catch (e) {
                     console.log(e);
@@ -196,18 +195,18 @@ module.exports = function (options: any, paguClient: any) {
                 });
               } else {
                 try {
-                  if(Command.cache.type=="slash")
-                  Command.commandFile.execute(
-                    interaction,
-                    options.client,
-                    paguClient
-                  )
-                  else if(Command.cache.type=="both")
-                  Command.commandFile.slashExecute(
-                    interaction,
-                    options.client,
-                    paguClient
-                  )
+                  if (Command.cache.type == "slash")
+                    Command.commandFile.execute(
+                      interaction,
+                      options.client,
+                      paguClient
+                    );
+                  else if (Command.cache.type == "both")
+                    Command.commandFile.slashExecute(
+                      interaction,
+                      options.client,
+                      paguClient
+                    );
                 } catch (e) {
                   console.log(e);
                   interaction.reply({
@@ -223,7 +222,10 @@ module.exports = function (options: any, paguClient: any) {
           var validSlashCommands = new Array();
           var i = 0;
           origValids.forEach(async (validCommand: any) => {
-            if (validCommand.cache.type == "slash" || validCommand.cache.type == "both") 
+            if (
+              validCommand.cache.type == "slash" ||
+              validCommand.cache.type == "both"
+            )
               validSlashCommands.push(validCommand);
             if (i == origValids.size - 1) {
               var slashCommands = await validSlashCommands.map((slash: any) =>

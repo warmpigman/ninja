@@ -63,7 +63,7 @@ module.exports = {
                       value: `${website.toString()} has been added.`,
                     });
                   }
-                } else if(!data) {
+                } else if (!data) {
                   await scamSchema.create({
                     guildID: message.guild.id,
                     scamLinks: [website],
