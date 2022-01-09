@@ -5,7 +5,6 @@ var cacheGuildHandler = require("../handlers/Cache/guild");
 var cacheUserHandler = require("../handlers/Cache/user");
 var mongoose = require("mongoose");
 const redis = require("redis");
-import * as util from "util";
 /**
  * Pagu
  * @extends {EventEmitter}
