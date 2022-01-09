@@ -20,9 +20,13 @@ const guild = new Schema(
     spamAllowedChannels: [String],
     swearAllowedCategories: [String],
     spamAllowedCategories: [String],
+    scamLinks: [
+        String
+    ],
     mainLoggingChannel: ChannelSubSchema,
     nickRequestChannel: ChannelSubSchema,
     reportRequestChannel: ChannelSubSchema,
+    notalk: ChannelSubSchema,
     mutedRole: RoleSubSchema,
     tradeBanRole: RoleSubSchema,
     silentVCRole: RoleSubSchema,

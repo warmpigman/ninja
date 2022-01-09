@@ -36,6 +36,7 @@ module.exports = {
         guildID: message.guild.id,
       },
       (err: Error, data: any) => {
+        console.log(data)
         if (err) {
           console.log(err);
           return message.reply({

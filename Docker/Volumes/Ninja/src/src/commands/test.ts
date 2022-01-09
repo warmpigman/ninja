@@ -17,10 +17,13 @@ module.exports = {
     //     .setTimestamp()
     // message.channel.send({content: 'hi'})
 
-    var checkGuildSchema = await paguClient.Util.checkGuildSchema(
-      paguClient,
-      message.guild.id
-    );
-    console.log(checkGuildSchema);
+   var guildSchema = await paguClient.schemas.get("guild");
+  //  const a = guildSchema.findOne({guildID: message.guild.id})
+    await guildSchema.findOne({guildID: message.guild.id}, (err: Error, data: any) => {
+      console.log('s')
+      console.log(1,err)
+      console.log(0,data)
+    }).clone()
+    
   },
 };

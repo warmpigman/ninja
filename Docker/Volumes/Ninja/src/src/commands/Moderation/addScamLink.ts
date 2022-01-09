@@ -36,11 +36,11 @@ module.exports = {
             "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+"
           ).test(website)
         ) {
-          // await addScamLinkFilter(website.toString())
+          //should make this not recursive, instead push to a list, and then push that list.
           await scamSchema
             .findOne(
               {
-                website: website,
+                guildID: message.guild.id,
               },
               async (err: Error, data: any) => {
                 if (err) {
@@ -50,14 +50,24 @@ module.exports = {
                   });
                   console.log(err);
                 } else if (data) {
-                  await embed.addFields({
-                    name: "Error",
-                    value: `${website.toString()} scam link already exists.`,
+                  if (data.scamLinks.includes(website.toString())) {
+                    await embed.addFields({
+                      name: "Error",
+                      value: `${website.toString()} scam link already exists.`,
+                    });
+                  } else if (!data.scamLinks.includes(website.toString())) {
+                    data.scamLinks.add(website);
+                    data.save();
+                    await embed.addFields({
+                      name: "Success",
+                      value: `${website.toString()} has been added.`,
+                    });
+                  }
+                } else if(!data) {
+                  await scamSchema.create({
+                    guildID: message.guild.id,
+                    scamLinks: [website],
                   });
-                } else if (!data) {
-                  data = await new scamSchema({
-                    website: website,
-                  }).save();
                   await embed.addFields({
                     name: "Success",
                     value: `${website.toString()} has been added.`,

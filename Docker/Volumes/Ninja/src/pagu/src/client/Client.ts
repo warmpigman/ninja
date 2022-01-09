@@ -5,7 +5,7 @@ var cacheGuildHandler = require("../handlers/Cache/guild");
 var cacheUserHandler = require("../handlers/Cache/user");
 var mongoose = require("mongoose");
 const redis = require("redis");
-import * as util from "util"
+import * as util from "util";
 /**
  * Pagu
  * @extends {EventEmitter}
@@ -154,30 +154,28 @@ class Pagu extends EventEmitter {
         })(),
         (async () => {
           try {
+            if(process.env.NODE_ENV=="development") mongoose.set('debug', true);
             const mongooseExec = mongoose.Query.prototype.exec;
             var self = this;
-            mongoose.Query.prototype.exec = async function () {
-              console.log(this.getQuery());
-              const key = await JSON.stringify(
-                {
-                  ...this.getQuery(),
-                  collection: this.mongooseCollection.name,
-                  op: this.op,
-                  options: this.options
-                }
-              )
-              const cached = await self.redisClient.get(key);
+            mongoose.Query.prototype.exec = async function (cb:any) {
+              const key = await JSON.stringify({
+                ...this.getQuery(),
+                collection: this.mongooseCollection.name,
+                op: this.op,
+                options: this.options,
+              });
+              let cached = await self.redisClient.get(key);
+              let result;
               if (cached) {
-                return JSON.parse(cached);
+                if(!cb) return;
+                cb(undefined, JSON.parse(cached));
+              } else {
+                result = await mongooseExec.apply(this, arguments)
+                const value = String(await JSON.stringify(result));
+                await self.redisClient.set(key, value);
+                return result;
               }
-              const result = await mongooseExec.apply(this, arguments);
-
-              if(result) {
-
-                await self.redisClient.set(key, JSON.stringify(result));
-              }
-              return result;
-            }
+            };
             mongoose.connection
               .on("connected", () => {
                 Util.log(__filename, "log", "Connected to the Mongo Database!");
