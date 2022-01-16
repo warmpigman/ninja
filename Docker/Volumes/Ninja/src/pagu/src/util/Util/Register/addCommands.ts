@@ -179,7 +179,10 @@ module.exports = function (options: any, paguClient: any) {
           // interactionCreate
           var validSlashes = origValids;
           for (let k of validSlashes.keys()) {
-            if ((validSlashes.get(k).cache.type !== "slash" && validSlashes.get(k).cache.type !== "both")) {
+            if (
+              validSlashes.get(k).cache.type !== "slash" &&
+              validSlashes.get(k).cache.type !== "both"
+            ) {
               validSlashes.delete(k);
             }
           }
@@ -228,8 +231,8 @@ module.exports = function (options: any, paguClient: any) {
             )
               validSlashCommands.push(validCommand);
             if (i == origValids.size - 1) {
-              var slashCommands = await validSlashCommands.map((slash: any) =>   slash.commandFile.slashInit().toJSON()
-              
+              var slashCommands = await validSlashCommands.map((slash: any) =>
+                slash.commandFile.slashInit().toJSON()
               );
               paguClient.Util.log(
                 __filename,

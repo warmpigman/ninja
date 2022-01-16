@@ -71,8 +71,12 @@ module.exports = {
     "Shows the auction house of yourself or a player. You may also choose a specific profile of a player.",
   usage: "ah (user) (profile)",
   slashInit() {
-    return new SlashCommandBuilder().setName("auctions").setDescription('no')
-    .addStringOption(option => option.setName("test").setDescription("test2"))
+    return new SlashCommandBuilder()
+      .setName("auctions")
+      .setDescription("no")
+      .addStringOption((option) =>
+        option.setName("test").setDescription("test2")
+      );
   },
   examples: [
     "ah",
@@ -439,9 +443,12 @@ module.exports = {
       }
     }
   },
-  async slashExecute(interaction: CommandInteraction, client: any, paguClient: any) {
+  async slashExecute(
+    interaction: CommandInteraction,
+    client: any,
+    paguClient: any
+  ) {
     // if (!interaction.isCommand()) return;
-    console.log(interaction.options.getString("test"))
-    
+    console.log(interaction.options.getString("test"));
   },
 };
