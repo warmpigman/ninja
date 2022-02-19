@@ -59,6 +59,15 @@ module.exports = {
               "No trade banned role found, try again when one has been made.",
           });
         }
+        const userSchema = await paguClient.schemas.get("user");
+        await userSchema.findOneAndUpdate(
+          {
+            discordID: target.id,
+          },
+          {
+            tradeBanned: true,
+          }
+        );
         await embed.addFields({
           name: "Success",
           value: `<@${target.id}> has been trade banned!`,
