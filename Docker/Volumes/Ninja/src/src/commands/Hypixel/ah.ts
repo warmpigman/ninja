@@ -1,6 +1,14 @@
 import { time } from "console";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Message, Client, MessageEmbed, CommandInteraction, DiscordAPIError, MessageEditOptions, User } from "discord.js";
+import {
+  Message,
+  Client,
+  MessageEmbed,
+  CommandInteraction,
+  DiscordAPIError,
+  MessageEditOptions,
+  User,
+} from "discord.js";
 import { listenerCount } from "process";
 const axios = require("axios");
 const getActiveProfile = function (profiles: any, uuid: any) {
@@ -64,18 +72,17 @@ const getEnchants = (str: string) => {
   return enchants;
 };
 
-function sleep(ms:number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
-async function inner(profile: any, uuid: any, username: String, author:User) {
+async function inner(profile: any, uuid: any, username: String, author: User) {
   const key = process.env.API_KEY;
   let url = `https://api.hypixel.net/skyblock/auction?key=${key}&player=`;
   let response;
   try {
     response = await paguClient.Util.cacheGet(url + uuid, paguClient);
-  }
-  catch (e:any) {
-    response = e.response
+  } catch (e: any) {
+    response = e.response;
   }
   if (!response) {
     response = await axios.get(url + uuid);
@@ -115,9 +122,7 @@ async function inner(profile: any, uuid: any, username: String, author:User) {
       totalUnclaimed > 0
         ? `**[${username}](https://sky.shiiyu.moe/stats/${username}/${
             profile.cute_name
-          }) has ${abbreviateNumber(
-            totalUnclaimed
-          )} coins that are unclaimed**`
+          }) has ${abbreviateNumber(totalUnclaimed)} coins that are unclaimed**`
         : `[${username}](https://sky.shiiyu.moe/stats/${username}/${profile.cute_name})`;
     embed.setDescription(d);
     for (let auction of auctions) {
@@ -139,8 +144,7 @@ async function inner(profile: any, uuid: any, username: String, author:User) {
         let b = divmod(remainder, 60);
         let minutes = b[0];
         let seconds = b[1];
-        let nice_time =
-          hours > 0 ? `${hours}h, ${minutes}m` : `${minutes}m`;
+        let nice_time = hours > 0 ? `${hours}h, ${minutes}m` : `${minutes}m`;
         embed.addField(
           name,
           `Current Bid: **${abbreviateNumber(
@@ -153,15 +157,19 @@ async function inner(profile: any, uuid: any, username: String, author:User) {
       content: null,
       embeds: [embed],
       allowedMentions: { repliedUser: false },
-    }
+    };
   }
-  let embed = new MessageEmbed
-  embed.setColor([247, 51, 37])
-  embed.addField("An Error Has Ocurred", response.data.cause)
-  return {content:null, embeds:[embed], allowedMentions:{repliedUser:false}}
+  let embed = new MessageEmbed();
+  embed.setColor([247, 51, 37]);
+  embed.addField("An Error Has Ocurred", response.data.cause);
+  return {
+    content: null,
+    embeds: [embed],
+    allowedMentions: { repliedUser: false },
+  };
 }
-async function getHyCache(uuid:string, paguClient:any) {
-  const key = process.env.API_KEY
+async function getHyCache(uuid: string, paguClient: any) {
+  const key = process.env.API_KEY;
   let response = await paguClient.Util.cacheGet(
     `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
     paguClient
@@ -170,7 +178,7 @@ async function getHyCache(uuid:string, paguClient:any) {
     response = await paguClient.Util.apiCallHandler(
       `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
     );
-    console.log(response)
+    console.log(response);
     await paguClient.Util.cacheThis(
       {
         key: `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
@@ -178,7 +186,7 @@ async function getHyCache(uuid:string, paguClient:any) {
       },
       paguClient
     );
-    return response
+    return response;
   }
 }
 module.exports = {
@@ -188,12 +196,46 @@ module.exports = {
     "Shows the auction house of yourself or a player. You may also choose a specific profile of a player.",
   usage: "ah (user) (profile)",
   slashInit() {
-    return new SlashCommandBuilder().setName("auctions").setDescription("Shows the auction house of yourself or a player.")
-    .addStringOption(option => option.setName("username").setDescription("The username of the player. Leave blank for yourself."))
-    .addStringOption(option => option.setName("profile")
-    .setDescription("The profile to check. Leave blank for most recently played")
-    .addChoices([["apple", "apple"], ["banana", "banana"], ["blueberry", "blueberry"], ["coconut", "coconut"], ["cucumber", "cucumber"], ["grapes", "grapes"], ["kiwi", "kiwi"], ["lemon", "lemon"], ["lime", "lime"], ["mango", "mango"], ["orange", "orange"], ["papaya", "papaya"], ["pear", "pear"], ["peach", "peach"], ["pineapple", "pineapple"], ["pomegranate", "pomegranate"], ["raspberry", "raspberry"], ["strawberry", "strawberry"], ["tomato", "tomato"], ["watermelon", "watermelon"], ["zucchini", "zucchini"]]))
-    
+    return new SlashCommandBuilder()
+      .setName("auctions")
+      .setDescription("Shows the auction house of yourself or a player.")
+      .addStringOption((option) =>
+        option
+          .setName("username")
+          .setDescription(
+            "The username of the player. Leave blank for yourself."
+          )
+      )
+      .addStringOption((option) =>
+        option
+          .setName("profile")
+          .setDescription(
+            "The profile to check. Leave blank for most recently played"
+          )
+          .addChoices([
+            ["apple", "apple"],
+            ["banana", "banana"],
+            ["blueberry", "blueberry"],
+            ["coconut", "coconut"],
+            ["cucumber", "cucumber"],
+            ["grapes", "grapes"],
+            ["kiwi", "kiwi"],
+            ["lemon", "lemon"],
+            ["lime", "lime"],
+            ["mango", "mango"],
+            ["orange", "orange"],
+            ["papaya", "papaya"],
+            ["pear", "pear"],
+            ["peach", "peach"],
+            ["pineapple", "pineapple"],
+            ["pomegranate", "pomegranate"],
+            ["raspberry", "raspberry"],
+            ["strawberry", "strawberry"],
+            ["tomato", "tomato"],
+            ["watermelon", "watermelon"],
+            ["zucchini", "zucchini"],
+          ])
+      );
   },
   examples: [
     "ah",
@@ -210,13 +252,11 @@ module.exports = {
     paguClient: any
   ) {
     const key = process.env.API_KEY;
-    
+
     let m = await message.reply({
       content: "<a:loading:925859228374142977> Loading...",
       allowedMentions: { repliedUser: false },
     });
-
-    
 
     if (args.length == 0) {
       const userSchema = paguClient.schemas.get("user");
@@ -228,7 +268,7 @@ module.exports = {
             return;
           }
           let uuid = data.mojangUUID;
-          let response = await getHyCache(uuid, paguClient)
+          let response = await getHyCache(uuid, paguClient);
           switch (response.status) {
             case 404:
               m.edit("Could not find that user or profile.");
@@ -255,8 +295,13 @@ module.exports = {
                 response = await axios.get(
                   `https://api.mojang.com/user/profiles/${uuid}/names`
                 );
-                let messageOptions = await inner(profile, uuid, response.data.slice(-1)[0].name, message.author);
-                m.edit(messageOptions)
+                let messageOptions = await inner(
+                  profile,
+                  uuid,
+                  response.data.slice(-1)[0].name,
+                  message.author
+                );
+                m.edit(messageOptions);
               } catch (e) {
                 m.edit("There was an issue in finding the player");
               }
@@ -342,8 +387,13 @@ module.exports = {
                     response = await axios.get(
                       `https://api.mojang.com/user/profiles/${uuid}/names`
                     );
-                    let messageOptions = await inner(profile, uuid, response.data.slice(-1)[0].name, message.author);
-                    m.edit(messageOptions)
+                    let messageOptions = await inner(
+                      profile,
+                      uuid,
+                      response.data.slice(-1)[0].name,
+                      message.author
+                    );
+                    m.edit(messageOptions);
                   } catch {
                     m.edit("There was an issue in finding the player");
                   }
@@ -399,8 +449,13 @@ module.exports = {
             case 200:
               let profiles = response.data.profiles;
               let profile = getActiveProfile(profiles, uuid);
-              let messageOptions = await inner(profile, uuid, username, message.author);
-              m.edit(messageOptions)
+              let messageOptions = await inner(
+                profile,
+                uuid,
+                username,
+                message.author
+              );
+              m.edit(messageOptions);
           }
         } else if (r.status == 404) {
           m.edit("That player does not exist");
@@ -456,85 +511,106 @@ module.exports = {
             if (profile === null) {
               m.edit("That is not a valid profile");
             } else {
-              let messageOptions = await inner(profile, uuid, username, message.author);
-              m.edit(messageOptions)
+              let messageOptions = await inner(
+                profile,
+                uuid,
+                username,
+                message.author
+              );
+              m.edit(messageOptions);
             }
         }
       }
     }
   },
-  async slashExecute(interaction: CommandInteraction, client: any, paguClient: any): Promise<undefined> {
+  async slashExecute(
+    interaction: CommandInteraction,
+    client: any,
+    paguClient: any
+  ): Promise<undefined> {
     if (!interaction.isCommand()) return;
-    await interaction.deferReply()
-    console.log(typeof paguClient)
+    await interaction.deferReply();
+    console.log(typeof paguClient);
     let username;
     let uuid;
     if (interaction.options.getString("username") === null) {
       const userSchema = paguClient.schemas.get("user");
-      let found = false
+      let found = false;
       userSchema.findOne(
         { discordID: interaction.user.id },
         async (err: Error, data: { mojangUUID: String }) => {
           if (!data) {
-            interaction.deleteReply()
-            interaction.followUp({content:"You need to link your account first", ephemeral:true})
-            return
+            interaction.deleteReply();
+            interaction.followUp({
+              content: "You need to link your account first",
+              ephemeral: true,
+            });
+            return;
           }
-          uuid = data.mojangUUID
-          found = true
-      })
-      if (!found) return
-      try {
-      let response = await axios.get(`https://api.mojang.com/user/profiles/${uuid}/names`)
-      console.log(response.status)
-      username = response.data.slice(-1)[0].name
-      }
-      catch (e:any) {
-        console.log(e)
-        interaction.deleteReply()
-        interaction.followUp({content:"That player does not exist.", ephemeral:true})
-        return
-      }
-    }
-    else {
-      username = interaction.options.getString("username")
-      try {
-        let response = await axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
-        let data = response.data
-        username = data.name
-        uuid = data.id
-      }
-      catch (e:any) {
-        console.log(e)
-        interaction.deleteReply()
-        interaction.followUp({content:"That player does not exist", ephemeral:true})
-        return
-      }
-    }
-    
-    let profile;
-    let response = await getHyCache(uuid, paguClient)
-    if (interaction.options.getString("profile") == null) {
-      profile = getActiveProfile(response.data.profiles, uuid)
-    }
-    else {
-      let found = false
-      let profiles: Array<any>= response.data.profiles
-      profiles.forEach((p:any) => {
-        if (p.cute_name == interaction.options.getString("profile")) {
-          profile = p
-          found = true
-          return
+          uuid = data.mojangUUID;
+          found = true;
         }
-      })
-      if (!found) {
-        interaction.deleteReply()
-        interaction.followUp({content:"That profile does not exist", ephemeral:true})
-        return
+      );
+      if (!found) return;
+      try {
+        let response = await axios.get(
+          `https://api.mojang.com/user/profiles/${uuid}/names`
+        );
+        console.log(response.status);
+        username = response.data.slice(-1)[0].name;
+      } catch (e: any) {
+        console.log(e);
+        interaction.deleteReply();
+        interaction.followUp({
+          content: "That player does not exist.",
+          ephemeral: true,
+        });
+        return;
+      }
+    } else {
+      username = interaction.options.getString("username");
+      try {
+        let response = await axios.get(
+          `https://api.mojang.com/users/profiles/minecraft/${username}`
+        );
+        let data = response.data;
+        username = data.name;
+        uuid = data.id;
+      } catch (e: any) {
+        console.log(e);
+        interaction.deleteReply();
+        interaction.followUp({
+          content: "That player does not exist",
+          ephemeral: true,
+        });
+        return;
       }
     }
-    let messageOptions = await inner(profile, uuid, username, interaction.user) 
-    interaction.editReply(messageOptions)
-    
+
+    let profile;
+    let response = await getHyCache(uuid, paguClient);
+    if (interaction.options.getString("profile") == null) {
+      profile = getActiveProfile(response.data.profiles, uuid);
+    } else {
+      let found = false;
+      let profiles: Array<any> = response.data.profiles;
+      profiles.forEach((p: any) => {
+        if (p.cute_name == interaction.options.getString("profile")) {
+          profile = p;
+          found = true;
+          return;
+        }
+      });
+      if (!found) {
+        interaction.deleteReply();
+        interaction.followUp({
+          content: "That profile does not exist",
+          ephemeral: true,
+        });
+        return;
+      }
+    }
+    let messageOptions = await inner(profile, uuid, username, interaction.user);
+    interaction.editReply(messageOptions);
   },
 };
