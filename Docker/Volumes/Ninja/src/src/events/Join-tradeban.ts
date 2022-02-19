@@ -7,7 +7,7 @@ module.exports = {
     member.guild.roles.fetch().then(async (roles: any) => {
       if (user && user.tradeBanned) {
         let tradeBannedRole = roles.find(
-          (r: any) => r.name.toLowerCase() === "trade banned"
+          (r: any) => r.name.toLowerCase() === "trade ban"
         );
         if (tradeBannedRole) {
           await member.roles.add(tradeBannedRole);
