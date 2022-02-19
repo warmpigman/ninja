@@ -463,7 +463,6 @@ module.exports = {
       }
     }
   },
-<<<<<<< HEAD:Docker/Volumes/Ninja/src/src/commands/Hypixel/ah.ts
   async slashExecute(interaction: CommandInteraction, client: any, paguClient: any): Promise<undefined> {
     if (!interaction.isCommand()) return;
     await interaction.deferReply()
@@ -537,14 +536,5 @@ module.exports = {
     let messageOptions = await inner(profile, uuid, username, interaction.user) 
     interaction.editReply(messageOptions)
     
-=======
-  async slashExecute(
-    interaction: CommandInteraction,
-    client: any,
-    paguClient: any
-  ) {
-    // if (!interaction.isCommand()) return;
-    console.log(interaction.options.getString("test"));
->>>>>>> 6f1580f4b0d2c0c550975c668e6ccd41912ff649:Docker/Volumes/Ninja/src/src/commands/test.ts
   },
 };
