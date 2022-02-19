@@ -188,21 +188,12 @@ module.exports = {
     "Shows the auction house of yourself or a player. You may also choose a specific profile of a player.",
   usage: "ah (user) (profile)",
   slashInit() {
-<<<<<<< HEAD:Docker/Volumes/Ninja/src/src/commands/Hypixel/ah.ts
     return new SlashCommandBuilder().setName("auctions").setDescription("Shows the auction house of yourself or a player.")
     .addStringOption(option => option.setName("username").setDescription("The username of the player. Leave blank for yourself."))
     .addStringOption(option => option.setName("profile")
     .setDescription("The profile to check. Leave blank for most recently played")
     .addChoices([["apple", "apple"], ["banana", "banana"], ["blueberry", "blueberry"], ["coconut", "coconut"], ["cucumber", "cucumber"], ["grapes", "grapes"], ["kiwi", "kiwi"], ["lemon", "lemon"], ["lime", "lime"], ["mango", "mango"], ["orange", "orange"], ["papaya", "papaya"], ["pear", "pear"], ["peach", "peach"], ["pineapple", "pineapple"], ["pomegranate", "pomegranate"], ["raspberry", "raspberry"], ["strawberry", "strawberry"], ["tomato", "tomato"], ["watermelon", "watermelon"], ["zucchini", "zucchini"]]))
     
-=======
-    return new SlashCommandBuilder()
-      .setName("auctions")
-      .setDescription("no")
-      .addStringOption((option) =>
-        option.setName("test").setDescription("test2")
-      );
->>>>>>> 6f1580f4b0d2c0c550975c668e6ccd41912ff649:Docker/Volumes/Ninja/src/src/commands/test.ts
   },
   examples: [
     "ah",
