@@ -62,15 +62,36 @@ module.exports = {
                   let tradeBannedRole = roles.find(
                     (r: any) => r.name.toLowerCase() === "trade banned"
                   );
-                  if (message.member.roles.cache.has(tradeBannedRole.id)) {
+                  let response = await paguClient.Util.cacheGet(
+                    "https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json",
+                    paguClient
+                  );
+                  if (!response) {
+                    response = await get(
+                      "https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json"
+                    );
+                    await paguClient.Util.cacheThis(
+                      {
+                        key: "https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json",
+                        data: response.data,
+                      },
+                      paguClient
+                    );
+                  }
+
+                  if (
+                    message.member.roles.cache.has(tradeBannedRole.id) ||
+                    response
+                      ? Object.values(response.data).some(
+                          (scammerUser: any) =>
+                            scammerUser?.uuid === mojangRes.data.id
+                        )
+                      : false
+                  ) {
                     await embed.addFields({
                       name: "Error!",
                       value: `Sorry, you're trade banned!`,
                     });
-                    // return await message.channel.send({
-                    //     embeds: [embed],
-                    //     allowedMentions: { "users": [] }
-                    // });
                   } else {
                     let tradeVerifiedRole = roles.find(
                       (r: any) => r.name.toLowerCase() === "trade verified"

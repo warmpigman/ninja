@@ -14,6 +14,10 @@ const user = new Schema(
     },
     ban: ModActionSchema,
     mute: ModActionSchema,
+    tradeBanned: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     minimize: false,
