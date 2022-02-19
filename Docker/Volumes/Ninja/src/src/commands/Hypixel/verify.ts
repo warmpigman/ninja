@@ -78,8 +78,16 @@ module.exports = {
                       paguClient
                     );
                   }
-                  
-                  if (message.member.roles.cache.has(tradeBannedRole.id) || response?Object.values(response.data).some((scammerUser:any) => scammerUser?.uuid===mojangRes.data.id): false) {
+
+                  if (
+                    message.member.roles.cache.has(tradeBannedRole.id) ||
+                    response
+                      ? Object.values(response.data).some(
+                          (scammerUser: any) =>
+                            scammerUser?.uuid === mojangRes.data.id
+                        )
+                      : false
+                  ) {
                     await embed.addFields({
                       name: "Error!",
                       value: `Sorry, you're trade banned!`,

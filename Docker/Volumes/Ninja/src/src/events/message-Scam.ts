@@ -13,14 +13,15 @@ module.exports = {
       .setTitle("Scam Message");
     var scamSchema = await paguClient.schemas.get("scam");
     var scamData = await scamSchema.find({});
-    if (scamData) scamData=scamData.map((data: any) => data.website);
+    if (scamData) scamData = scamData.map((data: any) => data.website);
     var guildSchema = await paguClient.schemas.get("guild");
     var guildData = await guildSchema.findOne({ guildID: message.guild?.id });
     var guildDataScams;
-    if (guildData) guildDataScams = guildData.scamLinks
+    if (guildData) guildDataScams = guildData.scamLinks;
     if (scamData && guildData) scamData.concat(guildDataScams);
     else if (!scamData && guildData) scamData = guildDataScams;
-    if (scamData) scamData = scamData.map((data:any) => data.toLowerCase()).join("|");
+    if (scamData)
+      scamData = scamData.map((data: any) => data.toLowerCase()).join("|");
     else if (!scamData) return;
     if (new RegExp(scamData).test(message.content.toLowerCase())) {
       if (
@@ -30,14 +31,16 @@ module.exports = {
         message.delete();
         embed.setDescription(`${message.author.tag} has sent a scam message.`);
         // send this to mod logs otherwise none.
-        if(guildData) {
-          if(guildData.mainLoggingChannel.Set) {
-            const channel = message.guild?.channels.cache.get(guildData.mainLoggingChannel.ID)
-            if(channel && channel.type=="GUILD_TEXT") {
+        if (guildData) {
+          if (guildData.mainLoggingChannel.Set) {
+            const channel = message.guild?.channels.cache.get(
+              guildData.mainLoggingChannel.ID
+            );
+            if (channel && channel.type == "GUILD_TEXT") {
               channel.send({
                 embeds: [embed],
                 allowedMentions: { users: [] },
-              })
+              });
             }
           }
         }

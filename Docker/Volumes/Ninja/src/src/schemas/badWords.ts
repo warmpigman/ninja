@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 const badWord = new Schema(
   {
     word: String,
-    Severity: String
+    Severity: String,
   },
   {
     minimize: false,
