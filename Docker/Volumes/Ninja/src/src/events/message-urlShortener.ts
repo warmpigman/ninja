@@ -1,4 +1,4 @@
-import { Message, User } from "discord.js";
+import { Message } from "discord.js";
 import "axios";
 
 module.exports = {
