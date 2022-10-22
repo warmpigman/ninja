@@ -21,6 +21,7 @@ module.exports = {
     } catch (e: any) {
       if (e.response.status >= 300 && e.response.status < 400) {
         await message.delete();
+        await message.channel.send("You can not use a URL shortener.");
       }
     }
   },
