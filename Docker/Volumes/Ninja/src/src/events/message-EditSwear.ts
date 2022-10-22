@@ -1,8 +1,13 @@
 import { Message } from "discord.js";
 
 module.exports = {
-    event: "messageUpdate",
-    async execute(client: any, paguClient: any, oldMessage: Message, newMessage: Message) {
+  event: "messageUpdate",
+  async execute(
+    client: any,
+    paguClient: any,
+    oldMessage: Message,
+    newMessage: Message
+  ) {
     const guildSchema = await paguClient.schemas.get("guild");
     const badWordsSchema = await paguClient.schemas.get("badWords");
     const guildData = await guildSchema.findOne({
@@ -21,7 +26,7 @@ module.exports = {
               word.word.toLowerCase()
             )
             .some((word: String) =>
-            newMessage.content.toLowerCase().includes(word.toString())
+              newMessage.content.toLowerCase().includes(word.toString())
             )
         ) {
           newMessage.delete();
@@ -39,7 +44,7 @@ module.exports = {
             word.word.toLowerCase()
           )
           .some((word: String) =>
-          newMessage.content.toLowerCase().includes(word.toString())
+            newMessage.content.toLowerCase().includes(word.toString())
           )
       ) {
         newMessage.delete();
@@ -48,5 +53,5 @@ module.exports = {
         );
       }
     }
-    }
-}
+  },
+};
