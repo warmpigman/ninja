@@ -7,7 +7,7 @@ module.exports = {
     const guildData = await guildSchema.findOne({
       guildID: message.guild?.id,
     });
-   
+
     if (guildData?.notalk && message.channel.id == guildData.notalk) {
       if (message.content.includes("http")) {
         await message.member?.kick("Spoke in forbidden channel");
@@ -48,7 +48,9 @@ module.exports = {
           embeds: [embed],
           attachments: attachments,
         });
-        const scamLinkChannel = client.cache.channels.get(guildData.scamRequestChannel);
+        const scamLinkChannel = client.cache.channels.get(
+          guildData.scamRequestChannel
+        );
         embed.setTitle("Potential Scam Link");
         embed.setColor("#0xfcba03");
         const re = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/;
@@ -61,7 +63,7 @@ module.exports = {
           { name: "Scam Link", value: scamLink },
           { name: "Message Content", value: message.content },
         ]);
-        if (!scamLinkChannel.Set) return; 
+        if (!scamLinkChannel.Set) return;
         let msgSent: Message = await scamLinkChannel.send(embed);
         msgSent.react("✅");
         msgSent.react("❌");
@@ -102,7 +104,7 @@ module.exports = {
           await message.author.send(
             `You cannot speak in <#${message.channel.id}>`
           );
-        } catch { }
+        } catch {}
       }
     }
   },

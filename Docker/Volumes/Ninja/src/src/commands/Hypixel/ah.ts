@@ -75,7 +75,13 @@ const getEnchants = (str: string) => {
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-async function inner(profile: any, uuid: any, username: String, author: User, paguClient: any) {
+async function inner(
+  profile: any,
+  uuid: any,
+  username: String,
+  author: User,
+  paguClient: any
+) {
   const key = process.env.API_KEY;
   let url = `https://api.hypixel.net/skyblock/auction?key=${key}&player=`;
   let response;
@@ -161,7 +167,7 @@ async function inner(profile: any, uuid: any, username: String, author: User, pa
   }
   let embed = new MessageEmbed();
   embed.setColor([247, 51, 37]);
-  embed.addField("An Error Has Ocurred", response.data.cause??"1");
+  embed.addField("An Error Has Ocurred", response.data.cause ?? "1");
   return {
     content: null,
     embeds: [embed],

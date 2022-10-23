@@ -29,7 +29,9 @@ module.exports = {
         }
         await paguClient.Util.cacheThis(
           {
-            key: `http://maro-api:3000/api/auctions/find/${encodeURI(args.join(" "))}`,
+            key: `http://maro-api:3000/api/auctions/find/${encodeURI(
+              args.join(" ")
+            )}`,
             data: err.response,
           },
           paguClient
@@ -106,7 +108,7 @@ module.exports = {
         `https://sessionserver.mojang.com/session/minecraft/profile/${lbin.rawItem.auction.seller}`
       );
     }
-    console.log(seller)
+    console.log(seller);
     seller = seller.data.name;
     let tier;
     const item = res.data.items.find((x: any) => x.id == lbin.id);

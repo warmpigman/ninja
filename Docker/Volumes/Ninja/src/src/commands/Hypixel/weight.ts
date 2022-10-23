@@ -48,7 +48,7 @@ module.exports = {
           let data = response.data.data;
           let profile_name = data.name;
           let username = data.username;
-          if(username == "Teodor") username="warmpigman"
+          if (username == "Teodor") username = "warmpigman";
           embed.setTitle(
             `Showing weight data for ${username}\nProfile: ${profile_name}`
           );
@@ -262,7 +262,7 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
 
     if (args.length == 2) {
       let username = args[0];
-      if(username.toLowerCase() == "warmpigman") username = "Teodor"
+      if (username.toLowerCase() == "warmpigman") username = "Teodor";
       let strategy = args[1];
       axios
         .get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
@@ -339,7 +339,7 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
         );
       } else {
         let username = args[0];
-        if(username.toLowerCase() == "warmpigman") username = "Teodor"
+        if (username.toLowerCase() == "warmpigman") username = "Teodor";
         axios
           .get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
           .then((res: any) => {

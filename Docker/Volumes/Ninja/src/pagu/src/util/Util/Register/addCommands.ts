@@ -107,15 +107,16 @@ module.exports = function (options: any, paguClient: any) {
             // console.log(process.env.PREFIX, message)
             if (
               message.content.startsWith(process.env.PREFIX) ||
-              (message.mentions.has(options.client.user) &&
-                valids.has(args[1]))
+              (message.mentions.has(options.client.user) && valids.has(args[1]))
             ) {
               // console.log('pass2')
               if (message.channel.type == "dm")
                 return message.reply("You can't use commands in DMs!");
-              
+
               const rawCommandFile = valids.get(
-                message.mentions.has(options.client.user)?args[1].toLowerCase():args[0].toLowerCase().substring(process.env.PREFIX?.length)
+                message.mentions.has(options.client.user)
+                  ? args[1].toLowerCase()
+                  : args[0].toLowerCase().substring(process.env.PREFIX?.length)
               );
               // console.log('1')
               if (!rawCommandFile) return;

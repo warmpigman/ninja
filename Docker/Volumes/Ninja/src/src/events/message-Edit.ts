@@ -8,16 +8,15 @@ module.exports = {
     oldMessage: Message,
     newMessage: Message
   ) {
-    
     const guildSchema = await paguClient.schemas.get("guild");
     const guildData = await guildSchema.findOne({
       guildID: oldMessage.guild?.id,
     });
     const mainLoggingChannel = guildData.mainLoggingChannel;
-    if(!mainLoggingChannel.Set) return;
-    console.log(mainLoggingChannel)
+    if (!mainLoggingChannel.Set) return;
+    console.log(mainLoggingChannel);
     const embed = new MessageEmbed();
-    console.log(oldMessage.content, newMessage.content)
+    console.log(oldMessage.content, newMessage.content);
 
     embed
       .setAuthor({

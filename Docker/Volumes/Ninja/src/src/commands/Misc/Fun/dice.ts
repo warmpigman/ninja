@@ -20,9 +20,10 @@ module.exports = {
       .setTitle("Dice");
     if (args.length >= 2) {
       embed.setDescription(
-        `**You rolled a ${
-          Math.floor(Math.random() * (parseInt(args[1]) - parseInt(args[0]) + 1) + parseInt(args[0]))
-        }!**`
+        `**You rolled a ${Math.floor(
+          Math.random() * (parseInt(args[1]) - parseInt(args[0]) + 1) +
+            parseInt(args[0])
+        )}!**`
       );
       message.channel.send({ embeds: [embed], allowedMentions: { users: [] } });
     } else if (args.length == 1) {
