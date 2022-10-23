@@ -7,7 +7,7 @@ module.exports = {
   async execute(client: any, paguClient: any, message: Message) {
     if (
       message.mentions.users.size < 4 ||
-      message.member?.permissions.has(PermissionFlagsBits.ModerateMembers, true)
+      message.member?.permissions.has(PermissionFlagsBits.Administrator, true)
     ) {
       return;
     }
