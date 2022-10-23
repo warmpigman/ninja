@@ -17,15 +17,17 @@ module.exports = {
       get({
         url: link,
         maxRedirects: 0,
-      }).catch(async e => {
+      }).catch(async (e) => {
         if (e.response.status >= 300 && e.response.status < 400) {
           await message.delete();
-          const sentMessage = await message.channel.send("You can not use a URL shortener.")
+          const sentMessage = await message.channel.send(
+            "You can not use a URL shortener."
+          );
           setTimeout(() => {
             sentMessage.delete();
-          }, 15000)
+          }, 15000);
         }
-      })
+      });
     } catch (e: any) {
       if (e.response.status >= 300 && e.response.status < 400) {
         await message.delete();

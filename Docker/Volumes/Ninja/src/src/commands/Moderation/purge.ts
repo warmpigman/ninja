@@ -344,7 +344,7 @@ module.exports = {
           allowedMentions: { users: [] },
         });
         setTimeout(() => {
-          sentEmbed.delete()
+          sentEmbed.delete();
         }, 10000);
         return;
       }

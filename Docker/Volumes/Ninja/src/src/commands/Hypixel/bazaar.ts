@@ -45,7 +45,7 @@ module.exports = {
           paguClient
         );
       }
-      let items = response
+      let items = response;
       let found = false;
       for (const property in items) {
         if (found) break;

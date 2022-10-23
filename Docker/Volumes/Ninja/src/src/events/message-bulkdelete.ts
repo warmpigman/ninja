@@ -28,7 +28,7 @@
 //       )
 //       .setTimestamp(Date.now())
 //       .setColor(`#1f94a6`);
-   
+
 //     mainLoggingChannel = client.channels.cache.get(
 //       mainLoggingChannel.ID
 //     ) as TextChannel;

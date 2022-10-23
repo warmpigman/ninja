@@ -8,7 +8,7 @@ module.exports = {
     oldMessage: Message,
     newMessage: Message
   ) {
-    if(oldMessage.content == newMessage.content) return;
+    if (oldMessage.content == newMessage.content) return;
     const guildSchema = await paguClient.schemas.get("guild");
     const guildData = await guildSchema.findOne({
       guildID: oldMessage.guild?.id,
@@ -16,7 +16,7 @@ module.exports = {
     let mainLoggingChannel = guildData.mainLoggingChannel;
     if (!mainLoggingChannel.Set) return;
 
-    console.log(mainLoggingChannel)
+    console.log(mainLoggingChannel);
     const embed = new MessageEmbed();
 
     embed
@@ -44,9 +44,10 @@ module.exports = {
     mainLoggingChannel = client.channels.cache.get(
       mainLoggingChannel.ID
     ) as TextChannel;
-    if (mainLoggingChannel) await mainLoggingChannel.send({
-      embeds: [embed],
-      attachments: attachments,
-    });
+    if (mainLoggingChannel)
+      await mainLoggingChannel.send({
+        embeds: [embed],
+        attachments: attachments,
+      });
   },
 };

@@ -48,12 +48,15 @@ module.exports = {
           mainLoggingChannel = client.channels.cache.get(
             mainLoggingChannel.ID
           ) as TextChannel;
-          if (mainLoggingChannel) await mainLoggingChannel.send({
-            embeds: [embed],
-            attachments: attachments,
-          });
+          if (mainLoggingChannel)
+            await mainLoggingChannel.send({
+              embeds: [embed],
+              attachments: attachments,
+            });
         }
-        const scamLinkChannel = client.cache.channels.get(guildData.scamRequestChannel);
+        const scamLinkChannel = client.cache.channels.get(
+          guildData.scamRequestChannel
+        );
         embed.setTitle("Potential Scam Link");
         embed.setColor("#0xfcba03");
         const re = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/;

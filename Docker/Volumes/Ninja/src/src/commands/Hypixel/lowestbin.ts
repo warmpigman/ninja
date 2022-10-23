@@ -112,7 +112,7 @@ module.exports = {
     let tier;
     const item = res.data.items.find((x: any) => x.id == lbin.id);
     if (!item) {
-      console.log('no item found')
+      console.log("no item found");
       if (
         !Object.keys(colors).some((x: any) => {
           if (lbin.id.includes(x)) {
