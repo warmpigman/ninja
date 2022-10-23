@@ -40,11 +40,9 @@ module.exports = {
     for (let attachment in message.attachments) {
       attachments.push(attachment);
     }
-    console.log(mainLoggingChannel)
     mainLoggingChannel = client.channels.cache.get(
       mainLoggingChannel.ID
     ) as TextChannel;
-    console.log(mainLoggingChannel, 1)
     if (mainLoggingChannel) await mainLoggingChannel.send({
       embeds: [embed],
       attachments: attachments,

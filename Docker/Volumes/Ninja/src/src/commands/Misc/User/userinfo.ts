@@ -32,7 +32,7 @@ module.exports = {
     let member_id =
       args.length > 0
         ? isNaN(parseInt(args[0]))
-          ? args[0].slice(3, -1)
+          ? args[0].slice(2, -1)
           : args[0]
         : message.author.id;
     let member = await message.guild?.members.fetch(member_id);

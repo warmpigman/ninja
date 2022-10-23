@@ -180,7 +180,6 @@ module.exports = {
           .fetch({ limit: toFetch })
           .then(async (messages: any) => {
             var messages2 = messages;
-            console.log(messages2)
             if (message.mentions.users.first())
               messages2 = messages2.filter(
                 (msg: any) => msg.author.id == message.mentions.users.first().id
@@ -219,7 +218,6 @@ module.exports = {
               messages2 = messages2.filter(
                 (msg: any) => msg.attachments.size > 0
               );
-              console.log(messages2)
             if (filter.includes("mentions"))
               messages2 = messages2.filter(
                 (msg: any) => msg.mentions.users.size > 0
@@ -270,7 +268,6 @@ module.exports = {
       function findFileData() {
         let dataToWrite = "";
         messagesToDelete.reverse();
-        console.log(usedChannels);
         dataToWrite += `${messagesToDelete.length} deleted in ${usedChannels
           .map((usedchannel) => `#${usedchannel.name}`)
           .join(", ")} | ${message.channel.id}:\n\n`;
@@ -302,11 +299,9 @@ module.exports = {
         Buffer.from(data, "utf8"),
         "purge.txt"
       );
-      // console.log(data);
       axios
         .post("https://hastebin.com/documents", data)
         .then((res: AxiosResponse) => {
-          console.log(res.data);
           embed.setDescription(
             `:wastebasket: ${messagesToDelete.length} messages deleted in ${
               message.channel
@@ -349,7 +344,6 @@ module.exports = {
           allowedMentions: { users: [] },
         });
         setTimeout(() => {
-          console.log(sentEmbed)
           sentEmbed.delete()
         }, 10000);
         return;

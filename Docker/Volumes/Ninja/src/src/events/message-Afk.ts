@@ -72,10 +72,13 @@ module.exports = {
                     name: `${user.tag} is afk!`,
                     value: `Reason: ${data.afk.reason}`,
                   });
-                  message.channel.send({
+                  const sentMessage = await message.channel.send({
                     embeds: [embed],
                     allowedMentions: { users: [] },
                   });
+                  setTimeout(() => {
+                    sentMessage.delete();
+                  }, 15000);
                 }
               }
             }

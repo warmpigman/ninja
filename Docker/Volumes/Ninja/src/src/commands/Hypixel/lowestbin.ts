@@ -106,11 +106,11 @@ module.exports = {
         `https://sessionserver.mojang.com/session/minecraft/profile/${lbin.rawItem.auction.seller}`
       );
     }
-    console.log(seller)
     seller = seller.data.name;
     let tier;
     const item = res.data.items.find((x: any) => x.id == lbin.id);
     if (!item) {
+      console.log('no item found')
       if (
         !Object.keys(colors).some((x: any) => {
           if (lbin.id.includes(x)) {

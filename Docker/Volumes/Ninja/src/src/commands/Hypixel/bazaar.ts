@@ -46,7 +46,6 @@ module.exports = {
         );
       }
       let items = response
-      console.log(items)
       let found = false;
       for (const property in items) {
         if(found) break;

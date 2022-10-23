@@ -8,24 +8,24 @@ module.exports = {
     oldMessage: Message,
     newMessage: Message
   ) {
-
+    if(oldMessage.content == newMessage.content) return;
     const guildSchema = await paguClient.schemas.get("guild");
     const guildData = await guildSchema.findOne({
       guildID: oldMessage.guild?.id,
     });
     let mainLoggingChannel = guildData.mainLoggingChannel;
     if (!mainLoggingChannel.Set) return;
+
     console.log(mainLoggingChannel)
     const embed = new MessageEmbed();
-    console.log(oldMessage.content, newMessage.content)
 
     embed
       .setAuthor({
         name: `${oldMessage.author.tag}`,
         iconURL: `${oldMessage.author.avatarURL({ dynamic: true })}`,
       })
-      .setTitle(
-        `📝\n[Message](${oldMessage.url}) sent by <#${oldMessage.author.id}> edited in <#${oldMessage.channelId}>`
+      .setDescription(
+        `📝\n[Message](${oldMessage.url}) sent by <@${oldMessage.author.id}> edited in <#${oldMessage.channelId}>`
       )
       .addFields([
         { name: "Old Message", value: oldMessage.content ?? "None" },
