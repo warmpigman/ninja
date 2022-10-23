@@ -175,11 +175,12 @@ module.exports = {
         var toFetch: any = findNextLimit();
         // console.log(currentChannel)
         // console.log(currentChannel, channels.length, channels[currentChannel], (channels[currentChannel][1]??channels[currentChannel]).messages)\
-        console.log(channels[currentChannel]);
+        // console.log(channels[currentChannel]);
         await (channels[currentChannel][1] ?? channels[currentChannel]).messages
           .fetch({ limit: toFetch })
           .then(async (messages: any) => {
             var messages2 = messages;
+            console.log(messages2)
             if (message.mentions.users.first())
               messages2 = messages2.filter(
                 (msg: any) => msg.author.id == message.mentions.users.first().id
@@ -218,6 +219,7 @@ module.exports = {
               messages2 = messages2.filter(
                 (msg: any) => msg.attachments.size > 0
               );
+              console.log(messages2)
             if (filter.includes("mentions"))
               messages2 = messages2.filter(
                 (msg: any) => msg.mentions.users.size > 0
@@ -300,7 +302,7 @@ module.exports = {
         Buffer.from(data, "utf8"),
         "purge.txt"
       );
-      console.log(data);
+      // console.log(data);
       axios
         .post("https://hastebin.com/documents", data)
         .then((res: AxiosResponse) => {
@@ -342,10 +344,15 @@ module.exports = {
         await embed.setDescription(
           "I have deleted " + messagesToDelete.length + " messages!"
         );
-        return message.channel.send({
+        const sentEmbed = await message.channel.send({
           embeds: [embed],
           allowedMentions: { users: [] },
         });
+        setTimeout(() => {
+          console.log(sentEmbed)
+          sentEmbed.delete()
+        }, 10000);
+        return;
       }
     }
     if (!filter.includes("silent")) {

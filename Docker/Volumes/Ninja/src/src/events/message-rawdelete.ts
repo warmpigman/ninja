@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed, TextChannel } from "discord.js";
 import { text } from "stream/consumers";
 module.exports = {
   event: "messageDelete",
@@ -11,20 +11,24 @@ module.exports = {
     const guildData = await guildSchema.findOne({
       guildID: message.guild?.id,
     });
-    const mainLoggingChannel = guildData.mainLoggingChannel;
-    if(!mainLoggingChannel.Set) return;
+    let mainLoggingChannel = guildData.mainLoggingChannel;
+    if (!mainLoggingChannel.Set) return;
 
     const embed = new MessageEmbed();
+    //@ts-ignore
+    if (message.content?.id) message.content = "MESSAGE IS EMBED."
     embed
-      .setAuthor({  
+      .setAuthor({
         name: `${message.author.tag}`,
         iconURL: `${message.author.avatarURL({ dynamic: true })}`,
       })
-      .setTitle(
-        `🗑️\n[Message](${message.url}) sent by <#${message.author.id}> deleted in <#${message.channelId}>`
+      .setDescription(
+        `🗑️\n[Message](${message.url}) sent by ${message.author} deleted in <#${message.channelId}>`
       )
       .addFields([
-        { name: "Message", value: message.content ?? "None" },
+        // { name: "Sent by", value: `<@${message.author.id}>` },
+        // { name: "Channel", value: `<#${message.channelId}>` },
+        { name: "Message", value: (message.content ?? "None") },
       ])
       .setFooter(
         `Message ID: ${message.id} • User ID: ${message.author.id}`
@@ -36,8 +40,14 @@ module.exports = {
     for (let attachment in message.attachments) {
       attachments.push(attachment);
     }
-    await mainLoggingChannel.send({
+    console.log(mainLoggingChannel)
+    mainLoggingChannel = client.channels.cache.get(
+      mainLoggingChannel.ID
+    ) as TextChannel;
+    console.log(mainLoggingChannel, 1)
+    if (mainLoggingChannel) await mainLoggingChannel.send({
       embeds: [embed],
       attachments: attachments,
     });
-  }}
+  }
+}

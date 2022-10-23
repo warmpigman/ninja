@@ -7,7 +7,7 @@ module.exports = {
     const guildData = await guildSchema.findOne({
       guildID: message.guild?.id,
     });
-   
+
     if (guildData?.notalk && message.channel.id == guildData.notalk) {
       if (message.content.includes("http")) {
         await message.member?.kick("Spoke in forbidden channel");
@@ -23,7 +23,7 @@ module.exports = {
         const guildData = await guildSchema.findOne({
           guildID: message.guild?.id,
         });
-        const mainLoggingChannel = guildData.mainLoggingChannel;
+        let mainLoggingChannel = guildData.mainLoggingChannel;
         const embed = new MessageEmbed();
         embed
           .setAuthor({
@@ -44,10 +44,15 @@ module.exports = {
         for (let attachment in message.attachments) {
           attachments.push(attachment);
         }
-        await mainLoggingChannel.send({
-          embeds: [embed],
-          attachments: attachments,
-        });
+        if (mainLoggingChannel.Set) {
+          mainLoggingChannel = client.channels.cache.get(
+            mainLoggingChannel.ID
+          ) as TextChannel;
+          if (mainLoggingChannel) await mainLoggingChannel.send({
+            embeds: [embed],
+            attachments: attachments,
+          });
+        }
         const scamLinkChannel = client.cache.channels.get(guildData.scamRequestChannel);
         embed.setTitle("Potential Scam Link");
         embed.setColor("#0xfcba03");
@@ -61,7 +66,7 @@ module.exports = {
           { name: "Scam Link", value: scamLink },
           { name: "Message Content", value: message.content },
         ]);
-        if (!scamLinkChannel.Set) return; 
+        if (!scamLinkChannel.Set) return;
         let msgSent: Message = await scamLinkChannel.send(embed);
         msgSent.react("✅");
         msgSent.react("❌");

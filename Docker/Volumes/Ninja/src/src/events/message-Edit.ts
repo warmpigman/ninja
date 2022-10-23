@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed, TextChannel } from "discord.js";
 import { text } from "stream/consumers";
 module.exports = {
   event: "messageUpdate",
@@ -8,13 +8,13 @@ module.exports = {
     oldMessage: Message,
     newMessage: Message
   ) {
-    
+
     const guildSchema = await paguClient.schemas.get("guild");
     const guildData = await guildSchema.findOne({
       guildID: oldMessage.guild?.id,
     });
-    const mainLoggingChannel = guildData.mainLoggingChannel;
-    if(!mainLoggingChannel.Set) return;
+    let mainLoggingChannel = guildData.mainLoggingChannel;
+    if (!mainLoggingChannel.Set) return;
     console.log(mainLoggingChannel)
     const embed = new MessageEmbed();
     console.log(oldMessage.content, newMessage.content)
@@ -41,7 +41,10 @@ module.exports = {
     for (let attachment in oldMessage.attachments) {
       attachments.push(attachment);
     }
-    await mainLoggingChannel.send({
+    mainLoggingChannel = client.channels.cache.get(
+      mainLoggingChannel.ID
+    ) as TextChannel;
+    if (mainLoggingChannel) await mainLoggingChannel.send({
       embeds: [embed],
       attachments: attachments,
     });
