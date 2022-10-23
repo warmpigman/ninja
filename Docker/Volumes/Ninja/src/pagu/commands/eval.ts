@@ -9,7 +9,7 @@ module.exports = {
     'eval paguClient.options.client.on(\'message\', message => {\nif(message.author.id=="738857742474805370")\n{ message.react("❤️") })})',
   ],
   hidden: ["dev"],
-  
+
   async execute(
     message: any,
     args: Array<string>,

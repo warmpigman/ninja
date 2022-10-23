@@ -29,7 +29,9 @@ module.exports = {
         }
         await paguClient.Util.cacheThis(
           {
-            key: `http://maro-api:3000/api/auctions/find/${encodeURI(args.join(" "))}`,
+            key: `http://maro-api:3000/api/auctions/find/${encodeURI(
+              args.join(" ")
+            )}`,
             data: err.response,
           },
           paguClient

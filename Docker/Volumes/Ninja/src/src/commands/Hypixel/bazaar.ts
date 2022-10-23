@@ -48,8 +48,13 @@ module.exports = {
       let items = response
       let found = false;
       for (const property in items) {
-        if(found) break;
-        if (items[property].name.toLowerCase() == search_term.toLowerCase() || items[property].name.toLowerCase().startsWith(search_term.toLowerCase())) {
+        if (found) break;
+        if (
+          items[property].name.toLowerCase() == search_term.toLowerCase() ||
+          items[property].name
+            .toLowerCase()
+            .startsWith(search_term.toLowerCase())
+        ) {
           found = true;
           let item = items[property];
           let embed = new MessageEmbed();

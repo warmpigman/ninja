@@ -1,5 +1,5 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction } from 'discord.js';
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { CommandInteraction } from "discord.js";
 
 module.exports = {
   name: ["help", "whatis"],
@@ -311,7 +311,7 @@ module.exports = {
         });
         let cleanName =
           paguClient.options.options.niceCategory[
-          JSON.parse(command).cache.category.toLowerCase()
+            JSON.parse(command).cache.category.toLowerCase()
           ];
         if (!cleanName) cleanName = JSON.parse(command).cache.category;
         categories.set(JSON.parse(command).cache.category, {
@@ -335,7 +335,7 @@ module.exports = {
               embed.addFields({
                 name:
                   paguClient.options.options.niceCommands[
-                  command.name.toLowerCase()
+                    command.name.toLowerCase()
                   ] ?? command.name,
                 value: command.description,
                 inline: true,
@@ -354,7 +354,7 @@ module.exports = {
             })[0];
             embed.setTitle(
               paguClient.options.options.niceCommands[
-              command.name.toLowerCase()
+                command.name.toLowerCase()
               ] ?? command.name.toLowerCase()
             );
             var alternatives = command.commandFile.name;

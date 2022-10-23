@@ -107,7 +107,7 @@ module.exports = {
           await message.author.send(
             `You cannot speak in <#${message.channel.id}>`
           );
-        } catch { }
+        } catch {}
       }
     }
   },
