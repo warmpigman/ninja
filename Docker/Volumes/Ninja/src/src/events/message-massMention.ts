@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 import "axios";
-import { PermissionFlagsBits } from "discord-api-types";
+import { PermissionFlagsBits } from "discord-api-types/v9";
 
 module.exports = {
   event: "messageCreate",
