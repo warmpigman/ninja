@@ -3,4 +3,4 @@ ENV NODE_ENV=production
 WORKDIR /application
 COPY . .
 # RUN npm install --production
-CMD ["yarn start"]
+CMD ["npm", "start"]

@@ -409,12 +409,17 @@ module.exports = {
           }
         );
       } else {
-        let r = await axios.get(
-          `https://api.mojang.com/users/profiles/minecraft/${args[0]}`
-        );
-        let username = r.data.name;
+        let r = await axios({
+          method: "post",
+          url: "https://api.mojang.com/profiles/minecraft",
+          data: JSON.stringify([args[0]]),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        let username = r.data[0].name;
         if (r.status == 200) {
-          let uuid = r.data.id;
+          let uuid = r.data[0].id;
           let response = await paguClient.Util.cacheGet(
             `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
             paguClient
@@ -472,12 +477,17 @@ module.exports = {
         }
       }
     } else if (args.length == 2) {
-      let r = await axios.get(
-        `https://api.mojang.com/users/profiles/minecraft/${args[0]}`
-      );
-      let username = r.data.name;
+      let r = await axios({
+        method: "post",
+        url: "https://api.mojang.com/profiles/minecraft",
+        data: JSON.stringify([args[0]]),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let username = r.data[0].name;
       if (r.status == 200) {
-        let uuid = r.data.id;
+        let uuid = r.data[0].id;
         let response = await paguClient.Util.cacheGet(
           `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
           paguClient

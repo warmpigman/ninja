@@ -263,9 +263,9 @@ module.exports = {
           profile.banking = activeProfile.banking;
 
           const resp = await axios.get(
-            `https://api.mojang.com/users/profiles/${uuid}/names`
+            `https://sessionserver.mojang.com/session/minecraft/profile/${uuid}`
           );
-          const username = resp.data.slice(-1).name;
+          const username = resp.data.name;
           await inner(uuid, profile, username, activeProfile.cute_name);
         }
       );
@@ -314,18 +314,23 @@ module.exports = {
             profile.banking = activeProfile.banking;
 
             const resp = await axios.get(
-              `https://api.mojang.com/users/profiles/${uuid}/names`
+              `https://sessionserver.mojang.com/session/minecraft/profile/${uuid}`
             );
-            const username = resp.data.slice(-1).name;
+            const username = resp.data.name;
             await inner(uuid, profile, username, activeProfile.cute_name);
           }
         );
       } else {
-        const resp = await axios.get(
-          `https://api.mojang.com/users/profiles/minecraft/${args[0]}`
-        );
-        const uuid = resp.data.id;
-        const username = resp.data.name;
+        const resp = await axios({
+          method: "post",
+          url: "https://api.mojang.com/profiles/minecraft",
+          data: JSON.stringify([args[0]]),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const uuid = resp.data[0].id;
+        const username = resp.data[0].name;
         const { data } = await get(key ?? "", uuid);
         const activeProfile = getActiveProfile(data.profiles, uuid);
         const profile = activeProfile.members[uuid];
@@ -333,11 +338,16 @@ module.exports = {
         await inner(uuid, profile, username, activeProfile.cute_name);
       }
     } else if (args.length == 2) {
-      const resp = await axios.get(
-        `https://api.mojang.com/users/profiles/minecraft/${args[0]}`
-      );
-      const uuid = resp.data.id;
-      const username = resp.data.name;
+      const resp = await axios({
+        method: "post",
+        url: "https://api.mojang.com/profiles/minecraft",
+        data: JSON.stringify([args[0]]),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      const uuid = resp.data[0].id;
+      const username = resp.data[0].name;
       const { data } = await get(key ?? "", uuid);
       const activeProfile = getProfileByName(data.profiles, args[1]);
       if (activeProfile === null) {

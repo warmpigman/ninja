@@ -7,7 +7,7 @@ module.exports = {
     const guildData = await guildSchema.findOne({
       guildID: message.guild?.id,
     });
-    let mainLoggingChannel = guildData.mainLoggingChannel;
+    let mainLoggingChannel = guildData?.mainLoggingChannel;
     if (!mainLoggingChannel.Set) return;
 
     const embed = new MessageEmbed();

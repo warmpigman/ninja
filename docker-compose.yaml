@@ -3,7 +3,7 @@ services:
   ninjabot:
     restart: unless-stopped
     build: "./Docker/Volumes/Ninja"
-    container_name: "ninjabot"
+    # container_name: "ninjabot"
     depends_on:
       - mongodb
       - senither-weight
@@ -27,9 +27,9 @@ services:
     command: redis-server --requirepass "fY2EL8sTwdVZRcvXssyb8jh85ut5hy6gbIcsYeDQxMUwd8O6x6loUumhxz3LKgqt" --maxmemory 50mb --maxmemory-policy allkeys-lru
   senither-weight:
     build: "./Docker/Volumes/hypixel-skyblock-facade"
-    container_name: senither-weight
+    # container_name: senither-weight
     restart: unless-stopped
   maro-api:
     build: "./Docker/Volumes/maro-api"
-    container_name: maro-api
+    # container_name: maro-api
     restart: unless-stopped

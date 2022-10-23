@@ -1,4 +1,4 @@
-import get from "axios";
+import axios from 'axios';
 
 module.exports = {
   name: ["verify"],
@@ -23,15 +23,18 @@ module.exports = {
       });
       return message.channel.send({ embeds: [embed] });
     } else {
-      get(
-        `https://api.mojang.com/users/profiles/minecraft/${args[0].toString()}`,
-        {
-          validateStatus: function (status) {
-            return status < 500;
-          },
+      axios({
+        method: "post",
+        url: "https://api.mojang.com/profiles/minecraft",
+        data: JSON.stringify([args[0]]),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        validateStatus: function (status) {
+          return status <500;
         }
-      ).then((mojangRes) => {
-        if (!mojangRes.data.id) {
+      }).then((mojangRes) => {
+        if (!mojangRes.data[0].id) {
           embed.addFields({
             name: "Failed!",
             value: "Not a valid username or a mojang error occured.",
@@ -40,8 +43,8 @@ module.exports = {
             embeds: [embed],
           });
         } else {
-          get(
-            `https://api.hypixel.net/player?uuid=${mojangRes.data.id}&key=c2d06b71-ea84-46db-95ff-319bc7f03fe9`
+          axios.get(
+            `https://api.hypixel.net/player?uuid=${mojangRes.data.id}&key=${process.env.API_KEY}`
           ).then(async (res) => {
             if (!res.data.player || !res.data.player.socialMedia) {
               embed.addFields({
@@ -60,14 +63,14 @@ module.exports = {
               ) {
                 await message.guild.roles.fetch().then(async (roles: any) => {
                   let tradeBannedRole = roles.find(
-                    (r: any) => r.name.toLowerCase() === "trade banned"
+                    (r: any) => r.name.toLowerCase() === "trade ban"
                   );
                   let response = await paguClient.Util.cacheGet(
                     "https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json",
                     paguClient
                   );
                   if (!response) {
-                    response = await get(
+                    response = await axios.get(
                       "https://raw.githubusercontent.com/skyblockz/pricecheckbot/master/scammer.json"
                     );
                     await paguClient.Util.cacheThis(
@@ -80,7 +83,7 @@ module.exports = {
                   }
 
                   if (
-                    message.member.roles.cache.has(tradeBannedRole.id) ||
+                    message.member.roles.cache.has(tradeBannedRole.ID) ||
                     response
                       ? Object.values(response.data).some(
                           (scammerUser: any) =>
