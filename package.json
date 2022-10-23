@@ -22,7 +22,7 @@
     "dev": "sudo docker compose up --build",
     "test": "sudo (docker compose run --rm --entrypoint \"/bin/bash\" ninjabot && sudo docker compose stop) || sudo docker compose stop",
     "build": "sudo docker compose build --parallel",
-    "format": "sudo prettier --write ."
+    "format": "prettier . --write \"!./Docker/Volumes/mongodata\""
   },
   "devDependencies": {
     "prettier": "^2.5.1",

@@ -8,29 +8,29 @@ This API acts as a facade to the real Hypixel API, its purpose is to make it eas
 
 ## Table of Content
 
-* [Installation using NodeJS](#installation-using-nodejs)
-  + [Prerequisites](#prerequisites)
-  + [Setup Guide](#setup-guide)
-* [Installation using Docker](#installation-using-docker)
-  + [Prerequisites](#prerequisites-1)
-  + [Setup Guide](#setup-guide-1)
-* [Deploy directly to DigitalOcean](#deploy-directly-to-digitalocean)
-  + [Prerequisites](#prerequisites-2)
-  + [Setup Guide](#setup-guide-2)
-* [Deploy directly to Replit](#deploy-directly-to-replit)
-  + [Prerequisites](#prerequisites-3)
-  + [Setup Guide](#setup-guide-3)
-* [Environment Variables](#environment-variables)
-* [Usage](#usage)
-* [Changelog](#changelog)
-* [Contributing](#contributing)
-* [License](#License)
+- [Installation using NodeJS](#installation-using-nodejs)
+  - [Prerequisites](#prerequisites)
+  - [Setup Guide](#setup-guide)
+- [Installation using Docker](#installation-using-docker)
+  - [Prerequisites](#prerequisites-1)
+  - [Setup Guide](#setup-guide-1)
+- [Deploy directly to DigitalOcean](#deploy-directly-to-digitalocean)
+  - [Prerequisites](#prerequisites-2)
+  - [Setup Guide](#setup-guide-2)
+- [Deploy directly to Replit](#deploy-directly-to-replit)
+  - [Prerequisites](#prerequisites-3)
+  - [Setup Guide](#setup-guide-3)
+- [Environment Variables](#environment-variables)
+- [Usage](#usage)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [License](#License)
 
 ## Installation using NodeJS
 
 ### Prerequisites
 
-* NodeJS >= 14
+- NodeJS >= 14
 
 ### Setup Guide
 
@@ -56,7 +56,7 @@ You can also launch the site in watch mode using `yarn watch` or `npm run-script
 
 ### Prerequisites
 
-* Docker >= 20
+- Docker >= 20
 
 _Older versions may also work, but have not been tested._
 

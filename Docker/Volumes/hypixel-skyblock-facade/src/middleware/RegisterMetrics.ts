@@ -6,7 +6,7 @@ import { Request, Response } from '../types/express'
  * the request onto the next middleware in the stack.
  */
 export default (_: Request, __: Response, next: any) => {
-    MetricsWorker.incrementRequest()
+  MetricsWorker.incrementRequest()
 
-    return next()
+  return next()
 }

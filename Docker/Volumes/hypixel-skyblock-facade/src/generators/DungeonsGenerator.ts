@@ -55,11 +55,7 @@ class DungeonsGenerator extends Generator {
         tank: this.generateClassProperties('tank', dungeonGroups.player_classes.tank || null),
       },
       types: {
-        catacombs: this.buildDungeonTypeProperties(
-          'catacombs',
-          dungeonGroups.dungeon_types.catacombs,
-          dungeonGroups.dungeon_types.master_catacombs
-        ),
+        catacombs: this.buildDungeonTypeProperties('catacombs', dungeonGroups.dungeon_types.catacombs, dungeonGroups.dungeon_types.master_catacombs),
       },
     }
 
@@ -118,7 +114,7 @@ class DungeonsGenerator extends Generator {
         fastest_time_s_plus: this.formatDungeonStatsGroup(masterDungeon?.fastest_time_s_plus),
         mobs_killed: this.formatDungeonStatsGroup(masterDungeon?.mobs_killed),
         most_mobs_killed: this.formatDungeonStatsGroup(masterDungeon?.most_mobs_killed),
-      }
+      },
     }
 
     dungeonResult.best_score = this.formatDungeonScores(dungeonResult.best_score)

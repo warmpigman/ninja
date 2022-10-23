@@ -26,8 +26,8 @@ class SlayersGenerator extends Generator {
     },
     enderman: {
       divider: 1430,
-      modifier: .017,
-    }
+      modifier: 0.017,
+    },
   }
 
   build(_: PlayerStats, profile: SkyBlockProfile): SkyBlockSlayerGroupResponse | null {
