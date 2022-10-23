@@ -19,7 +19,7 @@
     "syncworkspacerepos": "node Tools/syncworkspacerepos",
     "start": "sudo docker compose up -d --build",
     "stop": "sudo docker compose stop",
-    "dev": "sudo docker compose up --build",
+    "dev": "sudo docker compose up --build -f docker-compose.dev.yml",
     "test": "sudo (docker compose run --rm --entrypoint \"/bin/bash\" ninjabot && sudo docker compose stop) || sudo docker compose stop",
     "build": "sudo docker compose build --parallel",
     "format": "prettier . --write \"!./Docker/Volumes/mongodata\""

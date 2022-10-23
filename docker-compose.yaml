@@ -15,8 +15,6 @@ services:
     image: mongo:3
     restart: unless-stopped
     #get rid of in prod
-    ports:
-      - "27019:27017"
     environment:
       MONGO_INITDB_DATABASE: mongodb
       MONGO_INITDB_ROOT_USERNAME: VQUzCLSs60TpfFcT9AViaS0VlVDlBTpLXTRrRdkCRO6mXkCCcYHV1us2k3DksZXd
@@ -27,10 +25,7 @@ services:
     image: redis:6.2.6
     restart: unless-stopped
     command: redis-server --requirepass "fY2EL8sTwdVZRcvXssyb8jh85ut5hy6gbIcsYeDQxMUwd8O6x6loUumhxz3LKgqt" --maxmemory 50mb --maxmemory-policy allkeys-lru
-    ports:
-      - "6379:6379"
   senither-weight:
-    # image: senither/hypixel-skyblock-facade
     build: "./Docker/Volumes/hypixel-skyblock-facade"
     container_name: senither-weight
     restart: unless-stopped
@@ -38,6 +33,3 @@ services:
     build: "./Docker/Volumes/maro-api"
     container_name: maro-api
     restart: unless-stopped
-    #get rid of in prod
-    ports:
-      - "27018:3000"

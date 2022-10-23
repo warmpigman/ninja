@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node . || exit 1\""
+    "dev": "tsc-watch --onSuccess \"node . || exit 1\"",
+    "start": "tsc && node ."
   },
   "author": "",
   "license": "UNLICENSED",
