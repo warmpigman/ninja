@@ -2,7 +2,13 @@ import { Channel, Message, MessageEmbed, TextChannel } from "discord.js";
 module.exports = {
   event: "messageCreate",
   async execute(client: any, paguClient: any, message: Message) {
-    if (message.channel.id == "899227365228576841") {
+    if (!(message.content.length > 0)) return;
+    const guildSchema = await paguClient.schemas.get("guild");
+    const guildData = await guildSchema.findOne({
+      guildID: message.guild?.id,
+    });
+   
+    if (guildData?.notalk && message.channel.id == guildData.notalk) {
       if (message.content.includes("http")) {
         await message.member?.kick("Spoke in forbidden channel");
         message.guild?.channels.cache.forEach((channel: Channel) => {
@@ -26,7 +32,7 @@ module.exports = {
           })
           .setTitle(`Kicked <@${message.author.id}>`)
           .addFields([
-            { name: "Reason", value: "Spoke in <#899227365228576841>" },
+            { name: "Reason", value: `Spoke in ${guildData.notalk}` },
             { name: "Message", value: message.content },
           ])
           .setFooter(
@@ -42,7 +48,7 @@ module.exports = {
           embeds: [embed],
           attachments: attachments,
         });
-        const scamLinkChannel = client.cache.channels.get("937390783001157754");
+        const scamLinkChannel = client.cache.channels.get(guildData.scamRequestChannel);
         embed.setTitle("Potential Scam Link");
         embed.setColor("#0xfcba03");
         const re = /(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-&?=%.]+/;
@@ -55,7 +61,7 @@ module.exports = {
           { name: "Scam Link", value: scamLink },
           { name: "Message Content", value: message.content },
         ]);
-
+        if (!scamLinkChannel.Set) return; 
         let msgSent: Message = await scamLinkChannel.send(embed);
         msgSent.react("✅");
         msgSent.react("❌");
@@ -96,7 +102,7 @@ module.exports = {
           await message.author.send(
             `You cannot speak in <#${message.channel.id}>`
           );
-        } catch {}
+        } catch { }
       }
     }
   },

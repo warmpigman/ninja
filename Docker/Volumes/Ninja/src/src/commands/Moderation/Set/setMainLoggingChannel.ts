@@ -5,7 +5,7 @@ module.exports = {
     "set-mainloggingchannel",
   ],
   category: "Mod",
-  description: "Set's the guild's main logging channel to send logs to.",
+  description: "Sets the guild's main logging channel to send logs to.",
   usage: "setmainloggingchannel [ID or #channel]",
   examples: [
     "setmainloggingchannel #bot-logs",

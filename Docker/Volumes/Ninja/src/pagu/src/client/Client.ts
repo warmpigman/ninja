@@ -155,27 +155,27 @@ class Pagu extends EventEmitter {
           try {
             if (process.env.NODE_ENV == "development")
               mongoose.set("debug", true);
-            const mongooseExec = mongoose.Query.prototype.exec;
-            var self = this;
-            mongoose.Query.prototype.exec = async function (cb: any) {
-              const key = await JSON.stringify({
-                ...this.getQuery(),
-                collection: this.mongooseCollection.name,
-                op: this.op,
-                options: this.options,
-              });
-              let cached = await self.redisClient.get(key);
-              let result;
-              if (cached) {
-                if (!cb) return;
-                cb(undefined, JSON.parse(cached));
-              } else {
-                result = await mongooseExec.apply(this, arguments);
-                const value = String(await JSON.stringify(result));
-                await self.redisClient.set(key, value);
-                return result;
-              }
-            };
+            // const mongooseExec = mongoose.Query.prototype.exec;
+            // var self = this;
+            // mongoose.Query.prototype.exec = async function (cb: any) {
+            //   const key = await JSON.stringify({
+            //     ...this.getQuery(),
+            //     collection: this.mongooseCollection.name,
+            //     op: this.op,
+            //     options: this.options,
+            //   });
+            //   let cached = await self.redisClient.get(key);
+            //   let result;
+            //   if (cached) {
+            //     if (!cb) return;
+            //     cb(undefined, JSON.parse(cached));
+            //   } else {
+            //     result = await mongooseExec.apply(this, arguments);
+            //     const value = String(await JSON.stringify(result));
+            //     await self.redisClient.set(key, value);
+            //     return result;
+            //   }
+            // };
             mongoose.connection
               .on("connected", () => {
                 Util.log(__filename, "log", "Connected to the Mongo Database!");
@@ -189,8 +189,8 @@ class Pagu extends EventEmitter {
                 );
               });
             await mongoose.connect(options.options.mongoURI, {
-              useNewUrlParser: true,
-              useUnifiedTopology: true,
+              // useNewUrlParser: true,
+              // useUnifiedTopology: true,
               // useFindAndModify: false
             });
           } catch (e) {

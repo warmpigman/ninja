@@ -21,6 +21,7 @@ module.exports = {
   ) {
     message.channel.sendTyping();
     async function inner(uuid: String, strategy: String) {
+      console.log(uuid, strategy);
       let url = `http://senither-weight:9281/v1/profiles/${uuid}/${strategy}?key=${process.env.API_KEY}`;
       let response = await paguClient.Util.apiCallHandler(url);
       switch (response.status) {
@@ -47,7 +48,7 @@ module.exports = {
           let data = response.data.data;
           let profile_name = data.name;
           let username = data.username;
-
+          if(username == "Teodor") username="warmpigman"
           embed.setTitle(
             `Showing weight data for ${username}\nProfile: ${profile_name}`
           );
@@ -261,6 +262,7 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
 
     if (args.length == 2) {
       let username = args[0];
+      if(username.toLowerCase() == "warmpigman") username = "Teodor"
       let strategy = args[1];
       axios
         .get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
@@ -337,6 +339,7 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
         );
       } else {
         let username = args[0];
+        if(username.toLowerCase() == "warmpigman") username = "Teodor"
         axios
           .get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
           .then((res: any) => {

@@ -30,7 +30,8 @@ services:
     ports:
       - "6379:6379"
   senither-weight:
-    image: senither/hypixel-skyblock-facade
+    # image: senither/hypixel-skyblock-facade
+    build: "./Docker/Volumes/hypixel-skyblock-facade"
     container_name: senither-weight
     restart: unless-stopped
   maro-api:

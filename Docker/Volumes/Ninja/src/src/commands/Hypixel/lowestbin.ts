@@ -29,7 +29,7 @@ module.exports = {
         }
         await paguClient.Util.cacheThis(
           {
-            key: `http://maro-api:3000/api/auctions/find/${args.join(" ")}`,
+            key: `http://maro-api:3000/api/auctions/find/${encodeURI(args.join(" "))}`,
             data: err.response,
           },
           paguClient
@@ -66,7 +66,7 @@ module.exports = {
         "orange",
       ].some((x) => args2.includes(x))
     ) {
-      response.data.auctions.filter((item: any) =>
+      response.auctions.filter((item: any) =>
         [
           "red",
           "blue",
@@ -98,15 +98,16 @@ module.exports = {
       res = await axios.get("https://api.hypixel.net/resources/skyblock/items");
     }
     let seller = await paguClient.Util.cacheGet(
-      `https://api.mojang.com/user/profiles/${lbin.rawItem.auction.seller}/names`,
+      `https://sessionserver.mojang.com/session/minecraft/profile/${lbin.rawItem.auction.seller}`,
       paguClient
     );
     if (!seller) {
       seller = await axios.get(
-        `https://api.mojang.com/user/profiles/${lbin.rawItem.auction.seller}/names`
+        `https://sessionserver.mojang.com/session/minecraft/profile/${lbin.rawItem.auction.seller}`
       );
     }
-    seller = seller.data[0].name;
+    console.log(seller)
+    seller = seller.data.name;
     let tier;
     const item = res.data.items.find((x: any) => x.id == lbin.id);
     if (!item) {

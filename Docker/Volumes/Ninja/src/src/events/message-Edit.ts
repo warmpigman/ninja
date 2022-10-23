@@ -8,12 +8,17 @@ module.exports = {
     oldMessage: Message,
     newMessage: Message
   ) {
+    
     const guildSchema = await paguClient.schemas.get("guild");
     const guildData = await guildSchema.findOne({
       guildID: oldMessage.guild?.id,
     });
     const mainLoggingChannel = guildData.mainLoggingChannel;
+    if(!mainLoggingChannel.Set) return;
+    console.log(mainLoggingChannel)
     const embed = new MessageEmbed();
+    console.log(oldMessage.content, newMessage.content)
+
     embed
       .setAuthor({
         name: `${oldMessage.author.tag}`,
@@ -31,7 +36,7 @@ module.exports = {
       )
       .setTimestamp(Date.now())
       .setColor(`#c8cf04`);
-    await oldMessage.channel.send({});
+    // await oldMessage.channel.send({});
     let attachments = [];
     for (let attachment in oldMessage.attachments) {
       attachments.push(attachment);

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  api:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: senither/hypixel-skyblock-facade
+    environment:
+      PORT: 9281
+      CLUSTER_SIZE: 4
+    ports:
+      - 9281:9281

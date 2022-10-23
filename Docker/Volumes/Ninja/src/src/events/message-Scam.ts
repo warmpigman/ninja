@@ -13,9 +13,11 @@ module.exports = {
       .setTitle("Scam Message");
     var scamSchema = await paguClient.schemas.get("scam");
     var scamData = await scamSchema.find({});
+        // console.log(scamData, 2)
     if (scamData) scamData = scamData.map((data: any) => data.website);
     var guildSchema = await paguClient.schemas.get("guild");
     var guildData = await guildSchema.findOne({ guildID: message.guild?.id });
+    // console.log(guildData);
     var guildDataScams;
     if (guildData) guildDataScams = guildData.scamLinks;
     if (scamData && guildData) scamData.concat(guildDataScams);

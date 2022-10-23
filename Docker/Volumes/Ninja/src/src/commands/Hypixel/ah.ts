@@ -75,7 +75,7 @@ const getEnchants = (str: string) => {
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-async function inner(profile: any, uuid: any, username: String, author: User) {
+async function inner(profile: any, uuid: any, username: String, author: User, paguClient: any) {
   const key = process.env.API_KEY;
   let url = `https://api.hypixel.net/skyblock/auction?key=${key}&player=`;
   let response;
@@ -161,7 +161,7 @@ async function inner(profile: any, uuid: any, username: String, author: User) {
   }
   let embed = new MessageEmbed();
   embed.setColor([247, 51, 37]);
-  embed.addField("An Error Has Ocurred", response.data.cause);
+  embed.addField("An Error Has Ocurred", response.data.cause??"1");
   return {
     content: null,
     embeds: [embed],
@@ -178,7 +178,6 @@ async function getHyCache(uuid: string, paguClient: any) {
     response = await paguClient.Util.apiCallHandler(
       `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`
     );
-    console.log(response);
     await paguClient.Util.cacheThis(
       {
         key: `https://api.hypixel.net/skyblock/profiles?key=${key}&uuid=${uuid}`,
@@ -195,48 +194,48 @@ module.exports = {
   description:
     "Shows the auction house of yourself or a player. You may also choose a specific profile of a player.",
   usage: "ah (user) (profile)",
-  slashInit() {
-    return new SlashCommandBuilder()
-      .setName("auctions")
-      .setDescription("Shows the auction house of yourself or a player.")
-      .addStringOption((option) =>
-        option
-          .setName("username")
-          .setDescription(
-            "The username of the player. Leave blank for yourself."
-          )
-      )
-      .addStringOption((option) =>
-        option
-          .setName("profile")
-          .setDescription(
-            "The profile to check. Leave blank for most recently played"
-          )
-          .addChoices([
-            ["apple", "apple"],
-            ["banana", "banana"],
-            ["blueberry", "blueberry"],
-            ["coconut", "coconut"],
-            ["cucumber", "cucumber"],
-            ["grapes", "grapes"],
-            ["kiwi", "kiwi"],
-            ["lemon", "lemon"],
-            ["lime", "lime"],
-            ["mango", "mango"],
-            ["orange", "orange"],
-            ["papaya", "papaya"],
-            ["pear", "pear"],
-            ["peach", "peach"],
-            ["pineapple", "pineapple"],
-            ["pomegranate", "pomegranate"],
-            ["raspberry", "raspberry"],
-            ["strawberry", "strawberry"],
-            ["tomato", "tomato"],
-            ["watermelon", "watermelon"],
-            ["zucchini", "zucchini"],
-          ])
-      );
-  },
+  // slashInit() {
+  //   return new SlashCommandBuilder()
+  //     .setName("auctions")
+  //     .setDescription("Shows the auction house of yourself or a player.")
+  //     .addStringOption((option) =>
+  //       option
+  //         .setName("username")
+  //         .setDescription(
+  //           "The username of the player. Leave blank for yourself."
+  //         )
+  //     )
+  //     .addStringOption((option) =>
+  //       option
+  //         .setName("profile")
+  //         .setDescription(
+  //           "The profile to check. Leave blank for most recently played"
+  //         )
+  //         .addChoices([
+  //           ["apple", "apple"],
+  //           ["banana", "banana"],
+  //           ["blueberry", "blueberry"],
+  //           ["coconut", "coconut"],
+  //           ["cucumber", "cucumber"],
+  //           ["grapes", "grapes"],
+  //           ["kiwi", "kiwi"],
+  //           ["lemon", "lemon"],
+  //           ["lime", "lime"],
+  //           ["mango", "mango"],
+  //           ["orange", "orange"],
+  //           ["papaya", "papaya"],
+  //           ["pear", "pear"],
+  //           ["peach", "peach"],
+  //           ["pineapple", "pineapple"],
+  //           ["pomegranate", "pomegranate"],
+  //           ["raspberry", "raspberry"],
+  //           ["strawberry", "strawberry"],
+  //           ["tomato", "tomato"],
+  //           ["watermelon", "watermelon"],
+  //           ["zucchini", "zucchini"],
+  //         ])
+  //     );
+  // },
   examples: [
     "ah",
     "auctions",
@@ -245,7 +244,7 @@ module.exports = {
     "ah Apple",
     "ah ProNinjaGamin0 Apple",
   ],
-  async messageExecute(
+  async execute(
     message: Message,
     args: Array<string>,
     client: any,
@@ -299,7 +298,8 @@ module.exports = {
                   profile,
                   uuid,
                   response.data.slice(-1)[0].name,
-                  message.author
+                  message.author,
+                  paguClient
                 );
                 m.edit(messageOptions);
               } catch (e) {
@@ -391,7 +391,8 @@ module.exports = {
                       profile,
                       uuid,
                       response.data.slice(-1)[0].name,
-                      message.author
+                      message.author,
+                      paguClient
                     );
                     m.edit(messageOptions);
                   } catch {
@@ -453,7 +454,8 @@ module.exports = {
                 profile,
                 uuid,
                 username,
-                message.author
+                message.author,
+                paguClient
               );
               m.edit(messageOptions);
           }
@@ -515,7 +517,8 @@ module.exports = {
                 profile,
                 uuid,
                 username,
-                message.author
+                message.author,
+                paguClient
               );
               m.edit(messageOptions);
             }
@@ -523,94 +526,94 @@ module.exports = {
       }
     }
   },
-  async slashExecute(
-    interaction: CommandInteraction,
-    client: any,
-    paguClient: any
-  ): Promise<undefined> {
-    if (!interaction.isCommand()) return;
-    await interaction.deferReply();
-    console.log(typeof paguClient);
-    let username;
-    let uuid;
-    if (interaction.options.getString("username") === null) {
-      const userSchema = paguClient.schemas.get("user");
-      let found = false;
-      userSchema.findOne(
-        { discordID: interaction.user.id },
-        async (err: Error, data: { mojangUUID: String }) => {
-          if (!data) {
-            interaction.deleteReply();
-            interaction.followUp({
-              content: "You need to link your account first",
-              ephemeral: true,
-            });
-            return;
-          }
-          uuid = data.mojangUUID;
-          found = true;
-        }
-      );
-      if (!found) return;
-      try {
-        let response = await axios.get(
-          `https://api.mojang.com/user/profiles/${uuid}/names`
-        );
-        console.log(response.status);
-        username = response.data.slice(-1)[0].name;
-      } catch (e: any) {
-        console.log(e);
-        interaction.deleteReply();
-        interaction.followUp({
-          content: "That player does not exist.",
-          ephemeral: true,
-        });
-        return;
-      }
-    } else {
-      username = interaction.options.getString("username");
-      try {
-        let response = await axios.get(
-          `https://api.mojang.com/users/profiles/minecraft/${username}`
-        );
-        let data = response.data;
-        username = data.name;
-        uuid = data.id;
-      } catch (e: any) {
-        console.log(e);
-        interaction.deleteReply();
-        interaction.followUp({
-          content: "That player does not exist",
-          ephemeral: true,
-        });
-        return;
-      }
-    }
+  // async slashExecute(
+  //   interaction: CommandInteraction,
+  //   client: any,
+  //   paguClient: any
+  // ): Promise<undefined> {
+  //   if (!interaction.isCommand()) return;
+  //   await interaction.deferReply();
+  //   console.log(typeof paguClient);
+  //   let username;
+  //   let uuid;
+  //   if (interaction.options.getString("username") === null) {
+  //     const userSchema = paguClient.schemas.get("user");
+  //     let found = false;
+  //     userSchema.findOne(
+  //       { discordID: interaction.user.id },
+  //       async (err: Error, data: { mojangUUID: String }) => {
+  //         if (!data) {
+  //           interaction.deleteReply();
+  //           interaction.followUp({
+  //             content: "You need to link your account first",
+  //             ephemeral: true,
+  //           });
+  //           return;
+  //         }
+  //         uuid = data.mojangUUID;
+  //         found = true;
+  //       }
+  //     );
+  //     if (!found) return;
+  //     try {
+  //       let response = await axios.get(
+  //         `https://api.mojang.com/user/profiles/${uuid}/names`
+  //       );
+  //       console.log(response.status);
+  //       username = response.data.slice(-1)[0].name;
+  //     } catch (e: any) {
+  //       console.log(e);
+  //       interaction.deleteReply();
+  //       interaction.followUp({
+  //         content: "That player does not exist.",
+  //         ephemeral: true,
+  //       });
+  //       return;
+  //     }
+  //   } else {
+  //     username = interaction.options.getString("username");
+  //     try {
+  //       let response = await axios.get(
+  //         `https://api.mojang.com/users/profiles/minecraft/${username}`
+  //       );
+  //       let data = response.data;
+  //       username = data.name;
+  //       uuid = data.id;
+  //     } catch (e: any) {
+  //       console.log(e);
+  //       interaction.deleteReply();
+  //       interaction.followUp({
+  //         content: "That player does not exist",
+  //         ephemeral: true,
+  //       });
+  //       return;
+  //     }
+  //   }
 
-    let profile;
-    let response = await getHyCache(uuid, paguClient);
-    if (interaction.options.getString("profile") == null) {
-      profile = getActiveProfile(response.data.profiles, uuid);
-    } else {
-      let found = false;
-      let profiles: Array<any> = response.data.profiles;
-      profiles.forEach((p: any) => {
-        if (p.cute_name == interaction.options.getString("profile")) {
-          profile = p;
-          found = true;
-          return;
-        }
-      });
-      if (!found) {
-        interaction.deleteReply();
-        interaction.followUp({
-          content: "That profile does not exist",
-          ephemeral: true,
-        });
-        return;
-      }
-    }
-    let messageOptions = await inner(profile, uuid, username, interaction.user);
-    interaction.editReply(messageOptions);
-  },
+  //   let profile;
+  //   let response = await getHyCache(uuid, paguClient);
+  //   if (interaction.options.getString("profile") == null) {
+  //     profile = getActiveProfile(response.data.profiles, uuid);
+  //   } else {
+  //     let found = false;
+  //     let profiles: Array<any> = response.data.profiles;
+  //     profiles.forEach((p: any) => {
+  //       if (p.cute_name == interaction.options.getString("profile")) {
+  //         profile = p;
+  //         found = true;
+  //         return;
+  //       }
+  //     });
+  //     if (!found) {
+  //       interaction.deleteReply();
+  //       interaction.followUp({
+  //         content: "That profile does not exist",
+  //         ephemeral: true,
+  //       });
+  //       return;
+  //     }
+  //   }
+  //   let messageOptions = await inner(profile, uuid, username, interaction.user);
+  //   interaction.editReply(messageOptions);
+  // },
 };

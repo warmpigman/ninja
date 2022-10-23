@@ -25,6 +25,7 @@ const guild = new Schema(
     mainLoggingChannel: ChannelSubSchema,
     nickRequestChannel: ChannelSubSchema,
     reportRequestChannel: ChannelSubSchema,
+    scamRequestChannel: ChannelSubSchema,
     notalk: ChannelSubSchema,
     mutedRole: RoleSubSchema,
     tradeBanRole: RoleSubSchema,
@@ -41,4 +42,4 @@ const guild = new Schema(
   }
 );
 
-module.exports = model("guild", guild);
+module.exports = model("guilds", guild);

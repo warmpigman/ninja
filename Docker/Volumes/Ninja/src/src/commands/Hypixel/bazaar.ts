@@ -45,10 +45,12 @@ module.exports = {
           paguClient
         );
       }
-      let items = response.data;
+      let items = response
+      console.log(items)
       let found = false;
       for (const property in items) {
-        if (items[property].name.toLowerCase() == search_term) {
+        if(found) break;
+        if (items[property].name.toLowerCase() == search_term.toLowerCase() || items[property].name.toLowerCase().startsWith(search_term.toLowerCase())) {
           found = true;
           let item = items[property];
           let embed = new MessageEmbed();

@@ -4,7 +4,7 @@
   "main": "none",
   "repository": "https://github.com/warmpigman/ninja",
   "author": "warmpigman <https://github.com/warmpigman> and proninjagaming0 <https://github.com/ProNinjaGamin0>",
-  "license": "Unliscensed ",
+  "license": "MIT",
   "private": true,
   "workspaces": {
     "packages": [
@@ -17,12 +17,12 @@
     "migrateBadLinksToDB": "node Tools/migrateBadLinksToDB",
     "importmarocsv": "node Tools/importmarocsv",
     "syncworkspacerepos": "node Tools/syncworkspacerepos",
-    "start": "docker-compose up -d --build",
-    "stop": "docker-compose stop",
-    "dev": "docker-compose up --build",
-    "test": "(docker-compose run --rm --entrypoint \"/bin/bash\" ninjabot && docker-compose stop) || docker-compose stop",
-    "build": "docker-compose build --parallel",
-    "format": "prettier --write ."
+    "start": "sudo docker compose up -d --build",
+    "stop": "sudo docker compose stop",
+    "dev": "sudo docker compose up --build",
+    "test": "sudo (docker compose run --rm --entrypoint \"/bin/bash\" ninjabot && sudo docker compose stop) || sudo docker compose stop",
+    "build": "sudo docker compose build --parallel",
+    "format": "sudo prettier --write ."
   },
   "devDependencies": {
     "prettier": "^2.5.1",

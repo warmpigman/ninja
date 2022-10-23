@@ -29,7 +29,7 @@ module.exports = {
       return;
     }
     let user_id: string | Number = isNaN(parseInt(args[0]))
-      ? args[0].slice(3, -1)
+      ? args[0].slice(2, -1)
       : args[0];
     let user = client.users.fetch(`${user_id}`);
     user

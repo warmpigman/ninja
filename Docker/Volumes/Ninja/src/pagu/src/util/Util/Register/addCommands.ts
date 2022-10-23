@@ -101,22 +101,30 @@ module.exports = function (options: any, paguClient: any) {
         if (index == paguClient.commands.size - 1) {
           options.client.on("messageCreate", async (message: any) => {
             if (message.author.bot) return;
+            var args = message.content.split(/[ ]+/);
+            // console.log(message.content.startsWith(process.env.PREFIX))
+            // console.log(message.mentions.has(options.client.user))
+            // console.log(process.env.PREFIX, message)
             if (
               message.content.startsWith(process.env.PREFIX) ||
               (message.mentions.has(options.client.user) &&
-                Object.keys(valids).includes(args[1]))
+                valids.has(args[1]))
             ) {
+              // console.log('pass2')
               if (message.channel.type == "dm")
                 return message.reply("You can't use commands in DMs!");
-              var args = message.content.split(/[ ]+/);
+              
               const rawCommandFile = valids.get(
-                args[0].toLowerCase().substring(process.env.PREFIX?.length)
+                message.mentions.has(options.client.user)?args[1].toLowerCase():args[0].toLowerCase().substring(process.env.PREFIX?.length)
               );
+              // console.log('1')
               if (!rawCommandFile) return;
+              // console.log('2')
               const commandFile = rawCommandFile.commandFile;
               if (rawCommandFile.cache.type == "slash") {
                 return;
               }
+              // console.log('3')
               if (commandFile) {
                 args.shift();
                 if (
@@ -151,14 +159,15 @@ module.exports = function (options: any, paguClient: any) {
                       )}`
                     );
                   try {
-                    if (commandFile.cache.type == "message")
+                    // console.log(command)
+                    if (command.cache.type == "message")
                       commandFile.execute(
                         message,
                         args,
                         options.client,
                         paguClient
                       );
-                    else if (commandFile.cache.type == "both") {
+                    else if (command.cache.type == "both") {
                       commandFile.messageExecute(
                         message,
                         args,
@@ -190,14 +199,18 @@ module.exports = function (options: any, paguClient: any) {
             "interactionCreate",
             async (interaction: Interaction) => {
               if (!interaction.isCommand()) return;
+              // console.log(validSlashes, interaction.commandName)
+              // console.log(validSlashes.get(interaction.commandName))
               var Command = validSlashes.get(interaction.commandName);
               if (!Command) {
+                // console.log('no')
                 interaction.reply({
                   content: "Command not found",
                   ephemeral: true,
                 });
               } else {
                 try {
+                  // console.log(Command.cache.type)
                   if (Command.cache.type == "slash")
                     Command.commandFile.execute(
                       interaction,

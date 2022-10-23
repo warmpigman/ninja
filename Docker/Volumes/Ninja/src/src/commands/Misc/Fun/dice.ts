@@ -21,16 +21,7 @@ module.exports = {
     if (args.length >= 2) {
       embed.setDescription(
         `**You rolled a ${
-          Math.floor(
-            Number(
-              `.${require("crypto")
-                .randomBytes(4)
-                .toString("hex")
-                .split("")
-                .map((letter: String) => letter.charCodeAt(0))
-                .join("")}`
-            ) * parseInt(args[1])
-          ) + parseInt(args[0])
+          Math.floor(Math.random() * (parseInt(args[1]) - parseInt(args[0]) + 1) + parseInt(args[0]))
         }!**`
       );
       message.channel.send({ embeds: [embed], allowedMentions: { users: [] } });
