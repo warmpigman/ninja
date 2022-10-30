@@ -154,7 +154,7 @@ module.exports = {
                 return message.channel.send({
                   embeds: [embed],
                   allowedMentions: { users: [] },
-                }).then( msg:Message => {
+                }).then( msg => {
                   setTimeout(() => {
                     msg.delete()
                   }, 5000)});
@@ -172,7 +172,7 @@ module.exports = {
             return message.channel.send({
               embeds: [embed],
               allowedMentions: { users: [] },
-            }).then( msg:Message => {
+            }).then( msg => {
               setTimeout(() => {
                 msg.delete()
               }, 5000)});;
@@ -320,7 +320,7 @@ module.exports = {
           return message.channel.send({
             embeds: [embed],
             allowedMentions: { users: [] },
-          }).then( msg:Message => {
+          }).then( msg => {
             setTimeout(() => {
               msg.delete()
             }, 5000)});;
@@ -332,7 +332,7 @@ module.exports = {
           return message.channel.send({
             embeds: [embed],
             allowedMentions: { users: [] },
-          }).then( msg:Message => {
+          }).then( msg => {
             setTimeout(() => {
               msg.delete()
             }, 5000)});;
@@ -354,7 +354,7 @@ module.exports = {
         const sentEmbed = await message.channel.send({
           embeds: [embed],
           allowedMentions: { users: [] },
-        }).then( msg:Message => {
+        }).then( msg => {
           setTimeout(() => {
             msg.delete()
           }, 5000)});;
