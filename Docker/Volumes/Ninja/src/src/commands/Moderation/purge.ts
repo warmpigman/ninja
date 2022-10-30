@@ -151,16 +151,13 @@ module.exports = {
                 embed.setDescription(
                   `:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel}`
                 );
-                return message.channel
-                  .send({
-                    embeds: [embed],
-                    allowedMentions: { users: [] },
-                  })
-                  .then((msg) => {
-                    setTimeout(() => {
-                      msg.delete();
-                    }, 5000);
-                  });
+                return message.channel.send({
+                  embeds: [embed],
+                  allowedMentions: { users: [] },
+                }).then( (msg:Message) => {
+                  setTimeout(() => {
+                    msg.delete()
+                  }, 5000)});
               });
 
             // await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
@@ -172,16 +169,13 @@ module.exports = {
             //         embed.setDescription(`:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel} (${url ?? "Hastebin could not be created"})`)
             //         return message.channel.send({ embeds: [embed], allowedMentions: { users: [] } })
             //     })
-            return message.channel
-              .send({
-                embeds: [embed],
-                allowedMentions: { users: [] },
-              })
-              .then((msg) => {
-                setTimeout(() => {
-                  msg.delete();
-                }, 5000);
-              });
+            return message.channel.send({
+              embeds: [embed],
+              allowedMentions: { users: [] },
+            }).then( (msg:Message) => {
+              setTimeout(() => {
+                msg.delete()
+              }, 5000)});;
           }
         }
         var toFetch: any = findNextLimit();
@@ -323,31 +317,25 @@ module.exports = {
                 : "Hastebin could not be created"
             })`
           );
-          return message.channel
-            .send({
-              embeds: [embed],
-              allowedMentions: { users: [] },
-            })
-            .then((msg) => {
-              setTimeout(() => {
-                msg.delete();
-              }, 5000);
-            });
+          return message.channel.send({
+            embeds: [embed],
+            allowedMentions: { users: [] },
+          }).then( (msg:Message) => {
+            setTimeout(() => {
+              msg.delete()
+            }, 5000)});;
         })
         .catch((err: Error) => {
           embed.setDescription(
             `:wastebasket: ${messagesToDelete.length} messages deleted in ${message.channel}`
           );
-          return message.channel
-            .send({
-              embeds: [embed],
-              allowedMentions: { users: [] },
-            })
-            .then((msg) => {
-              setTimeout(() => {
-                msg.delete();
-              }, 5000);
-            });
+          return message.channel.send({
+            embeds: [embed],
+            allowedMentions: { users: [] },
+          }).then( (msg:Message) => {
+            setTimeout(() => {
+              msg.delete()
+            }, 5000)});;
         });
       // var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
       // await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
@@ -363,16 +351,13 @@ module.exports = {
         await embed.setDescription(
           "I have deleted " + messagesToDelete.length + " messages!"
         );
-        const sentEmbed = await message.channel
-          .send({
-            embeds: [embed],
-            allowedMentions: { users: [] },
-          })
-          .then((msg) => {
-            setTimeout(() => {
-              msg.delete();
-            }, 5000);
-          });
+        const sentEmbed = await message.channel.send({
+          embeds: [embed],
+          allowedMentions: { users: [] },
+        }).then( (msg:Message) => {
+          setTimeout(() => {
+            msg.delete()
+          }, 5000)});;
         setTimeout(() => {
           sentEmbed.delete();
         }, 10000);
