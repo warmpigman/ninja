@@ -154,7 +154,10 @@ module.exports = {
                 return message.channel.send({
                   embeds: [embed],
                   allowedMentions: { users: [] },
-                });
+                }).then( msg:Message => {
+                  setTimeout(() => {
+                    msg.delete()
+                  }, 5000)});
               });
 
             // await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
@@ -169,7 +172,10 @@ module.exports = {
             return message.channel.send({
               embeds: [embed],
               allowedMentions: { users: [] },
-            });
+            }).then( msg:Message => {
+              setTimeout(() => {
+                msg.delete()
+              }, 5000)});;
           }
         }
         var toFetch: any = findNextLimit();
@@ -314,7 +320,10 @@ module.exports = {
           return message.channel.send({
             embeds: [embed],
             allowedMentions: { users: [] },
-          });
+          }).then( msg:Message => {
+            setTimeout(() => {
+              msg.delete()
+            }, 5000)});;
         })
         .catch((err: Error) => {
           embed.setDescription(
@@ -323,7 +332,10 @@ module.exports = {
           return message.channel.send({
             embeds: [embed],
             allowedMentions: { users: [] },
-          });
+          }).then( msg:Message => {
+            setTimeout(() => {
+              msg.delete()
+            }, 5000)});;
         });
       // var File = await new MessageAttachment(Buffer.from(await findFileData(), 'utf8'), 'purge.txt');
       // await hastebin.createPaste(findFileData(), { server: 'https://hastebin.com/' })
@@ -342,7 +354,10 @@ module.exports = {
         const sentEmbed = await message.channel.send({
           embeds: [embed],
           allowedMentions: { users: [] },
-        });
+        }).then( msg:Message => {
+          setTimeout(() => {
+            msg.delete()
+          }, 5000)});;
         setTimeout(() => {
           sentEmbed.delete();
         }, 10000);
