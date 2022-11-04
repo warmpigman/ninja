@@ -196,7 +196,7 @@ module.exports = {
         });
       } catch (e: any) {
         console.log(e);
-        message.channel.send("An error occurred. Please report this!")
+        message.channel.send("An error occurred. Please report this!");
         // if (e.response === undefined)
         //   m.edit({
         //     content: `There was an error`,
@@ -330,7 +330,7 @@ module.exports = {
           headers: {
             "Content-Type": "application/json",
           },
-        })
+        });
         const uuid = resp.data[0].id;
         const username = resp.data[0].name;
         const { data } = await get(key ?? "", uuid);
@@ -347,7 +347,7 @@ module.exports = {
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      });
       const uuid = resp.data[0].id;
       const username = resp.data[0].name;
       const { data } = await get(key ?? "", uuid);

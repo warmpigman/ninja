@@ -416,7 +416,7 @@ module.exports = {
           headers: {
             "Content-Type": "application/json",
           },
-        })
+        });
         let username = r.data[0].name;
         if (r.status == 200) {
           let uuid = r.data[0].id;
@@ -484,7 +484,7 @@ module.exports = {
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      });
       let username = r.data[0].name;
       if (r.status == 200) {
         let uuid = r.data[0].id;
