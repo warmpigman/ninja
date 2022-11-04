@@ -44,7 +44,7 @@ module.exports = {
           });
         } else {
           axios.get(
-            `https://api.hypixel.net/player?uuid=${mojangRes.data.id}&key=${process.env.API_KEY}`
+            `https://api.hypixel.net/player?uuid=${mojangRes.data[0].id}&key=${process.env.API_KEY}`
           ).then(async (res) => {
             if (!res.data.player || !res.data.player.socialMedia) {
               embed.addFields({
@@ -87,7 +87,7 @@ module.exports = {
                     response
                       ? Object.values(response.data).some(
                           (scammerUser: any) =>
-                            scammerUser?.uuid === mojangRes.data.id
+                            scammerUser?.uuid === mojangRes.data[0].id
                         )
                       : false
                   ) {
@@ -125,7 +125,7 @@ module.exports = {
                   await paguClient.Util.createNewUser(
                     paguClient,
                     message,
-                    mojangRes.data.id
+                    mojangRes.data[0].id
                   );
                 });
               } else {
