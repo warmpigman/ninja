@@ -43,7 +43,7 @@ module.exports = {
             embeds: [embed],
           });
         } else {
-          axios.get(
+          get(
             `https://api.hypixel.net/player?uuid=${mojangRes.data.id}&key=${process.env.API_KEY}`
           ).then(async (res) => {
             if (!res.data.player || !res.data.player.socialMedia) {
