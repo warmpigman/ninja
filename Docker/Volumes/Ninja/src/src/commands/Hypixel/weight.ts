@@ -49,7 +49,7 @@ module.exports = {
           let profile_name = data.name;
           let username = data.username;
           if (username == "Teodor") username = "warmpigman";
-          if (username == "YoureSimple") username = "proninjagamin0"
+          if (username == "YoureSimple") username = "proninjagamin0";
           embed.setTitle(
             `Showing weight data for ${username}\nProfile: ${profile_name}`
           );
@@ -264,7 +264,7 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
     if (args.length == 2) {
       let username = args[0];
       if (username.toLowerCase() == "warmpigman") username = "Teodor";
-      if (username.toLowerCase() == "proninjagamin0") username = "YoureSimple"
+      if (username.toLowerCase() == "proninjagamin0") username = "YoureSimple";
       let strategy = args[1];
       await axios({
         method: "post",
@@ -348,7 +348,8 @@ ${`🛡️ Tank - ${catacombsData.classes.tank.level.toFixed(2)}`.padEnd(
       } else {
         let username = args[0];
         if (username.toLowerCase() == "warmpigman") username = "Teodor";
-        if (username.toLowerCase() == "proninjagamin0") username = "YoureSimple"
+        if (username.toLowerCase() == "proninjagamin0")
+          username = "YoureSimple";
         await axios({
           method: "post",
           url: "https://api.mojang.com/profiles/minecraft",
