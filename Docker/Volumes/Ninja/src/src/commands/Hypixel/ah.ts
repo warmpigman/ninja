@@ -525,7 +525,7 @@ module.exports = {
             m.edit("There was an issue getting the profiles.");
             return;
           case 200:
-            let profile = getProfileByName(response.data.profiles, args[2]);
+            let profile = getProfileByName(response.data.profiles, args[1]);
             if (profile === null) {
               m.edit("That is not a valid profile");
             } else {

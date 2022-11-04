@@ -195,42 +195,44 @@ module.exports = {
           allowedMentions: { repliedUser: false },
         });
       } catch (e: any) {
-        if (e.response === undefined)
-          m.edit({
-            content: `There was an error`,
-            allowedMentions: { repliedUser: false },
-          });
-        else if (e.response.data === undefined)
-          m.edit({
-            content: `There was an error`,
-            allowedMentions: { repliedUser: false },
-          });
-        else if (e.reponse.data.status === undefined)
-          m.edit({
-            content: `There was an error`,
-            allowedMentions: { repliedUser: false },
-          });
-        else {
-          let embed = new MessageEmbed();
-          embed.setTitle("Error");
-          embed.setColor(
-            `#${Math.floor(Math.random() * 16777215).toString(16)}`
-          );
-          embed.setTimestamp(Date.now());
-          embed.setFooter(
-            message.author.username,
-            message.author.displayAvatarURL({ dynamic: true })
-          );
-          embed.addField(
-            e.response.data.status.toString(),
-            e.response.data.cause
-          );
-          m.edit({
-            content: null,
-            embeds: [embed],
-            allowedMentions: { repliedUser: false },
-          });
-        }
+        console.log(e);
+        message.channel.send("An error occurred. Please report this!")
+        // if (e.response === undefined)
+        //   m.edit({
+        //     content: `There was an error`,
+        //     allowedMentions: { repliedUser: false },
+        //   });
+        // else if (e.response.data === undefined)
+        //   m.edit({
+        //     content: `There was an error`,
+        //     allowedMentions: { repliedUser: false },
+        //   });
+        // else if (e.reponse?.data.status === undefined)
+        //   m.edit({
+        //     content: `There was an error`,
+        //     allowedMentions: { repliedUser: false },
+        //   });
+        // else {
+        //   let embed = new MessageEmbed();
+        //   embed.setTitle("Error");
+        //   embed.setColor(
+        //     `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        //   );
+        //   embed.setTimestamp(Date.now());
+        //   embed.setFooter(
+        //     message.author.username,
+        //     message.author.displayAvatarURL({ dynamic: true })
+        //   );
+        //   embed.addField(
+        //     e.response.data.status.toString(),
+        //     e.response.data.cause
+        //   );
+        //   m.edit({
+        //     content: null,
+        //     embeds: [embed],
+        //     allowedMentions: { repliedUser: false },
+        //   });
+        //  }
       }
     }
     async function get(key: string, uuid: string) {
