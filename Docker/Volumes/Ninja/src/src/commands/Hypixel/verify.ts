@@ -41,7 +41,7 @@ module.exports = {
           });
         } else {
           get(
-            `https://api.hypixel.net/player?uuid=${mojangRes.data.id}&key=c2d06b71-ea84-46db-95ff-319bc7f03fe9`
+            `https://api.hypixel.net/player?uuid=${mojangRes.data.id}&key=${process.env.API_KEY}`
           ).then(async (res) => {
             if (!res.data.player || !res.data.player.socialMedia) {
               embed.addFields({
